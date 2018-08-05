@@ -37,9 +37,9 @@ nnoremap <leader><F1> :mksession!<cr> " save session
 nnoremap <leader><F11> :e ~/.vimrc<cr>
 nnoremap <leader><F12> :source %<cr>
 
-nnoremap <M-f> :Files<cr>
-nnoremap <M-b> :Buffers<cr>
-nnoremap <M-s> :Ag<space>
+nnoremap <leader>f :Files<cr>
+nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>s :Ag<space>
 
 " Shortcuts
 " <C-n>			select all words occur and replace with c or delete with d
