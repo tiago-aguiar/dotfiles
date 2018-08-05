@@ -1,0 +1,48 @@
+
+call plug#begin()
+Plug 'morhetz/gruvbox'
+Plug 'terryma/vim-multiple-cursors' "<C-n>
+Plug 'sheerun/vim-polyglot'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'roxma/nvim-completion-manager'
+Plug 'w0rp/ale'
+Plug 'jiangmiao/auto-pairs'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+call plug#end()
+
+
+colorscheme gruvbox
+set background=dark
+
+set hidden
+set number
+" set relativenumber	" relative number crash windows (slow)
+set mouse=c
+set inccommand=split
+set shiftwidth=4
+set tabstop=4
+
+let $FZF_DEFAULT_COMMAND = 'ag -g ""' " to use Ag system search
+
+let mapleader="," " mapping leader key
+
+nnoremap <leader>; A;<esc> " e.g. mapping command in normal mode
+
+" <cr> means <Enter>
+nnoremap <leader><F1> :e ~/.vimrc<cr>
+nnoremap <leader><F12> :source %<cr>
+
+nnoremap <M-f> :Files<cr>
+nnoremap <M-b> :Buffers<cr>
+nnoremap <M-s> :Ag<space>
+
+" Shortcuts
+" <C-n>			select all words occur and replace with c or delete with d
+"
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
