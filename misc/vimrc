@@ -10,6 +10,7 @@ Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'tpope/vim-obsession'
 call plug#end()
 
 
@@ -23,15 +24,17 @@ set mouse=c
 set inccommand=split
 set shiftwidth=4
 set tabstop=4
+set noswapfile
 
 let $FZF_DEFAULT_COMMAND = 'ag -g ""' " to use Ag system search
 
-let mapleader="," " mapping leader key
+let mapleader="\<Space>" " mapping leader key
 
 nnoremap <leader>; A;<esc> " e.g. mapping command in normal mode
 
 " <cr> means <Enter>
-nnoremap <leader><F1> :e ~/.vimrc<cr>
+nnoremap <leader><F1> :mksession!<cr> " save session
+nnoremap <leader><F11> :e ~/.vimrc<cr>
 nnoremap <leader><F12> :source %<cr>
 
 nnoremap <M-f> :Files<cr>

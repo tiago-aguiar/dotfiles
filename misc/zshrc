@@ -81,6 +81,7 @@ alias pip='noglob pip'
 alias homewin='cd $HOME/..'    
 alias tmk="tmux kill-session -t devenv"
 alias tms="tmux attach -t devenv || tmux new -s devenv"
+alias vim="nvim"
 
 source $ZSH/oh-my-zsh.sh
 cd $HOME
