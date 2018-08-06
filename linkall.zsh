@@ -75,9 +75,16 @@ fi
 # Return to original pwd.
 popd > /dev/null
 
+# install vim-plug
 if [ ! -d "$HOME/.config/nvim/autoload" ]; then
 	echo "download vim-plug."
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+# install Ag silver searcher
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+	apt-get install silversearcher-ag -y
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+	brew install the_silver_searcher
 fi
 
 
