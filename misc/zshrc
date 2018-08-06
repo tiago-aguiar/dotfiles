@@ -84,7 +84,6 @@ alias tms="tmux attach -t devenv || tmux new -s devenv"
 alias vim="nvim"
 
 source $ZSH/oh-my-zsh.sh
-cd $HOME
 export DISPLAY=:0.0
 export TERM="xterm-256color"
 
