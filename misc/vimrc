@@ -55,12 +55,13 @@ nnoremap <leader>; A;<esc>
 
 " <cr> means <Enter>
 nnoremap <leader><F1> :mksession!<cr> " save session
-nnoremap <leader><F11> :e ~/.vimrc<cr>
+nnoremap <leader><F10> :e ~/.vimrc<cr>
 nnoremap <leader><F12> :source %<cr>
 
 nnoremap <leader>f :Files<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>s :Ag<space>
+nnoremap <leader>k :bd<cr>
 
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
