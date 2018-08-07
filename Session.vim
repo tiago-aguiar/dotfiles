@@ -8,10 +8,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +50 ~/.vimrc
-badd +0 misc/tmux.conf
+badd +12 misc/tmux.conf
 argglobal
 silent! argdel *
-edit misc/tmux.conf
+edit ~/.vimrc
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -27,11 +27,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 4 - ((3 * winheight(0) + 49) / 98)
+let s:l = 49 - ((48 * winheight(0) + 49) / 98)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-4
+49
 normal! 0
 lcd ~/dotfiles
 tabnext 1
