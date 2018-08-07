@@ -1,41 +1,53 @@
-
+" plugins
 call plug#begin()
 Plug 'morhetz/gruvbox'
 Plug 'terryma/vim-multiple-cursors' "<C-n>
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-"Plug 'roxma/nvim-completion-manager'
-
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
-
 Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-obsession'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 call plug#end()
-
 
 colorscheme gruvbox
 set background=dark
 
+let g:airline_theme='simple'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+" incompatible powerline symbols for Inziu Iosevka font
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" font https://github.com/vim-airline/vim-airline/issues/1397
+let g:airline_symbols.linenr = " " 
+let g:airline_symbols.whitespace = " "
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+
 set hidden
 set number
-" set relativenumber	" relative number crash windows (slow)
+" set relativenumber
 set mouse=c
-" set inccommand=split
 set shiftwidth=4
 set tabstop=4
 set noswapfile
 
-let $FZF_DEFAULT_COMMAND = 'ag -g ""' " to use Ag system search
+" to use Ag system search
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 
-let mapleader="\<Space>" " mapping leader key
+let mapleader="\<Space>"
 
-nnoremap <leader>; A;<esc> " e.g. mapping command in normal mode
+nnoremap <leader>; A;<esc>
 
 " <cr> means <Enter>
 nnoremap <leader><F1> :mksession!<cr> " save session
@@ -46,9 +58,14 @@ nnoremap <leader>f :Files<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>s :Ag<space>
 
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
 " Shortcuts
 " <C-n>			select all words occur and replace with c or delete with d
-"
+
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
