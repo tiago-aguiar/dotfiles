@@ -1,6 +1,7 @@
 " plugins
 call plug#begin()
 Plug 'morhetz/gruvbox'
+Plug 'chriskempson/base16-vim'
 Plug 'terryma/vim-multiple-cursors' "<C-n>
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -17,8 +18,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
-colorscheme gruvbox
+syntax on
+colorscheme base16-black-metal-bathory
 set background=dark
+let g:gruvbox_termcolors=256
 
 let g:airline_theme='simple'
 let g:airline#extensions#tabline#enabled = 1
@@ -41,6 +44,7 @@ set mouse=c
 set shiftwidth=4
 set tabstop=4
 set noswapfile
+set termguicolors
 
 " to use Ag system search
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
