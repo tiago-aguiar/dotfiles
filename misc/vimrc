@@ -18,6 +18,7 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-obsession'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'benmills/vimux'
 call plug#end()
 
 " for terminal default font use #F9D8B4
@@ -70,6 +71,11 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
+nnoremap <C-S-j> <C-e>
+nnoremap <C-S-k> <C-y>
+
+nnoremap <F5> :call VimuxRunCommand("node inspect index.js")<cr>
 
 " ncm2 configurations
 inoremap <c-c> <ESC>
