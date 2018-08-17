@@ -20,6 +20,8 @@ Plug 'tpope/vim-obsession'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'benmills/vimux'
+Plug 'xolox/vim-colorscheme-switcher'
+Plug 'xolox/vim-misc'
 call plug#end()
 
 " for terminal default font use #F9D8B4
@@ -41,6 +43,10 @@ endif
 let g:airline_symbols.linenr = " " 
 let g:airline_symbols.whitespace = " "
 let g:airline#extensions#tabline#formatter = 'unique_tail'
+
+" change colorscheme with F8 and SHIFT-F8
+let g:colorscheme_switcher_define_mappings = 1
+hi Comment guifg=#FFE200
 
 set hidden
 set number
