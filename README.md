@@ -1,2 +1,2 @@
 # dotfiles
-dotfiles :: new version "all-in" environment
+Run `linkall.zsh` for build symlink of vim, tmux, android studio, anything else.
