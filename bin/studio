@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+if [ -d "$HOME/Applications/android-studio" ]; then
+	echo "Starting Android Studio..."
+	$HOME/Applications/android-studio/bin/./studio.sh &
+fi
