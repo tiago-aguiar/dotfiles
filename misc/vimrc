@@ -11,6 +11,11 @@ Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-path'
+
+" enable ncm2 for all buffers
+"autocmd BufEnter * call ncm2#enable_for_buffer()
+"set completeopt=noinsert,menuone,noselect
+
 Plug 'ncm2/ncm2-tern',  {'do': 'npm install'} "javascript
 Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
@@ -22,13 +27,27 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'benmills/vimux'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
+Plug 'shime/vim-livedown'
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+Plug 'zchee/deoplete-jedi'
+
 call plug#end()
+
+let g:deoplete#enable_at_startup = 1
 
 " for terminal default font use #F9D8B4
 syntax on
-colorscheme base16-black-metal-bathory
+colorscheme gruvbox
 set background=dark
-let g:gruvbox_termcolors=256
+" let g:gruvbox_termcolors=256
 
 let g:airline_theme='simple'
 let g:airline#extensions#tabline#enabled = 1
@@ -86,12 +105,9 @@ nnoremap <F5> :call VimuxRunCommand("node inspect index.js")<cr>
 
 " ncm2 configurations
 inoremap <c-c> <ESC>
-
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-
-
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
 
 " Shortcuts
 " <C-n>			select all words occur and replace with c or delete with d
@@ -102,6 +118,5 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
 
-" enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
+" deoplete jedi
+let g:deoplete#sources#jedi#show_docstring = 1
