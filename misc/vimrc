@@ -120,3 +120,7 @@ let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
 
 " deoplete jedi
 let g:deoplete#sources#jedi#show_docstring = 1
+
+set rtp+=/usr/share/powerline/bindings/vim/
+set laststatus=2
+set t_Co=256
