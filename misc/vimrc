@@ -1,35 +1,33 @@
 " plugins
 call plug#begin()
 Plug 'morhetz/gruvbox'
-Plug 'chriskempson/base16-vim'
-Plug 'terryma/vim-multiple-cursors' "<C-n>
-Plug 'sheerun/vim-polyglot'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'ncm2/ncm2'
+Plug 'terryma/vim-multiple-cursors' "<C-n> to replace all selected ocurr
+Plug 'sheerun/vim-polyglot' " a collection of language packs for Vim.
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fzf finder
+Plug 'junegunn/fzf.vim' " fzf finder
+Plug 'ncm2/ncm2' " nvim completion manager
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-path'
 
 " enable ncm2 for all buffers
-"autocmd BufEnter * call ncm2#enable_for_buffer()
-"set completeopt=noinsert,menuone,noselect
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone
 
-Plug 'ncm2/ncm2-tern',  {'do': 'npm install'} "javascript
-Plug 'w0rp/ale'
-Plug 'jiangmiao/auto-pairs'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'tpope/vim-obsession'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'benmills/vimux'
-Plug 'xolox/vim-colorscheme-switcher'
-Plug 'xolox/vim-misc'
-Plug 'shime/vim-livedown'
+Plug 'ncm2/ncm2-tern', { 'do': 'npm install' } " javascript completion (need to install node before this)
+Plug 'w0rp/ale' " lint chekcer
+Plug 'jiangmiao/auto-pairs' " auto bracket
+Plug 'SirVer/ultisnips' " snippet code
+Plug 'honza/vim-snippets' " repository with snippet files
+Plug 'tpope/vim-obsession' " save session
+Plug 'vim-airline/vim-airline' " status bar
+Plug 'vim-airline/vim-airline-themes' " status theme
+Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
+Plug 'xolox/vim-misc' " used for switcher colorscheme
+Plug 'xolox/vim-colorscheme-switcher' " switch coloscheme to test
 
-if has('nvim')
+if has('nvim') " async frameworks completion
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/deoplete.nvim'
@@ -37,54 +35,31 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-Plug 'zchee/deoplete-jedi'
+Plug 'zchee/deoplete-jedi' " autocomplete for python with deoplete async
 
 call plug#end()
 
-let g:deoplete#enable_at_startup = 1
-
-" for terminal default font use #F9D8B4
+" default
 syntax on
 colorscheme gruvbox
+
 set background=dark
-" let g:gruvbox_termcolors=256
-
-let g:airline_theme='simple'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-
-" incompatible powerline symbols for Inziu Iosevka font
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-" font https://github.com/vim-airline/vim-airline/issues/1397
-let g:airline_symbols.linenr = " " 
-let g:airline_symbols.whitespace = " "
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-
-" change colorscheme with F8 and SHIFT-F8
-let g:colorscheme_switcher_define_mappings = 1
-hi Comment guifg=#FFE200
-
 set hidden
 set number
-" set relativenumber
+set relativenumber
 set mouse=c
 set shiftwidth=4
 set tabstop=4
 set noswapfile
 set termguicolors
-
-" to use Ag system search
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-
 let mapleader="\<Space>"
+set laststatus=2
+set t_Co=256
+set rtp+=/usr/share/powerline/bindings/vim/
 
 nnoremap <leader>; A;<esc>
 
-" <cr> means <Enter>
-nnoremap <leader><F1> :mksession!<cr> " save session
+nnoremap <leader><F1> :mksession!<cr>
 nnoremap <leader><F10> :e ~/.vimrc<cr>
 nnoremap <leader><F12> :source %<cr>
 
@@ -101,26 +76,38 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-S-j> <C-e>
 nnoremap <C-S-k> <C-y>
 
-nnoremap <F5> :call VimuxRunCommand("node inspect index.js")<cr>
+" gui stuff
+if !exists('g:airline_symbols') " incompatible powerline symbols for Inziu Iosevka font
+  let g:airline_symbols = {}
+endif
+let g:airline_theme='gruvbox'
+let g:colorscheme_switcher_define_mappings = 1 " change colorscheme with F8 and SHIFT-F8
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_symbols.linenr = " " "font https://github.com/vim-airline/vim-airline/issues/1397
+let g:airline_symbols.whitespace = " "
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 
-" ncm2 configurations
+
+" python stuff
+let g:deoplete#enable_at_startup = 1
+let g:python3_host_prog = '/usr/bin/python3'
+let g:deoplete#sources#jedi#show_docstring = 1 " deoplete jedi (python)
+
+" to use Ag system search
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+
+" ncm2 configs
 inoremap <c-c> <ESC>
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
 
-" Shortcuts
-" <C-n>			select all words occur and replace with c or delete with d
+" vimux configs
+nnoremap <F5> :call VimuxRunCommand("node inspect index.js")<cr>
 
+" snippets configs
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
-
-" deoplete jedi
-let g:deoplete#sources#jedi#show_docstring = 1
-
-set rtp+=/usr/share/powerline/bindings/vim/
-set laststatus=2
-set t_Co=256
