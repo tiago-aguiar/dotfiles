@@ -1,6 +1,7 @@
 " plugins
 call plug#begin()
 Plug 'morhetz/gruvbox'
+Plug 'srcery-colors/srcery-vim'
 Plug 'terryma/vim-multiple-cursors' "<C-n> to replace all selected ocurr
 Plug 'sheerun/vim-polyglot' " a collection of language packs for Vim.
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fzf finder
@@ -39,9 +40,12 @@ Plug 'zchee/deoplete-jedi' " autocomplete for python with deoplete async
 
 call plug#end()
 
+
 " default
 syntax on
-colorscheme gruvbox
+
+set t_Co=256
+colorscheme srcery
 
 set background=dark
 set hidden
@@ -51,10 +55,9 @@ set mouse=c
 set shiftwidth=4
 set tabstop=4
 set noswapfile
-set termguicolors
+"set termguicolors
 let mapleader="\<Space>"
 set laststatus=2
-set t_Co=256
 set rtp+=/usr/share/powerline/bindings/vim/
 
 nnoremap <leader>; A;<esc>
