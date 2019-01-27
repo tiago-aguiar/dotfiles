@@ -83,7 +83,7 @@ nnoremap <C-S-k> <C-y>
 if !exists('g:airline_symbols') " incompatible powerline symbols for Inziu Iosevka font
   let g:airline_symbols = {}
 endif
-let g:airline_theme='gruvbox'
+let g:airline_theme='srcery'
 let g:colorscheme_switcher_define_mappings = 1 " change colorscheme with F8 and SHIFT-F8
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
