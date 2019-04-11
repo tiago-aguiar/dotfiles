@@ -106,7 +106,7 @@ inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
 
 " vimux configs
-nnoremap <F5> :call VimuxRunCommand("node inspect index.js")<cr>
+nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
 
 " snippets configs
 let g:UltiSnipsExpandTrigger="<tab>"

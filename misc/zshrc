@@ -7,7 +7,9 @@
 #
 # ===============                
 
+export JAVA_HOME=/usr/lib/java/jdk1.8.0_201
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$JAVA_HOME/bin:$PATH
 
 ANDROID_HOME=""
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
@@ -128,3 +130,7 @@ export LANG=en_US.UTF-8
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/tiago/.sdkman"
+[[ -s "/home/tiago/.sdkman/bin/sdkman-init.sh" ]] && source "/home/tiago/.sdkman/bin/sdkman-init.sh"
