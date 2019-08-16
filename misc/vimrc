@@ -27,6 +27,8 @@ Plug 'vim-airline/vim-airline-themes' " status theme
 Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
 Plug 'xolox/vim-misc' " used for switcher colorscheme
 Plug 'xolox/vim-colorscheme-switcher' " switch coloscheme to test
+Plug 'dart-lang/dart-vim-plugin' " for flutter
+Plug 'thosakwe/vim-flutter' " for flutter
 
 if has('nvim') " async frameworks completion
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -37,8 +39,17 @@ else
 endif
 
 Plug 'zchee/deoplete-jedi' " autocomplete for python with deoplete async
+Plug 'natebosch/vim-lsc'
 
 call plug#end()
+
+" Some of these key choices were arbitrary;
+" it's just an example.
+nnoremap <leader>fa :FlutterRun<cr>
+nnoremap <leader>fq :FlutterQuit<cr>
+nnoremap <leader>fr :FlutterHotReload<cr>
+nnoremap <leader>fR :FlutterHotRestart<cr>
+nnoremap <leader>fD :FlutterVisualDebug<cr>
 
 
 " default
@@ -108,9 +119,14 @@ inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
 " vimux configs
 nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
 
+let g:ale_python_flake8_executable = 'python3'   " or 'python' for Python 2
+let g:ale_python_flake8_options = '-m flake8'
+
 " snippets configs
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
+
+let g:lsc_server_commands = {'dart': 'dart_language_server'}
