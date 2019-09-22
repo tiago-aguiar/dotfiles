@@ -11,6 +11,7 @@ Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-path'
+Plug 'johngrib/vim-game-snake'
 
 " enable ncm2 for all buffers
 autocmd BufEnter * call ncm2#enable_for_buffer()
@@ -130,3 +131,15 @@ let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
 
 let g:lsc_server_commands = {'dart': 'dart_language_server'}
+
+let t:is_transparent = 0
+function! Toggle_transparent()
+	if t:is_transparent == 0
+		hi Normal guibg=NONE ctermbg=NONE
+		let t:is_transparent = 1
+	else
+		set background=dark
+		let t:is_tranparent = 0
+	endif
+endfunction
+nnoremap <C-t> : call Toggle_transparent()<CR>
