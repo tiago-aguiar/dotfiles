@@ -11,7 +11,9 @@ Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-path'
+Plug 'Chiel92/vim-autoformat'
 Plug 'johngrib/vim-game-snake'
+Plug 'scrooloose/nerdtree'
 
 " enable ncm2 for all buffers
 autocmd BufEnter * call ncm2#enable_for_buffer()
@@ -52,12 +54,12 @@ nnoremap <leader>fr :FlutterHotReload<cr>
 nnoremap <leader>fR :FlutterHotRestart<cr>
 nnoremap <leader>fD :FlutterVisualDebug<cr>
 
+noremap <F3> :Autoformat<CR>
 
 " default
 syntax on
 
 set t_Co=256
-colorscheme srcery
 
 set background=dark
 set hidden
@@ -72,6 +74,8 @@ let mapleader="\<Space>"
 set laststatus=2
 set rtp+=/usr/share/powerline/bindings/vim/
 
+colorscheme srcery
+
 nnoremap <leader>; A;<esc>
 
 nnoremap <leader><F1> :mksession!<cr>
@@ -82,6 +86,7 @@ nnoremap <leader>f :Files<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>s :Ag<space>
 nnoremap <leader>k :bd<cr>
+nnoremap <leader><TAB> :NERDTreeToggle<cr>
 
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -143,3 +148,9 @@ function! Toggle_transparent()
 	endif
 endfunction
 nnoremap <C-t> : call Toggle_transparent()<CR>
+
+" put this in your .vimrc
+set wildignore+=*.pyc,__pycache__,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
+
+" Nerdtree config for wildignore
+let NERDTreeRespectWildIgnore=1
