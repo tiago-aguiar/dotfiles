@@ -1,3 +1,6 @@
+# python ~/dotfiles/bin/add_watermark_pdf.py -i /home/tiagoaguiar/Downloads/ebookxxx.pdf -p "email@hotmail.com" -n "FulanoDaSilva" -o /home/tiagoaguiar/Downloads/output.pdf 
+
+
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import io
 import argparse

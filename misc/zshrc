@@ -7,7 +7,7 @@
 #
 # ===============                
 
-export JAVA_HOME=/usr/lib/java/jdk-12.0.2
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$JAVA_HOME/bin:$PATH
 export PATH="$PATH:/opt/flutter/bin"
