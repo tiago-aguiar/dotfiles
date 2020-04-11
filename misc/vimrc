@@ -111,7 +111,9 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 " python stuff
 let g:deoplete#enable_at_startup = 1
+
 let g:python3_host_prog = '/usr/bin/python3'
+
 let g:deoplete#sources#jedi#show_docstring = 1 " deoplete jedi (python)
 
 " to use Ag system search

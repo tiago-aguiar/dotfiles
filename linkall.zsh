@@ -7,6 +7,7 @@ green="\e[32;40m"
 reset="\e[39;49m"
 
 me=`basename $0`
+echo "basename is: $me"
 
 # Get options.
 LNOPTS=""
@@ -28,6 +29,7 @@ fi
 
 # The system name is used to link platform-specific files.
 platform=`uname`
+echo "current platform is: $platform"
 
 pushd `dirname $0` > /dev/null
 SCRIPTPATH=`pwd`
@@ -37,8 +39,13 @@ popd > /dev/null
 
 pushd ~ > /dev/null
 
-echo "Creating symlinks for all configuration files in $SCRIPTPATH.."
+echo "current BINPATH is: $BINPATH"
+echo "Creating symlinks for all configuration files in $SCRIPTPATH"
 echo ""
+
+# setup ohmyzsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
+rm -rf $HOME/.zshrc
 
 for dotfile in `find $SCRIPTPATH -mindepth 1 -maxdepth 1`; do
     linkfile=".${dotfile##*/}"
@@ -65,6 +72,11 @@ if [ ! -d "$HOME/bin" ]; then
   mkdir "$HOME/bin"
 fi
 
+if [ ! -d "$HOME/.config" ]; then
+	echo "Creating .config directory."
+	mkdir "$HOME/.config"
+fi
+
 
 if [ ! -d "$HOME/.config/nvim" ]; then
 	echo "Creating nvim directory."
@@ -74,6 +86,19 @@ fi
 
 # Return to original pwd.
 popd > /dev/null
+
+# setup applications
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+	sudo apt-get install silversearcher-ag -y
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" 
+
+	brew install the_silver_searcher
+	brew install zsh
+	brew install neovim
+	brew install tmux
+fi
+
 
 # install vim-plug
 if [ ! -d "$HOME/.config/nvim/autoload" ]; then
@@ -86,15 +111,14 @@ if [ ! -d "$HOME/.tmux/plugins" ]; then
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
-# install Ag silver searcher
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-	sudo apt-get install silversearcher-ag -y
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-	brew install the_silver_searcher
-fi
-
-
 ln -s $LNOPTS "`pwd`/init.vim" "$HOME/.config/nvim/init.vim" > /dev/null 2>&1
+
+# force install pynvim
+pip3 install pynvim
+pip3 install --user neovim
+
+# install vim plugin
+nvim -c "PlugInstall"
 
 # Move into bin dir.
 pushd "$HOME/bin" > /dev/null
