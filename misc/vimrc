@@ -63,6 +63,10 @@ filetype plugin indent on
 set t_Co=256
 
 set background=dark
+set encoding=utf8
+set fillchars=vert:\│ 
+autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
+
 set hidden
 set number
 set relativenumber
