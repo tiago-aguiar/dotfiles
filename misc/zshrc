@@ -27,6 +27,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 	echo "zshell macosx started!\n"
 
+    export ANDROID_SDK_ROOT=$HOME/Library/Android/Sdk
     ANDROID_HOME=$HOME/Library/Android/sdk
     export PATH=$PATH:/Library/TeX/texbin
 
