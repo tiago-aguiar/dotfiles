@@ -1,5 +1,6 @@
 " plugins
 call plug#begin()
+
 Plug 'morhetz/gruvbox'
 Plug 'srcery-colors/srcery-vim'
 Plug 'terryma/vim-multiple-cursors' "<C-n> to replace all selected ocurr
@@ -13,13 +14,8 @@ Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-path'
 Plug 'Chiel92/vim-autoformat'
 Plug 'johngrib/vim-game-snake'
-Plug 'scrooloose/nerdtree'
-
-" enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone
-
-Plug 'ncm2/ncm2-tern', { 'do': 'npm install' } " javascript completion (need to install node before this)
+Plug 'scrooloose/nerdtree' 
+Plug 'ncm2/ncm2-tern', { 'do': 'npm install' } " javascript completion (need to install node)
 Plug 'w0rp/ale' " lint chekcer
 Plug 'jiangmiao/auto-pairs' " auto bracket
 Plug 'SirVer/ultisnips' " snippet code
@@ -32,41 +28,25 @@ Plug 'xolox/vim-misc' " used for switcher colorscheme
 Plug 'xolox/vim-colorscheme-switcher' " switch coloscheme to test
 Plug 'dart-lang/dart-vim-plugin' " for flutter
 Plug 'thosakwe/vim-flutter' " for flutter
-
-if has('nvim') " async frameworks completion
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-
 Plug 'zchee/deoplete-jedi' " autocomplete for python with deoplete async
 Plug 'natebosch/vim-lsc'
+if has('nvim') " async frameworks completion
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 call plug#end()
-
-" Some of these key choices were arbitrary;
-" it's just an example.
-nnoremap <leader>fa :FlutterRun<cr>
-nnoremap <leader>fq :FlutterQuit<cr>
-nnoremap <leader>fr :FlutterHotReload<cr>
-nnoremap <leader>fR :FlutterHotRestart<cr>
-nnoremap <leader>fD :FlutterVisualDebug<cr>
-
-noremap <F3> :Autoformat<CR>
 
 " default
 syntax on
 filetype plugin indent on
 
 set t_Co=256
-
 set background=dark
 set encoding=utf8
-set fillchars=vert:\│ 
-autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
-
 set hidden
 set number
 set relativenumber
@@ -75,37 +55,69 @@ set shiftwidth=4
 set tabstop=4
 set expandtab
 set noswapfile
-"set termguicolors
+set cursorline
+set lazyredraw
 let mapleader="\<Space>"
 set laststatus=2
+set colorcolumn=100
+highlight ColorColumn ctermbg=0 guibg=lightgrey
 set rtp+=/usr/share/powerline/bindings/vim/
+set wildignore+=*.pyc,__pycache__,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
+
+set fillchars=vert:\│
+autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
 
 colorscheme srcery
 
-nnoremap <leader>; A;<esc>
+" remaps
 
+" flutter stuff
+nnoremap <leader>fa :FlutterRun<cr>
+nnoremap <leader>fq :FlutterQuit<cr>
+nnoremap <leader>fr :FlutterHotReload<cr>
+nnoremap <leader>fR :FlutterHotRestart<cr>
+nnoremap <leader>fD :FlutterVisualDebug<cr>
+
+" gui stuff
+nnoremap <leader>; A;<esc>
 nnoremap <leader><F1> :mksession!<cr>
 nnoremap <leader><F10> :e ~/.vimrc<cr>
 nnoremap <leader><F12> :source %<cr>
-
 nnoremap <leader>f :Files<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>s :Ag<space>
 nnoremap <leader>k :bd<cr>
 nnoremap <leader><TAB> :NERDTreeToggle<cr>
-
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-
 nnoremap <C-S-j> <C-e>
 nnoremap <C-S-k> <C-y>
+nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
 
-" gui stuff
+" Chiel92/vim-autoformat
+noremap <leader>o :Autoformat<cr>
+" auto format when save file
+au BufWrite * :Autoformat
+
+" ncm2 configs
+inoremap <c-c> <ESC>
+inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
+
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+
+
 if !exists('g:airline_symbols') " incompatible powerline symbols for Inziu Iosevka font
-  let g:airline_symbols = {}
+    let g:airline_symbols = {}
 endif
+
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+let NERDTreeRespectWildIgnore=1
+
 let g:airline_theme='srcery'
 let g:colorscheme_switcher_define_mappings = 1 " change colorscheme with F8 and SHIFT-F8
 let g:airline#extensions#tabline#enabled = 1
@@ -113,53 +125,34 @@ let g:airline_powerline_fonts = 1
 let g:airline_symbols.linenr = " " "font https://github.com/vim-airline/vim-airline/issues/1397
 let g:airline_symbols.whitespace = " "
 let g:airline#extensions#tabline#formatter = 'unique_tail'
-
-
-" python stuff
 let g:deoplete#enable_at_startup = 1
-
 let g:python3_host_prog = '/usr/bin/python3'
-
 let g:deoplete#sources#jedi#show_docstring = 1 " deoplete jedi (python)
-
-" to use Ag system search
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-
-" ncm2 configs
-inoremap <c-c> <ESC>
-inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
-
-" vimux configs
-nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
-
 let g:ale_python_flake8_executable = 'python3'   " or 'python' for Python 2
 let g:ale_python_flake8_options = '-m flake8'
 let g:ale_linters = {'cpp': []}
-
-" snippets configs
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
-
+let g:autoformat_verbosemode=0 " debug autoformat
+let g:formatdef_my_html_django = "'html-beautify'" " custom for django html (need nodejs)
+let g:formatters_htmldjango = ['my_html_django']
 let g:lsc_server_commands = {'dart': 'dart_language_server'}
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
+autocmd FileType vim,tex let b:autoformat_autoindent=1
 
 let t:is_transparent = 0
 function! Toggle_transparent()
-	if t:is_transparent == 0
-		hi Normal guibg=NONE ctermbg=NONE
-		let t:is_transparent = 1
-	else
-		set background=dark
-		let t:is_tranparent = 0
-	endif
+    if t:is_transparent == 0
+        hi Normal guibg=NONE ctermbg=NONE
+        let t:is_transparent = 1
+    else
+        set background=dark
+        let t:is_tranparent = 0
+    endif
 endfunction
 nnoremap <C-t> : call Toggle_transparent()<CR>
-
-" put this in your .vimrc
-set wildignore+=*.pyc,__pycache__,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
-
-" Nerdtree config for wildignore
-let NERDTreeRespectWildIgnore=1
