@@ -58,6 +58,7 @@ noremap <F3> :Autoformat<CR>
 
 " default
 syntax on
+filetype plugin indent on
 
 set t_Co=256
 
@@ -68,6 +69,7 @@ set relativenumber
 set mouse=c
 set shiftwidth=4
 set tabstop=4
+set expandtab
 set noswapfile
 "set termguicolors
 let mapleader="\<Space>"
@@ -129,6 +131,7 @@ nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
 
 let g:ale_python_flake8_executable = 'python3'   " or 'python' for Python 2
 let g:ale_python_flake8_options = '-m flake8'
+let g:ale_linters = {'cpp': []}
 
 " snippets configs
 let g:UltiSnipsExpandTrigger="<tab>"
