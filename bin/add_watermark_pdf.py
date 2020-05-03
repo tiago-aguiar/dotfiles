@@ -1,4 +1,7 @@
 # python ~/dotfiles/bin/add_watermark_pdf.py -i /home/tiagoaguiar/Downloads/ebookxxx.pdf -p "email@hotmail.com" -n "FulanoDaSilva" -o /home/tiagoaguiar/Downloads/output.pdf 
+# Pillow==6.2.1
+# PyPDF2==1.26.0
+# reportlab==3.5.32
 
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
