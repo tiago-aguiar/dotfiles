@@ -44,8 +44,8 @@ call plug#end()
 syntax on
 filetype plugin indent on
 
-set t_Co=256
-set background=dark
+"set t_Co=256
+set background=dark termguicolors cursorline
 set encoding=utf8
 set hidden
 set number
@@ -68,6 +68,10 @@ set fillchars=vert:\│
 autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
 
 colorscheme srcery
+
+" activated transparent background for alacritty
+hi! Normal guibg=NONE ctermbg=NONE
+hi! NonText guibg=NONE ctermbg=NONE
 
 " remaps
 
@@ -95,6 +99,7 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-S-j> <C-e>
 nnoremap <C-S-k> <C-y>
 nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
+nnoremap <leader>vr :call VimuxRunCommand("clear; ./build.sh")<cr>
 
 " Chiel92/vim-autoformat
 noremap <leader>o :Autoformat<cr>
@@ -143,12 +148,15 @@ let g:lsc_server_commands = {'dart': 'dart_language_server'}
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
+let g:VimuxOrientation = "h"
+let g:VimuxHeight = "50"
 autocmd FileType vim,tex let b:autoformat_autoindent=1
 
-let t:is_transparent = 0
+let t:is_transparent = 1
 function! Toggle_transparent()
     if t:is_transparent == 0
-        hi Normal guibg=NONE ctermbg=NONE
+        hi! Normal guibg=NONE ctermbg=NONE
+        hi! NonText guibg=NONE ctermbg=NONE
         let t:is_transparent = 1
     else
         set background=dark
