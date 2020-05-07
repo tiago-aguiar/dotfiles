@@ -72,11 +72,11 @@ colorscheme srcery
 " remaps
 
 " flutter stuff
-nnoremap <leader>fa :FlutterRun<cr>
-nnoremap <leader>fq :FlutterQuit<cr>
-nnoremap <leader>fr :FlutterHotReload<cr>
-nnoremap <leader>fR :FlutterHotRestart<cr>
-nnoremap <leader>fD :FlutterVisualDebug<cr>
+" nnoremap <leader>fa :FlutterRun<cr>
+" nnoremap <leader>fq :FlutterQuit<cr>
+" nnoremap <leader>fr :FlutterHotReload<cr>
+" nnoremap <leader>fR :FlutterHotRestart<cr>
+" nnoremap <leader>fD :FlutterVisualDebug<cr>
 
 " gui stuff
 nnoremap <leader>; A;<esc>
@@ -115,7 +115,7 @@ if !exists('g:airline_symbols') " incompatible powerline symbols for Inziu Iosev
     let g:airline_symbols = {}
 endif
 
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+let $FZF_DEFAULT_COMMAND = 'ag --nocolor -g ""'
 let NERDTreeRespectWildIgnore=1
 
 let g:airline_theme='srcery'
