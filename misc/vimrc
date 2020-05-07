@@ -44,8 +44,9 @@ call plug#end()
 syntax on
 filetype plugin indent on
 
-"set t_Co=256
-set background=dark termguicolors cursorline
+set t_Co=256
+set background=dark
+"set background=dark termguicolors cursorline
 set encoding=utf8
 set hidden
 set number
@@ -70,8 +71,8 @@ autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
 colorscheme srcery
 
 " activated transparent background for alacritty
-hi! Normal guibg=NONE ctermbg=NONE
-hi! NonText guibg=NONE ctermbg=NONE
+" hi! Normal guibg=NONE ctermbg=NONE
+" hi! NonText guibg=NONE ctermbg=NONE
 
 " remaps
 
@@ -152,7 +153,7 @@ let g:VimuxOrientation = "h"
 let g:VimuxHeight = "50"
 autocmd FileType vim,tex let b:autoformat_autoindent=1
 
-let t:is_transparent = 1
+let t:is_transparent = 0
 function! Toggle_transparent()
     if t:is_transparent == 0
         hi! Normal guibg=NONE ctermbg=NONE
