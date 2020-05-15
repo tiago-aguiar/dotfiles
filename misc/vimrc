@@ -30,6 +30,7 @@ Plug 'dart-lang/dart-vim-plugin' " for flutter
 Plug 'thosakwe/vim-flutter' " for flutter
 Plug 'zchee/deoplete-jedi' " autocomplete for python with deoplete async
 Plug 'natebosch/vim-lsc'
+Plug 'ap/vim-css-color'
 if has('nvim') " async frameworks completion
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
