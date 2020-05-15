@@ -112,6 +112,7 @@ if [ ! -d "$HOME/.tmux/plugins" ]; then
 fi
 
 ln -s $LNOPTS "`pwd`/init.vim" "$HOME/.config/nvim/init.vim" > /dev/null 2>&1
+ln -s $LNOPTS "`pwd`/settings/alacritty.yml" "$HOME/.config/alacritty.yml" > /dev/null 2>&1
 
 # force install pynvim
 pip3 install pynvim
