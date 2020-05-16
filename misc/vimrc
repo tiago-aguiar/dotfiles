@@ -41,6 +41,7 @@ endif
 
 call plug#end()
 
+
 " default
 syntax on
 filetype plugin indent on

@@ -1,0 +1,18 @@
+let mapleader=" "
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+nnoremap <leader>rr :action Run<cr>
+nnoremap <leader>ss :action Stop<cr>
+nnoremap <leader>dd :action Debug<cr>
+
+nnoremap <leader>f :action GotoFile<cr>
+nnoremap <leader>b :action RecentFiles<cr>
+nnoremap <leader>a :action GotoAction<cr>
+nnoremap <leader>u :action FindUsages<cr>
+nnoremap <leader>l :action ReformatCode<cr>
+nnoremap <leader>n :action NewClass<cr>
+nnoremap <leader>su :action ShowUsages<cr>
