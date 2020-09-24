@@ -12,7 +12,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fzf finder
 Plug 'junegunn/fzf.vim' " fzf finder
 Plug 'Chiel92/vim-autoformat' " autoformat file on save
 Plug 'scrooloose/nerdtree' " project explorer
-Plug 'dense-analysis/ale' " Asynchronous Lint Engine - lint checker
+Plug 'dense-analysis/ale', { 'do': 'pip install flake8 isort yapf' } " Asynchronous Lint Engine - lint checker
 Plug 'SirVer/ultisnips' " snippet code
 Plug 'honza/vim-snippets' " dependency of ultisnips
 Plug 'vim-airline/vim-airline' " status bar
