@@ -1,36 +1,40 @@
 " plugins
 call plug#begin()
 
-Plug 'morhetz/gruvbox'
-Plug 'srcery-colors/srcery-vim'
+Plug 'morhetz/gruvbox' " color scheme
+Plug 'srcery-colors/srcery-vim' " color scheme
+Plug 'ap/vim-css-color' " preview css color
+Plug 'xolox/vim-misc' " dependency of coloscheme to test
+Plug 'xolox/vim-colorscheme-switcher' " switch coloscheme to test
 Plug 'terryma/vim-multiple-cursors' "<C-n> to replace all selected ocurr
-Plug 'sheerun/vim-polyglot' " a collection of language packs for Vim.
+Plug 'sheerun/vim-polyglot' " pack of languages syntaxes and more
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fzf finder
 Plug 'junegunn/fzf.vim' " fzf finder
-Plug 'ncm2/ncm2' " nvim completion manager
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-tmux'
-Plug 'ncm2/ncm2-path'
-Plug 'Chiel92/vim-autoformat'
-Plug 'johngrib/vim-game-snake'
-Plug 'scrooloose/nerdtree' 
-Plug 'ncm2/ncm2-tern', { 'do': 'npm install' } " javascript completion (need to install node)
-Plug 'w0rp/ale' " lint chekcer
-Plug 'jiangmiao/auto-pairs' " auto bracket
+Plug 'Chiel92/vim-autoformat' " autoformat file on save
+Plug 'scrooloose/nerdtree' " project explorer
+Plug 'dense-analysis/ale' " Asynchronous Lint Engine - lint checker
 Plug 'SirVer/ultisnips' " snippet code
-Plug 'honza/vim-snippets' " repository with snippet files
-Plug 'tpope/vim-obsession' " save session
+Plug 'honza/vim-snippets' " dependency of ultisnips
 Plug 'vim-airline/vim-airline' " status bar
 Plug 'vim-airline/vim-airline-themes' " status theme
-Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
-Plug 'xolox/vim-misc' " used for switcher colorscheme
-Plug 'xolox/vim-colorscheme-switcher' " switch coloscheme to test
-Plug 'dart-lang/dart-vim-plugin' " for flutter
-Plug 'thosakwe/vim-flutter' " for flutter
-Plug 'zchee/deoplete-jedi' " autocomplete for python with deoplete async
-Plug 'natebosch/vim-lsc'
-Plug 'ap/vim-css-color'
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " completion - make vim as smart as vscode
+
+"Plug 'ncm2/ncm2' " nvim completion manager
+"Plug 'roxma/nvim-yarp'
+"Plug 'ncm2/ncm2-bufword'
+"Plug 'ncm2/ncm2-tmux'
+"Plug 'ncm2/ncm2-path'
+"Plug 'ncm2/ncm2-tern', { 'do': 'npm install' } " javascript completion (need to install node)
+
+"Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
+"
+"Plug 'dart-lang/dart-vim-plugin' " for flutter
+"Plug 'thosakwe/vim-flutter' " for flutter
+"Plug 'natebosch/dartlang-snippets'
+"Plug 'natebosch/vim-lsc'
+"Plug 'natebosch/vim-lsc-dart'
+"Plug 'iamcco/coc-flutter'
+"
 if has('nvim') " async frameworks completion
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -51,6 +55,8 @@ set background=dark
 " set background=dark termguicolors cursorline
 set encoding=utf8
 set hidden
+set nobackup
+set nowritebackup
 set number
 set relativenumber
 set mouse=c
@@ -106,17 +112,45 @@ nnoremap <leader>vr :call VimuxRunCommand("clear; ./build.sh")<cr>
 
 " Chiel92/vim-autoformat
 noremap <leader>o :Autoformat<cr>
-" auto format when save file
-au BufWrite * :Autoformat
+au BufWrite * :Autoformat " auto format when save file
+
+
+" coc
+inoremap <silent><expr> <C-j>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<C-j>" :
+      \ coc#refresh()
+inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
 
 " ncm2 configs
-inoremap <c-c> <ESC>
-inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
+"inoremap <c-c> <ESC>
+"inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
+"inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
 " enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
+"autocmd BufEnter * call ncm2#enable_for_buffer()
+"set completeopt=noinsert,menuone,noselect
 
 
 if !exists('g:airline_symbols') " incompatible powerline symbols for Inziu Iosevka font
@@ -133,27 +167,41 @@ let g:airline_powerline_fonts = 1
 let g:airline_symbols.linenr = " " "font https://github.com/vim-airline/vim-airline/issues/1397
 let g:airline_symbols.whitespace = " "
 let g:airline#extensions#tabline#formatter = 'unique_tail'
+
 let g:deoplete#enable_at_startup = 1
-let g:python3_host_prog = '/usr/bin/python3'
 let g:deoplete#sources#jedi#show_docstring = 1 " deoplete jedi (python)
+
 let g:ale_python_flake8_executable = 'python3'   " or 'python' for Python 2
 let g:ale_python_flake8_options = '-m flake8'
-let g:ale_linters = {'cpp': []}
+let g:ale_linters = {
+            \   'javascript': ['eslint'],
+            \   'python': ['flake8'],
+            \}
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
-let g:autoformat_verbosemode=0 " debug autoformat
-let g:formatdef_my_html_django = "'html-beautify'" " custom for django html (need nodejs)
-let g:formatters_htmldjango = ['my_html_django']
-let g:lsc_server_commands = {'dart': 'dart_language_server'}
+
+let g:autoformat_verbosemode = 0 " debug autoformat
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
+let g:formatdef_my_html_django = "'html-beautify'" " custom for django html (need nodejs)
+let g:formatters_htmldjango = ['my_html_django']
+let g:lsc_server_commands = {'dart': 'dart_language_server'}
 let g:VimuxOrientation = "h"
 let g:VimuxHeight = "50"
-autocmd FileType vim,tex let b:autoformat_autoindent=1
+
+" flutter stuff
+let g:dart_style_guide = 2
+let g:dart_format_on_save = 1
+let g:lsc_auto_map = v:true
+
+autocmd FileType vim,tex let b:autoformat_autoindent=0
+autocmd FileType dart let b:deoplete_disable_auto_complete = 1
+
+let g:deoplete#disable_auto_complete = 1
 
 let t:is_transparent = 1
 function! Toggle_transparent()
