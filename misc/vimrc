@@ -11,7 +11,8 @@ Plug 'sheerun/vim-polyglot' " pack of languages syntaxes and more
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fzf finder
 Plug 'junegunn/fzf.vim' " fzf finder
 Plug 'Chiel92/vim-autoformat' " autoformat file on save
-Plug 'scrooloose/nerdtree' " project explorer
+Plug 'preservim/nerdtree' |
+            \ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'dense-analysis/ale', { 'do': 'pip install flake8 isort yapf' } " Asynchronous Lint Engine - lint checker
 Plug 'SirVer/ultisnips' " snippet code
 Plug 'honza/vim-snippets' " dependency of ultisnips
