@@ -7,7 +7,6 @@ Plug 'ap/vim-css-color' " preview css color
 Plug 'xolox/vim-misc' " dependency of coloscheme to test
 Plug 'xolox/vim-colorscheme-switcher' " switch coloscheme to test
 Plug 'terryma/vim-multiple-cursors' "<C-n> to replace all selected ocurr
-Plug 'sheerun/vim-polyglot' " pack of languages syntaxes and more
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fzf finder
 Plug 'junegunn/fzf.vim' " fzf finder
 Plug 'Chiel92/vim-autoformat' " autoformat file on save
@@ -19,6 +18,8 @@ Plug 'honza/vim-snippets' " dependency of ultisnips
 Plug 'vim-airline/vim-airline' " status bar
 Plug 'vim-airline/vim-airline-themes' " status theme
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " completion - make vim as smart as vscode
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } " golang features like :GoBuild and more
+Plug 'sheerun/vim-polyglot' " pack of languages syntaxes and more (this must be after vim-go to work)
 
 "Plug 'ncm2/ncm2' " nvim completion manager
 "Plug 'roxma/nvim-yarp'
