@@ -20,6 +20,7 @@ Plug 'vim-airline/vim-airline-themes' " status theme
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " completion - make vim as smart as vscode
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } " golang features like :GoBuild and more
 Plug 'sheerun/vim-polyglot' " pack of languages syntaxes and more (this must be after vim-go to work)
+Plug 'tikhomirov/vim-glsl' " Vim syntax highlighting for OpenGL Shading Language
 
 "Plug 'ncm2/ncm2' " nvim completion manager
 "Plug 'roxma/nvim-yarp'
@@ -62,8 +63,8 @@ set nowritebackup
 set number
 set relativenumber
 set mouse=c
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 set expandtab
 set noswapfile
 set cursorline
@@ -113,8 +114,9 @@ nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
 nnoremap <leader>vr :call VimuxRunCommand("clear; ./build.sh")<cr>
 
 " Chiel92/vim-autoformat
-noremap <leader>o :Autoformat<cr>
+noremap <leader>l :Autoformat<cr>
 au BufWrite * :Autoformat " auto format when save file
+au BufRead,BufNewFile *.mm set filetype=objc
 
 
 " coc
@@ -202,6 +204,7 @@ let g:lsc_auto_map = v:true
 
 autocmd FileType vim,tex let b:autoformat_autoindent=0
 autocmd FileType dart let b:deoplete_disable_auto_complete = 1
+autocmd! BufNewFile,BufRead *.vs,*.fs,*.vert,*.frag set ft=glsl
 
 let g:deoplete#disable_auto_complete = 1
 
