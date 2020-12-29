@@ -29,7 +29,7 @@ Plug 'tikhomirov/vim-glsl' " Vim syntax highlighting for OpenGL Shading Language
 "Plug 'ncm2/ncm2-path'
 "Plug 'ncm2/ncm2-tern', { 'do': 'npm install' } " javascript completion (need to install node)
 
-"Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
+Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
 "
 "Plug 'dart-lang/dart-vim-plugin' " for flutter
 "Plug 'thosakwe/vim-flutter' " for flutter
@@ -110,8 +110,8 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-S-j> <C-e>
 nnoremap <C-S-k> <C-y>
-nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
-nnoremap <leader>vr :call VimuxRunCommand("clear; ./build.sh")<cr>
+"nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
+nnoremap <leader>qw :call VimuxRunCommand("clear; echo \"Start compiling...\"; ./build.sh")<cr>
 
 " Chiel92/vim-autoformat
 noremap <leader>l :Autoformat<cr>
@@ -193,6 +193,7 @@ let g:autoformat_retab = 0
 let g:autoformat_remove_trailing_spaces = 0
 let g:formatdef_my_html_django = "'html-beautify'" " custom for django html (need nodejs)
 let g:formatters_htmldjango = ['my_html_django']
+let g:formatdef_astyle_cpp = '"astyle --mode=c --style=google --indent-switches -pcH".(&expandtab ? "s".shiftwidth() : "t")'
 let g:lsc_server_commands = {'dart': 'dart_language_server'}
 let g:VimuxOrientation = "h"
 let g:VimuxHeight = "50"
