@@ -25,17 +25,17 @@ window:
   #
   # Specified in number of pixels.
   # If the position is not set, the window manager will handle the placement.
-  position:
-    x: 0
-    y: 0
+  # position:
+  #   x: 0
+  #   y: 0
 
   # Window padding (changes require restart)
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
   padding:
-    x: 20
-    y: 10
+    x: 5
+    y: 5
 
   # Spread additional padding evenly around the terminal content.
   #dynamic_padding: false
@@ -49,7 +49,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  decorations: full
+  decorations: buttonless
 
   # Startup Mode (changes require restart)
   #
@@ -109,7 +109,7 @@ font:
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
     #family: JetBrains Mono
-    family: Menlo
+    family: JetBrains Mono
 
     # The `style` can be specified to pick a specific face.
     style: Bold
@@ -137,7 +137,7 @@ font:
     style: Bold Italic
 
   # Point size
-  size: 14.0
+  size: 14.2
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -175,30 +175,31 @@ font:
 colors:
   # Default colors
   primary:
-    background: '0x1c1b19'
-    foreground: '0xfce8c3'
+    #background: '0x1c1b19'
+    background: '#000000'
+    foreground: '#fce8c3'
 
   # Normal colors
   normal:
-    black:   '0x1c1b19'
-    red:     '0xef2f27'
-    green:   '0x519f50'
-    yellow:  '0xfbb829'
-    blue:    '0x2c78bf'
-    magenta: '0xe02c6d'
-    cyan:    '0x0aaeb3'
-    white:   '0xd0bfa1'
+    black:   '#1c1b19'
+    red:     '#ef2f27'
+    green:   '#519f50'
+    yellow:  '#fbb829'
+    blue:    '#2c78bf'
+    magenta: '#e02c6d'
+    cyan:    '#0aaeb3'
+    white:   '#d0bfa1'
 
   # Bright colors
   bright:
-    black:   '0x918175'
-    red:     '0xf75341'
-    green:   '0x98bc37'
-    yellow:  '0xfed06e'
-    blue:    '0x68a8e4'
-    magenta: '0xff5c8f'
-    cyan:    '0x53fde9'
-    white:   '0xfce8c3'
+    black:   '#918175'
+    red:     '#f75341'
+    green:   '#98bc37'
+    yellow:  '#fed06e'
+    blue:    '#68a8e4'
+    magenta: '#ff5c8f'
+    cyan:    '#53fde9'
+    white:   '#fce8c3'
 # Colors (Tomorrow Night Bright)
 # colors:
   # Default colors
