@@ -85,6 +85,7 @@ autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
 " activated transparent background for alacritty
 hi! Normal guibg=NONE ctermbg=NONE
 hi! NonText guibg=NONE ctermbg=NONE
+hi! Comment ctermfg=78 " green
 
 " remaps
 
