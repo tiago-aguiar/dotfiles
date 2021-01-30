@@ -98,6 +98,7 @@ font:
     #   - (Windows) Consolas
     family: JetBrains Mono
     #family: SF Mono
+    #family: Liberation Mono for Powerline
 
     # The `style` can be specified to pick a specific face.
     style: Regular
@@ -137,7 +138,7 @@ font:
     style: Bold Italic
 
   # Point size
-  size: 14.2
+  size: 15
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -176,7 +177,7 @@ colors:
   # Default colors
   primary:
     #background: '0x1c1b19'
-    background: '#000000'
+    background: '#111111'
     foreground: '#fce8c3'
 
   # Normal colors
@@ -219,17 +220,17 @@ colors:
   #
   # Colors which should be used to draw the terminal cursor. If these are
   # unset, the cursor color will be the inverse of the cell color.
-  #cursor:
-  #  text: '#000000'
-  #  cursor: '#ffffff'
+  cursor:
+    text: '#000000'
+    cursor: '#92E499'
 
   # Vi mode cursor colors
   #
   # Colors for the cursor when the vi mode is active. If these are unset, the
   # cursor color will be the inverse of the cell color.
-  #vi_mode_cursor:
-  #  text: '#000000'
-  #  cursor: '#ffffff'
+  vi_mode_cursor:
+    text: '#000000'
+    cursor: '#92E499'
 
   # Selection colors
   #
