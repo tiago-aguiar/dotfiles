@@ -133,6 +133,8 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+alias studio="open -a /Applications/Android\ Studio.app"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -158,3 +160,7 @@ if [ -f '/Users/tiagoaguiar/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/Users
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/tiagoaguiar/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tiagoaguiar/bin/google-cloud-sdk/completion.zsh.inc'; fi
+
+if [ -d '/usr/local/go/bin' ]; then 
+    export PATH=$PATH:/usr/local/go/bin;
+fi

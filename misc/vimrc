@@ -1,37 +1,41 @@
-" plugins 
-call plug#begin() 
+" =================
+"     plugins
+" ================
+call plug#begin()
 Plug 'srcery-colors/srcery-vim'     " color scheme
 Plug 'ap/vim-css-color'             " preview css color
 
-Plug 'xolox/vim-misc'                 " dependency of coloscheme to test
+Plug 'xolox/vim-misc'                 " dependency of vim-colorscheme-switcher to test
 Plug 'xolox/vim-colorscheme-switcher' " switch coloscheme to test
 Plug 'terryma/vim-multiple-cursors'   " <C-n> to replace all selected ocurr
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fzf finder
 Plug 'junegunn/fzf.vim' " fzf finder
 
-" debug Plug 'Chiel92/vim-autoformat' " autoformat file on save
-
-" debug Plug 'dense-analysis/ale', { 'do': 'pip install flake8 isort yapf' } " Asynchronous Lint Engine - lint checker
+Plug 'Chiel92/vim-autoformat'                                         " autoformat file on save
+Plug 'dense-analysis/ale', { 'do': 'pip install flake8 isort yapf' }  " Asynchronous Lint Engine - lint checker
 " debug Plug 'SirVer/ultisnips' " snippet code
 " debug Plug 'honza/vim-snippets' " dependency of ultisnips
 " debug Plug 'vim-airline/vim-airline' " status bar
 " debug Plug 'vim-airline/vim-airline-themes' " status theme
-" debug Plug 'neoclide/coc.nvim', {'branch': 'release'} " completion - make vim as smart as vscode
 
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " completion - make vim smart
+" (run :CocInstall coc-pyright, :CocInstall coc-kotlin, :CocUninstall  coc-pairs)
+
+Plug 'udalov/kotlin-vim' " kotlin filetype recognized
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } " golang features like :GoBuild and more
 
 Plug 'sheerun/vim-polyglot' " pack of languages syntaxes and more (this must be after vim-go to work)
 Plug 'tikhomirov/vim-glsl'  " Vim syntax highlighting for OpenGL Shading Language
-" debug 
+" debug
 " debug "Plug 'ncm2/ncm2' " nvim completion manager
 " debug "Plug 'roxma/nvim-yarp'
 " debug "Plug 'ncm2/ncm2-bufword'
 " debug "Plug 'ncm2/ncm2-tmux'
 " debug "Plug 'ncm2/ncm2-path'
 " debug "Plug 'ncm2/ncm2-tern', { 'do': 'npm install' } " javascript completion (need to install node)
-" debug 
-" debug Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
+" debug
+Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
 " debug "
 " debug "Plug 'dart-lang/dart-vim-plugin' " for flutter
 " debug "Plug 'thosakwe/vim-flutter' " for flutter
@@ -47,21 +51,18 @@ Plug 'tikhomirov/vim-glsl'  " Vim syntax highlighting for OpenGL Shading Languag
 " debug     Plug 'roxma/nvim-yarp'
 " debug     Plug 'roxma/vim-hug-neovim-rpc'
 " debug endif
-" debug 
+" debug
 
 Plug 'preservim/nerdtree' |
-            \ Plug 'Xuyuanp/nerdtree-git-plugin'
+      \ Plug 'Xuyuanp/nerdtree-git-plugin'
 call plug#end()
 
 
-" default
+" ========================
+"        default
+" ========================
 syntax on
 filetype plugin indent on
-" debug 
-" debug "set t_Co=256
-" debug set background=dark
-" debug " set background=dark termguicolors cursorline
-" debug 
 set cindent
 set encoding=utf8
 set hidden
@@ -74,59 +75,69 @@ set shiftwidth=2
 set tabstop=2
 set expandtab
 set noswapfile
-"set lazyredraw
 let mapleader="\<Space>"
 set laststatus=2
 set colorcolumn=100
-" debug 
-" debug 
-" debug highlight ColorColumn ctermbg=0 guibg=lightgrey
-" debug set rtp+=/usr/share/powerline/bindings/vim/
-" debug set wildignore+=*.pyc,__pycache__,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
-" debug 
-colorscheme srcery
-" debug set fillchars=vert:\│
-autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
-" debug 
-" debug 
-" debug " activated transparent background for alacritty
-" debug hi! Normal guibg=NONE ctermbg=NONE
-" debug hi! NonText guibg=NONE ctermbg=NONE
-" debug 
-" custom color highlighting
-hi! Comment ctermfg=77
-hi! Keyword ctermfg=255
-hi! Statement ctermfg=5
 
-hi! String ctermfg=14
-hi! Character ctermfg=14
-hi! Number ctermfg=14
-hi! Boolean ctermfg=14
-hi! Float ctermfg=14
-
-hi! Function ctermfg=7
-hi! Identifier ctermfg=15
-hi! Type ctermfg=15
-hi! Todo ctermfg=5
-
+" Cursor style
 set guicursor=n-v-c:block-Cursor
 set guicursor+=i:block-Cursor
 set guicursor+=i:blinkon1
 set guicursor+=i:blinkwait1
 
-" flutter
-" nnoremap <leader>fa :FlutterRun<cr>
-" nnoremap <leader>fq :FlutterQuit<cr>
-" nnoremap <leader>fr :FlutterHotReload<cr>
-" nnoremap <leader>fR :FlutterHotRestart<cr>
-" nnoremap <leader>fD :FlutterVisualDebug<cr>
+" debug highlight ColorColumn ctermbg=0 guibg=lightgrey
+" debug set rtp+=/usr/share/powerline/bindings/vim/
+" debug set wildignore+=*.pyc,__pycache__,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
 
-" gui
+" ==================
+"       Theme
+" ==================
+colorscheme zellner
+autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
+
+" Activated Transparent Background for Alacritty
+"hi! Normal guibg=NONE ctermbg=NONE
+"hi! NonText guibg=NONE ctermbg=NONE
+"
+"" My Custom Color Highlighting from scery
+hi! Comment ctermfg=10
+set cc=
+"
+"hi! Pmenu ctermfg=0
+hi! Keyword ctermfg=10
+hi! Conditional ctermfg=10
+hi! Repeat ctermfg=10
+"hi! Label ctermfg=1
+"hi! Exception ctermfg=1
+hi! Statement ctermfg=10
+""
+hi! String ctermfg=14
+hi! Character ctermfg=14
+hi! Number ctermfg=13
+hi! Boolean ctermfg=1
+hi! Float ctermfg=13
+""
+hi! Function ctermfg=1
+hi! Identifier ctermfg=2
+hi! Type ctermfg=10
+hi! Todo ctermfg=17
+
+" highlight whole line commented
+augroup myTodo
+  autocmd!
+  autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
+augroup END
+
+highlight link myTodo Todo
+
+" ==========
+"    GUI
+" ==========
 nnoremap <leader>; A;<esc>
 nnoremap <leader><F1> :mksession!<cr>
 nnoremap <leader><F10> :e ~/.vimrc<cr>
 nnoremap <leader><F12> :source %<cr>
-nnoremap <leader>f :Files<cr>
+nnoremap <leader>f :GFiles<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>s :Ag<space>
 nnoremap <leader>k :bd<cr>
@@ -137,60 +148,78 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-S-j> <C-e>
 nnoremap <C-S-k> <C-y>
-" debug "nnoremap <F5> :call VimuxRunCommand("nodemon inspect index.js")<cr>
+nnoremap <leader><esc> :noh<return><esc>
+nnoremap <leader>e :call VimuxRunCommand("./build.sh")<cr>
+nnoremap <leader>r :call VimuxRunCommand("./run.sh")<cr>
 " debug nnoremap <leader>qw :call VimuxRunCommand("clear; echo \"Start compiling...\"; ./build.sh")<cr>
-" debug 
-" debug " Chiel92/vim-autoformat
-" debug noremap <leader>l :Autoformat<cr>
-" debug au BufWrite * :Autoformat " auto format when save file
-" debug au BufRead,BufNewFile *.mm set filetype=objc
-" debug 
-" debug 
-" debug " coc
-" debug inoremap <silent><expr> <C-j>
-" debug       \ pumvisible() ? "\<C-n>" :
-" debug       \ <SID>check_back_space() ? "\<C-j>" :
-" debug       \ coc#refresh()
-" debug inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-h>"
-" debug 
-" debug " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" debug " position. Coc only does snippet and additional edit on confirm.
-" debug " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-" debug if exists('*complete_info')
-" debug   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-" debug else
-" debug   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" debug endif
-" debug 
+
+" flutter
+" nnoremap <leader>fa :FlutterRun<cr>
+" nnoremap <leader>fq :FlutterQuit<cr>
+" nnoremap <leader>fr :FlutterHotReload<cr>
+" nnoremap <leader>fR :FlutterHotRestart<cr>
+" nnoremap <leader>fD :FlutterVisualDebug<cr>
+
+" Chiel92/vim-autoformat
+noremap <leader>l :Autoformat<cr>
+au BufWrite *.mm :Autoformat " auto format when save file
+au BufRead,BufNewFile *.mm set filetype=objc
+
+" coc
+inoremap <silent><expr> <C-j>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<C-j>" :
+      \ coc#refresh()
+inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+
+autocmd BufNewFile,BufRead *.swift set filetype=swift
+
 " debug " ncm2 configs
 " debug "inoremap <c-c> <ESC>
 " debug "inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " debug "inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
-" debug 
+" debug
 " debug function! s:check_back_space() abort
 " debug   let col = col('.') - 1
 " debug   return !col || getline('.')[col - 1]  =~# '\s'
 " debug endfunction
-" debug 
+
 " debug " Use <c-space> to trigger completion.
 " debug if has('nvim')
 " debug   inoremap <silent><expr> <c-space> coc#refresh()
 " debug else
 " debug   inoremap <silent><expr> <c-@> coc#refresh()
 " debug endif
-" debug 
+
 " debug " enable ncm2 for all buffers
 " debug "autocmd BufEnter * call ncm2#enable_for_buffer()
 " debug "set completeopt=noinsert,menuone,noselect
-" debug 
-" debug 
+
+
 " debug if !exists('g:airline_symbols') " incompatible powerline symbols for Inziu Iosevka font
 " debug     let g:airline_symbols = {}
 " debug endif
-" debug 
+
 let $FZF_DEFAULT_COMMAND = 'ag --nocolor -g ""'
 let NERDTreeRespectWildIgnore=1
-" debug 
+
+" golang
+let g:go_fmt_autosave = 0
+
+" debug
 " debug let g:airline_theme='srcery'
 " debug let g:colorscheme_switcher_define_mappings = 1 " change colorscheme with F8 and SHIFT-F8
 " debug let g:airline#extensions#tabline#enabled = 1
@@ -198,22 +227,26 @@ let NERDTreeRespectWildIgnore=1
 " debug let g:airline_symbols.linenr = " " "font https://github.com/vim-airline/vim-airline/issues/1397
 " debug let g:airline_symbols.whitespace = " "
 " debug let g:airline#extensions#tabline#formatter = 'unique_tail'
-" debug 
+" debug
 " debug let g:deoplete#enable_at_startup = 1
 " debug let g:deoplete#sources#jedi#show_docstring = 1 " deoplete jedi (python)
-" debug 
-" debug let g:ale_python_flake8_executable = 'python3'   " or 'python' for Python 2
-" debug let g:ale_python_flake8_options = '-m flake8'
-" debug let g:ale_linters = {
-" debug             \   'javascript': ['eslint'],
-" debug             \   'python': ['flake8'],
-" debug             \}
+" debug
+let g:ale_python_flake8_executable = 'python3'   " or 'python' for Python 2
+"let g:ale_kotlin_ktlint_executable = '/usr/local/ktlint'
+let g:ale_python_flake8_options = '-m flake8'
+"let g:ale_kotlin_languageserver_executable
+"
+" 'kotlin': ['ktlint'],
+let g:ale_linters = {
+            \   'javascript': ['eslint'],
+            \   'python': ['flake8']
+            \}
 " debug let g:UltiSnipsExpandTrigger="<tab>"
 " debug let g:UltiSnipsJumpForwardTrigger="<tab>"
 " debug let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 " debug let g:UltiSnipsEditSplit="vertical"
 " debug let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
-" debug 
+" debug
 " debug let g:autoformat_verbosemode = 0 " debug autoformat
 " debug let g:autoformat_autoindent = 0
 " debug let g:autoformat_retab = 0
@@ -224,18 +257,18 @@ let NERDTreeRespectWildIgnore=1
 " debug let g:lsc_server_commands = {'dart': 'dart_language_server'}
 " debug let g:VimuxOrientation = "h"
 " debug let g:VimuxHeight = "50"
-" debug 
+" debug
 " debug " flutter stuff
 " debug let g:dart_style_guide = 2
 " debug let g:dart_format_on_save = 1
 " debug let g:lsc_auto_map = v:true
-" debug 
+" debug
 " debug autocmd FileType vim,tex,htmldjango,html let b:autoformat_autoindent=0
 " debug autocmd FileType dart let b:deoplete_disable_auto_complete = 1
 " debug autocmd! BufNewFile,BufRead *.vs,*.fs,*.vert,*.frag set ft=glsl
-" debug 
+" debug
 " debug let g:deoplete#disable_auto_complete = 1
-" debug 
+" debug
 " debug let t:is_transparent = 1
 " debug function! Toggle_transparent()
 " debug     if t:is_transparent == 0
@@ -248,3 +281,6 @@ let NERDTreeRespectWildIgnore=1
 " debug     endif
 " debug endfunction
 " debug nnoremap <C-t> : call Toggle_transparent()<CR>
+
+
+

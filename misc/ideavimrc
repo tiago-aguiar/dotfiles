@@ -16,4 +16,5 @@ nnoremap <leader>u :action FindUsages<cr>
 nnoremap <leader>l :action ReformatCode<cr>
 nnoremap <leader>n :action NewClass<cr>
 nnoremap <leader>o :action OptimizeImports<cr>
+nnoremap <leader>h :action HideAllWindows<cr>
 nnoremap <leader>su :action ShowUsages<cr>
