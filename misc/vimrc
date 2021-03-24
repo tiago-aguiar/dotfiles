@@ -4,6 +4,8 @@
 call plug#begin()
 Plug 'srcery-colors/srcery-vim'     " color scheme
 Plug 'ap/vim-css-color'             " preview css color
+Plug 'Rigellute/rigel'
+Plug 'loshjawrence/magicka.vim'
 
 Plug 'xolox/vim-misc'                 " dependency of vim-colorscheme-switcher to test
 Plug 'xolox/vim-colorscheme-switcher' " switch coloscheme to test
@@ -37,12 +39,12 @@ Plug 'tikhomirov/vim-glsl'  " Vim syntax highlighting for OpenGL Shading Languag
 " debug
 Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
 " debug "
-" debug "Plug 'dart-lang/dart-vim-plugin' " for flutter
-" debug "Plug 'thosakwe/vim-flutter' " for flutter
-" debug "Plug 'natebosch/dartlang-snippets'
-" debug "Plug 'natebosch/vim-lsc'
-" debug "Plug 'natebosch/vim-lsc-dart'
-" debug "Plug 'iamcco/coc-flutter'
+"Plug 'dart-lang/dart-vim-plugin' " for flutter
+"Plug 'thosakwe/vim-flutter' " for flutter
+"Plug 'natebosch/dartlang-snippets'
+"Plug 'natebosch/vim-lsc'
+"Plug 'natebosch/vim-lsc-dart'
+"Plug 'iamcco/coc-flutter'
 " debug "
 " debug if has('nvim') " async frameworks completion
 " debug     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -92,35 +94,16 @@ set guicursor+=i:blinkwait1
 " ==================
 "       Theme
 " ==================
-colorscheme zellner
+syntax enable
+colorscheme rigel
 autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
 
 " Activated Transparent Background for Alacritty
-"hi! Normal guibg=NONE ctermbg=NONE
+hi! Normal guibg=NONE ctermbg=NONE ctermfg=230
 "hi! NonText guibg=NONE ctermbg=NONE
 "
 "" My Custom Color Highlighting from scery
-hi! Comment ctermfg=10
 set cc=
-"
-"hi! Pmenu ctermfg=0
-hi! Keyword ctermfg=10
-hi! Conditional ctermfg=10
-hi! Repeat ctermfg=10
-"hi! Label ctermfg=1
-"hi! Exception ctermfg=1
-hi! Statement ctermfg=10
-""
-hi! String ctermfg=14
-hi! Character ctermfg=14
-hi! Number ctermfg=13
-hi! Boolean ctermfg=1
-hi! Float ctermfg=13
-""
-hi! Function ctermfg=1
-hi! Identifier ctermfg=2
-hi! Type ctermfg=10
-hi! Todo ctermfg=17
 
 " highlight whole line commented
 augroup myTodo
@@ -154,11 +137,11 @@ nnoremap <leader>r :call VimuxRunCommand("./run.sh")<cr>
 " debug nnoremap <leader>qw :call VimuxRunCommand("clear; echo \"Start compiling...\"; ./build.sh")<cr>
 
 " flutter
-" nnoremap <leader>fa :FlutterRun<cr>
-" nnoremap <leader>fq :FlutterQuit<cr>
-" nnoremap <leader>fr :FlutterHotReload<cr>
-" nnoremap <leader>fR :FlutterHotRestart<cr>
-" nnoremap <leader>fD :FlutterVisualDebug<cr>
+"nnoremap <leader>fa :FlutterRun<cr>
+"nnoremap <leader>fq :FlutterQuit<cr>
+"nnoremap <leader>fr :FlutterHotReload<cr>
+"nnoremap <leader>fR :FlutterHotRestart<cr>
+"nnoremap <leader>fD :FlutterVisualDebug<cr>
 
 " Chiel92/vim-autoformat
 noremap <leader>l :Autoformat<cr>
@@ -281,6 +264,3 @@ let g:ale_linters = {
 " debug     endif
 " debug endfunction
 " debug nnoremap <C-t> : call Toggle_transparent()<CR>
-
-
-

@@ -153,34 +153,69 @@ font:
 # If `true`, bold text is drawn using the bright color variants.
 #draw_bold_text_with_bright_colors: false
 
-# Colors (Srcery)
+  
 colors:
+  # Default colors
   primary:
-    background: '#1c1b19'
-    #background: '#111111'
+    background: '#002635'
+    # foreground: '#e6e6dc'
     foreground: '#fce8c3'
 
   # Normal colors
   normal:
-    black:   '#1c1b19'
-    red:     '#ef2f27'
-    green:   '#519f50'
-    yellow:  '#fbb829'
-    blue:    '#2c78bf'
-    magenta: '#e02c6d'
-    cyan:    '#0aaeb3'
-    white:   '#d0bfa1'
+    black:   '#00384d'
+    red:     '#c43061'
+    green:   '#7fc06e'
+    yellow:  '#f08e48'
+    blue:    '#1c8db2'
+    magenta: '#c694ff'
+    cyan:    '#00cccc'
+    # white:   '#77929e'
+    white:   '#fce8c3'
 
   # Bright colors
   bright:
-    black:   '#918175'
-    red:     '#f75341'
-    green:   '#98bc37'
-    yellow:  '#fed06e'
-    blue:    '#68a8e4'
-    magenta: '#ff5c8f'
-    cyan:    '#53fde9'
+    black:   '#517f8d'
+    red:     '#ff5a67'
+    green:   '#9cf087'
+    yellow:  '#ffcc1b'
+    blue:    '#7eb2dd'
+    magenta: '#fb94ff'
+    cyan:    '#00ffff'
+    # white:   '#b7cff9'
     white:   '#fce8c3'
+
+  cursor:
+    text:   "#002635"
+    cursor: "#ffcc1b"
+# Colors (Srcery)
+#colors:
+#  primary:
+#    background: '#1c1b19'
+#    #background: '#111111'
+#    foreground: '#fce8c3'
+#
+#  # Normal colors
+#  normal:
+#    black:   '#1c1b19'
+#    red:     '#ef2f27'
+#    green:   '#519f50'
+#    yellow:  '#fbb829'
+#    blue:    '#2c78bf'
+#    magenta: '#e02c6d'
+#    cyan:    '#0aaeb3'
+#    white:   '#d0bfa1'
+#
+#  # Bright colors
+#  bright:
+#    black:   '#918175'
+#    red:     '#f75341'
+#    green:   '#98bc37'
+#    yellow:  '#fed06e'
+#    blue:    '#68a8e4'
+#    magenta: '#ff5c8f'
+#    cyan:    '#53fde9'
+#    white:   '#fce8c3'
 # Colors (Tomorrow Night Bright)
 # colors:
   # Default colors
@@ -297,7 +332,7 @@ colors:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.95
+background_opacity: 1.00
 
 #selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
