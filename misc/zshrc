@@ -164,3 +164,4 @@ if [ -f '/Users/tiagoaguiar/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '
 if [ -d '/usr/local/go/bin' ]; then 
     export PATH=$PATH:/usr/local/go/bin;
 fi
+export PATH="/Users/tiagoaguiar/.deta/bin:$PATH"

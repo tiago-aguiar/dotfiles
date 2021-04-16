@@ -132,8 +132,8 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-S-j> <C-e>
 nnoremap <C-S-k> <C-y>
 nnoremap <leader><esc> :noh<return><esc>
-nnoremap <leader>e :call VimuxRunCommand("./build.sh")<cr>
-nnoremap <leader>r :call VimuxRunCommand("./run.sh")<cr>
+nnoremap <leader>e :call VimuxRunCommand("sh build.sh")<cr>
+nnoremap <leader>r :call VimuxRunCommand("sh run.sh")<cr>
 " debug nnoremap <leader>qw :call VimuxRunCommand("clear; echo \"Start compiling...\"; ./build.sh")<cr>
 
 " flutter
