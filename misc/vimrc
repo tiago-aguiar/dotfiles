@@ -1,63 +1,49 @@
 " =================
 "     plugins
-" ================
-"call plug#begin()
-call plug#begin('~/AppData/Local/nvim/plugged')
-Plug 'srcery-colors/srcery-vim'     " color scheme
-Plug 'ap/vim-css-color'             " preview css color
-Plug 'Rigellute/rigel'
-Plug 'loshjawrence/magicka.vim'
+" =================
 
-Plug 'xolox/vim-misc'                 " dependency of vim-colorscheme-switcher to test
+if has('win32')
+  :echom "running on win32"
+  call plug#begin('~/AppData/Local/nvim/plugged')
+else
+  call plug#begin()
+endif
+Plug 'srcery-colors/srcery-vim'       " color scheme
+Plug 'loshjawrence/magicka.vim'       " coloscheme
+Plug 'vim-airline/vim-airline'        " status bar
+Plug 'vim-airline/vim-airline-themes' " status theme
+Plug 'ap/vim-css-color'               " preview css color
 Plug 'xolox/vim-colorscheme-switcher' " switch coloscheme to test
+Plug 'xolox/vim-misc'                 " dependency of vim-colorscheme-switcher to test
 Plug 'terryma/vim-multiple-cursors'   " <C-n> to replace all selected ocurr
-
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fzf finder
-Plug 'junegunn/fzf.vim' " fzf finder
-
-Plug 'Chiel92/vim-autoformat'                                         " autoformat file on save
-Plug 'dense-analysis/ale', { 'do': 'pip install flake8 isort yapf' }  " Asynchronous Lint Engine - lint checker
-" debug Plug 'SirVer/ultisnips' " snippet code
-" debug Plug 'honza/vim-snippets' " dependency of ultisnips
-" debug Plug 'vim-airline/vim-airline' " status bar
-" debug Plug 'vim-airline/vim-airline-themes' " status theme
-
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " completion - make vim smart
+Plug 'Chiel92/vim-autoformat'         " autoformat file on save
+Plug 'udalov/kotlin-vim'              " kotlin filetype recognized
+Plug 'junegunn/fzf.vim'               " fzf finder
+Plug 'sheerun/vim-polyglot'           " pack of languages syntaxes and more (this must be after vim-go to work)
+Plug 'benmills/vimux'                 " run command another pane tmux
+Plug 'junegunn/fzf', { 
+      \ 'do': { -> fzf#install() } 
+      \}
+" Asynchronous Lint Engine - lint checker
+Plug 'dense-analysis/ale', {  
+      \ 'do': 'pip install flake8 isort yapf' 
+      \} 
+" completion - make vim smart
 " (run :CocInstall coc-pyright, :CocInstall coc-kotlin, :CocUninstall  coc-pairs)
-
-Plug 'udalov/kotlin-vim' " kotlin filetype recognized
+Plug 'neoclide/coc.nvim', {'branch': 'release'} 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } " golang features like :GoBuild and more
 
-Plug 'sheerun/vim-polyglot' " pack of languages syntaxes and more (this must be after vim-go to work)
-Plug 'tikhomirov/vim-glsl'  " Vim syntax highlighting for OpenGL Shading Language
-" debug
-" debug "Plug 'ncm2/ncm2' " nvim completion manager
-" debug "Plug 'roxma/nvim-yarp'
-" debug "Plug 'ncm2/ncm2-bufword'
-" debug "Plug 'ncm2/ncm2-tmux'
-" debug "Plug 'ncm2/ncm2-path'
-" debug "Plug 'ncm2/ncm2-tern', { 'do': 'npm install' } " javascript completion (need to install node)
-" debug
-Plug 'benmills/vimux' " VimuxRunCommand(\"ls\") run command another pane tmux
-" debug "
+Plug 'preservim/nerdtree' |
+      \ Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" Flutter Plugins
 "Plug 'dart-lang/dart-vim-plugin' " for flutter
 "Plug 'thosakwe/vim-flutter' " for flutter
 "Plug 'natebosch/dartlang-snippets'
 "Plug 'natebosch/vim-lsc'
 "Plug 'natebosch/vim-lsc-dart'
 "Plug 'iamcco/coc-flutter'
-" debug "
-" debug if has('nvim') " async frameworks completion
-" debug     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" debug else
-" debug     Plug 'Shougo/deoplete.nvim'
-" debug     Plug 'roxma/nvim-yarp'
-" debug     Plug 'roxma/vim-hug-neovim-rpc'
-" debug endif
-" debug
 
-Plug 'preservim/nerdtree' |
-      \ Plug 'Xuyuanp/nerdtree-git-plugin'
 call plug#end()
 
 
@@ -66,20 +52,24 @@ call plug#end()
 " ========================
 syntax on
 filetype plugin indent on
-set cindent
 set encoding=utf8
 set hidden
 set nobackup
 set nowritebackup
 set nonumber
 set norelativenumber
-set shiftwidth=2
-set tabstop=2
+set autoindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 set noswapfile
 set laststatus=2
 set colorcolumn=100
 set mouse=a
+set clipboard=unnamedplus
+set cc=
+set wildignore+=*.pyc,__pycache__,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
 let mapleader="\<Space>"
 
 " Cursor style
@@ -88,37 +78,20 @@ set guicursor+=i:block-Cursor
 set guicursor+=i:blinkon1
 set guicursor+=i:blinkwait1
 
-" debug highlight ColorColumn ctermbg=0 guibg=lightgrey
-" debug set rtp+=/usr/share/powerline/bindings/vim/
-" debug set wildignore+=*.pyc,__pycache__,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
 
 " ==================
 "       Theme
 " ==================
 syntax enable
-"colorscheme rigel
 colorscheme magicka
-autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
 
-" Activated Transparent Background for Alacritty
 hi! Normal guibg=NONE ctermbg=233 ctermfg=223
-"hi! NonText guibg=NONE ctermbg=NONE
-"
-"" My Custom Color Highlighting from scery
-set cc=
 
-" highlight whole line commented
-augroup myTodo
-  autocmd!
-  autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
-augroup END
-
-highlight link myTodo Todo
 
 " ==========
 "    GUI
 " ==========
-nnoremap <leader>; A;<esc>
+nnoremap <leader>/ I// <esc>j<esc>
 nnoremap <leader><F1> :mksession!<cr>
 nnoremap <leader><F10> :e ~/.vimrc<cr>
 nnoremap <leader><F12> :source %<cr>
@@ -136,24 +109,62 @@ nnoremap <C-S-k> <C-y>
 nnoremap <leader><esc> :noh<return><esc>
 nnoremap <leader>e :call VimuxRunCommand("sh build.sh")<cr>
 nnoremap <leader>r :call VimuxRunCommand("sh run.sh")<cr>
-
-" win
-inoremap <silent>  <S-Insert>  <C-R>+
-GuiPopupmenu 0
-
-" debug nnoremap <leader>qw :call VimuxRunCommand("clear; echo \"Start compiling...\"; ./build.sh")<cr>
-
-" flutter
-"nnoremap <leader>fa :FlutterRun<cr>
-"nnoremap <leader>fq :FlutterQuit<cr>
-"nnoremap <leader>fr :FlutterHotReload<cr>
-"nnoremap <leader>fR :FlutterHotRestart<cr>
-"nnoremap <leader>fD :FlutterVisualDebug<cr>
-
-" Chiel92/vim-autoformat
 noremap <leader>l :Autoformat<cr>
-au BufWrite *.mm :Autoformat " auto format when save file
+if has('win32')
+  inoremap <silent>  <S-Insert>  <C-R>+
+endif
+
+let $FZF_DEFAULT_COMMAND = 'ag --nocolor -g ""'
+let NERDTreeRespectWildIgnore=1
+let g:airline_theme='srcery'
+
+
+" ===========================
+"   Plugins Configurations
+" ===========================
+
+" Ale linter
+let g:ale_python_flake8_options = '-m flake8'
+let g:ale_python_flake8_executable = 'python3'
+let g:ale_linters = {
+            \   'javascript': ['eslint'],
+            \   'python': ['flake8']
+            \}
+"let g:ale_kotlin_ktlint_executable = '/usr/local/ktlint'
+"let g:ale_kotlin_languageserver_executable
+
+
+" Autoformat
+au BufWrite *.mm :Autoformat
+
+let g:go_fmt_autosave = 0
+" let g:autoformat_verbosemode = 0 " debug autoformat
+" let g:autoformat_autoindent = 0
+" let g:autoformat_retab = 0
+" let g:autoformat_remove_trailing_spaces = 0
+" let g:formatdef_my_html_django = "'html-beautify'" " custom for django html (need nodejs)
+" let g:formatters_htmldjango = ['my_html_django']
+" let g:formatdef_astyle_cpp = '"astyle --mode=c --style=google --indent-switches -pcH".(&expandtab ? "s".shiftwidth() : "t")'
+" let g:lsc_server_commands = {'dart': 'dart_language_server'}
+" autocmd FileType vim,tex,htmldjango,html let b:autoformat_autoindent=0
+
+
+" Vimux
+" let g:VimuxOrientation = "h"
+" let g:VimuxHeight = "50"
+
+
+" Vim
 au BufRead,BufNewFile *.mm set filetype=objc
+au BufRead,BufNewFile *.swift set filetype=swift
+au BufRead,BufNewFile *.vs,*.fs,*.vert,*.frag set ft=glsl
+
+augroup myTodo
+  autocmd!
+  autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
+augroup END
+highlight link myTodo Todo
+
 
 " coc
 inoremap <silent><expr> <C-j>
@@ -175,100 +186,13 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 
-autocmd BufNewFile,BufRead *.swift set filetype=swift
+" flutter
+"nnoremap <leader>fa :FlutterRun<cr>
+"nnoremap <leader>fq :FlutterQuit<cr>
+"nnoremap <leader>fr :FlutterHotReload<cr>
+"nnoremap <leader>fR :FlutterHotRestart<cr>
+"nnoremap <leader>fD :FlutterVisualDebug<cr>
 
-" debug " ncm2 configs
-" debug "inoremap <c-c> <ESC>
-" debug "inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" debug "inoremap <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<S-Tab>")
-" debug
-" debug function! s:check_back_space() abort
-" debug   let col = col('.') - 1
-" debug   return !col || getline('.')[col - 1]  =~# '\s'
-" debug endfunction
-
-" debug " Use <c-space> to trigger completion.
-" debug if has('nvim')
-" debug   inoremap <silent><expr> <c-space> coc#refresh()
-" debug else
-" debug   inoremap <silent><expr> <c-@> coc#refresh()
-" debug endif
-
-" debug " enable ncm2 for all buffers
-" debug "autocmd BufEnter * call ncm2#enable_for_buffer()
-" debug "set completeopt=noinsert,menuone,noselect
-
-
-" debug if !exists('g:airline_symbols') " incompatible powerline symbols for Inziu Iosevka font
-" debug     let g:airline_symbols = {}
-" debug endif
-
-let $FZF_DEFAULT_COMMAND = 'ag --nocolor -g ""'
-let NERDTreeRespectWildIgnore=1
-
-" golang
-let g:go_fmt_autosave = 0
-
-" debug
-" debug let g:airline_theme='srcery'
-" debug let g:colorscheme_switcher_define_mappings = 1 " change colorscheme with F8 and SHIFT-F8
-" debug let g:airline#extensions#tabline#enabled = 1
-" debug let g:airline_powerline_fonts = 1
-" debug let g:airline_symbols.linenr = " " "font https://github.com/vim-airline/vim-airline/issues/1397
-" debug let g:airline_symbols.whitespace = " "
-" debug let g:airline#extensions#tabline#formatter = 'unique_tail'
-" debug
-" debug let g:deoplete#enable_at_startup = 1
-" debug let g:deoplete#sources#jedi#show_docstring = 1 " deoplete jedi (python)
-" debug
-let g:ale_python_flake8_executable = 'python3'   " or 'python' for Python 2
-"let g:ale_kotlin_ktlint_executable = '/usr/local/ktlint'
-let g:ale_python_flake8_options = '-m flake8'
-"let g:ale_kotlin_languageserver_executable
-"
-" 'kotlin': ['ktlint'],
-let g:ale_linters = {
-            \   'javascript': ['eslint'],
-            \   'python': ['flake8']
-            \}
-" debug let g:UltiSnipsExpandTrigger="<tab>"
-" debug let g:UltiSnipsJumpForwardTrigger="<tab>"
-" debug let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-" debug let g:UltiSnipsEditSplit="vertical"
-" debug let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
-" debug
-" debug let g:autoformat_verbosemode = 0 " debug autoformat
-" debug let g:autoformat_autoindent = 0
-" debug let g:autoformat_retab = 0
-" debug let g:autoformat_remove_trailing_spaces = 0
-" debug let g:formatdef_my_html_django = "'html-beautify'" " custom for django html (need nodejs)
-" debug let g:formatters_htmldjango = ['my_html_django']
-" debug let g:formatdef_astyle_cpp = '"astyle --mode=c --style=google --indent-switches -pcH".(&expandtab ? "s".shiftwidth() : "t")'
-" debug let g:lsc_server_commands = {'dart': 'dart_language_server'}
-" debug let g:VimuxOrientation = "h"
-" debug let g:VimuxHeight = "50"
-" debug
-" debug " flutter stuff
-" debug let g:dart_style_guide = 2
-" debug let g:dart_format_on_save = 1
-" debug let g:lsc_auto_map = v:true
-" debug
-" debug autocmd FileType vim,tex,htmldjango,html let b:autoformat_autoindent=0
-" debug autocmd FileType dart let b:deoplete_disable_auto_complete = 1
-" debug autocmd! BufNewFile,BufRead *.vs,*.fs,*.vert,*.frag set ft=glsl
-" debug
-" debug let g:deoplete#disable_auto_complete = 1
-" debug
-" debug let t:is_transparent = 1
-" debug function! Toggle_transparent()
-" debug     if t:is_transparent == 0
-" debug         hi! Normal guibg=NONE ctermbg=NONE
-" debug         hi! NonText guibg=NONE ctermbg=NONE
-" debug         let t:is_transparent = 1
-" debug     else
-" debug         set background=dark
-" debug         let t:is_tranparent = 0
-" debug     endif
-" debug endfunction
-" debug nnoremap <C-t> : call Toggle_transparent()<CR>
-
+"let g:dart_style_guide = 2
+"let g:dart_format_on_save = 1
+"let g:lsc_auto_map = v:true
