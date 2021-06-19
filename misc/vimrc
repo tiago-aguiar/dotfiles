@@ -87,7 +87,6 @@ set guicursor+=i:block-Cursor
 set guicursor+=i:blinkon1
 set guicursor+=i:blinkwait1
 
-" debug highlight ColorColumn ctermbg=0 guibg=lightgrey
 " debug set rtp+=/usr/share/powerline/bindings/vim/
 " debug set wildignore+=*.pyc,__pycache__,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
 
@@ -99,7 +98,13 @@ colorscheme rigel
 autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Black ctermbg=NONE
 
 " Activated Transparent Background for Alacritty
-hi! Normal guibg=NONE ctermbg=NONE ctermfg=230
+hi! Normal     guibg=NONE ctermbg=NONE ctermfg=230
+hi! Statement  guibg=NONE ctermbg=NONE ctermfg=85
+hi! Type       guibg=NONE ctermbg=NONE ctermfg=85
+hi! Function   guibg=NONE ctermbg=NONE ctermfg=255
+hi! Identifier guibg=NONE ctermbg=NONE ctermfg=255
+hi! Keyword    guibg=NONE ctermbg=NONE ctermfg=85
+hi! Todo       guibg=NONE ctermbg=NONE ctermfg=196
 "hi! NonText guibg=NONE ctermbg=NONE
 "
 "" My Custom Color Highlighting from scery
@@ -108,7 +113,7 @@ set cc=
 " highlight whole line commented
 augroup myTodo
   autocmd!
-  autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
+  autocmd Syntax * syntax match myTodo /\v\_.<(TODO).*/hs=s+1 containedin=.*Comment
 augroup END
 
 highlight link myTodo Todo
@@ -120,7 +125,7 @@ nnoremap <leader>; A;<esc>
 nnoremap <leader><F1> :mksession!<cr>
 nnoremap <leader><F10> :e ~/.vimrc<cr>
 nnoremap <leader><F12> :source %<cr>
-nnoremap <leader>f :GFiles<cr>
+nnoremap <leader>f :Files<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>s :Ag<space>
 nnoremap <leader>k :bd<cr>
@@ -169,6 +174,11 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 
 
 autocmd BufNewFile,BufRead *.swift set filetype=swift
+
+autocmd bufNewFile *.cpp 0r  ~/dotfiles/boilers/cpp_source.txt
+autocmd bufnewfile *.cpp exe "1," . 8 . "g/$File: $.*/s//$File: " . expand("%:t:r") . ".cpp $"
+autocmd bufnewfile *.cpp exe "1," . 8 . "g/$Date: $.*/s//$Date: " . strftime("%d-%b-%Y") . " $"
+autocmd bufnewfile *.cpp exe "1," . 8 . "g/$Version: $.*/s//$Version: 0.1 $"
 
 " debug " ncm2 configs
 " debug "inoremap <c-c> <ESC>
