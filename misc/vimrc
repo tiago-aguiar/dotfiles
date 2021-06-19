@@ -84,7 +84,19 @@ set guicursor+=i:blinkwait1
 syntax enable
 colorscheme magicka
 
-hi! Normal guibg=NONE ctermbg=233 ctermfg=223
+hi! Normal   guibg=NONE ctermbg=233  ctermfg=223
+hi! Todo     guibg=NONE ctermbg=NONE ctermfg=196
+hi! Comment  guibg=NONE ctermbg=NONE ctermfg=28
+hi! Constant guibg=NONE ctermbg=NONE ctermfg=15
+hi! String   guibg=NONE ctermbg=NONE ctermfg=14
+hi! Number   guibg=NONE ctermbg=NONE ctermfg=14
+
+augroup myTodo
+  autocmd!
+  autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
+augroup END
+
+highlight link myTodo Todo
 
 " ==========
 "    GUI
@@ -156,13 +168,6 @@ let g:go_fmt_autosave = 0
 au BufRead,BufNewFile *.mm set filetype=objc
 au BufRead,BufNewFile *.swift set filetype=swift
 au BufRead,BufNewFile *.vs,*.fs,*.vert,*.frag set ft=glsl
-
-augroup myTodo
-  autocmd!
-  autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
-augroup END
-highlight link myTodo Todo
-
 
 " coc
 inoremap <silent><expr> <C-j>
