@@ -35,7 +35,7 @@ window:
   # by DPI and the specified value is always added at both opposing sides.
   padding:
     x: 5
-    y: 5
+    y: 35
 
   # Spread additional padding evenly around the terminal content.
   #dynamic_padding: false
@@ -49,7 +49,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  decorations: full
+  decorations: transparent
 
   # Startup Mode (changes require restart)
   #
@@ -96,26 +96,26 @@ font:
     #   - (Windows) Consolas
   normal:
     #family: JetBrains Mono
-    #family: SF Mono
-    family: Liberation Mono for Powerline
+    family: SF Mono
+    #family: Liberation Mono for Powerline
     style: Regular
 
   bold:
     #family: JetBrains Mono
-    #family: SF Mono
-    family: Liberation Mono for Powerline
+    family: SF Mono
+    #family: Liberation Mono for Powerline
     style: Bold
 
   italic:
     #family: JetBrains Mono
-    #family: SF Mono
-    family: Liberation Mono for Powerline
+    family: SF Mono
+    #family: Liberation Mono for Powerline
     style: Italic
 
   bold_italic:
     #family: JetBrains Mono
-    #family: SF Mono
-    family: Liberation Mono for Powerline
+    family: SF Mono
+    #family: Liberation Mono for Powerline
     style: Bold Italic
 
   # Point size
@@ -157,8 +157,7 @@ font:
 colors:
   # Default colors
   primary:
-    background: '#00202E'
-    # foreground: '#e6e6dc'
+    background: '#111111'
     foreground: '#fce8c3'
 
   # Normal colors
@@ -170,66 +169,18 @@ colors:
     blue:    '#1c8db2'
     magenta: '#c694ff'
     cyan:    '#00cccc'
-    # white:   '#77929e'
     white:   '#fce8c3'
 
   # Bright colors
   bright:
-    black:   '#517f8d'
+    black:   '#00202E'
     red:     '#ff5a67'
     green:   '#9cf087'
     yellow:  '#ffcc1b'
     blue:    '#7eb2dd'
     magenta: '#fb94ff'
     cyan:    '#00ffff'
-    # white:   '#b7cff9'
     white:   '#fce8c3'
-
-  cursor:
-    text:   "#002635"
-    cursor: "#ffcc1b"
-# Colors (Srcery)
-#colors:
-#  primary:
-#    background: '#1c1b19'
-#    #background: '#111111'
-#    foreground: '#fce8c3'
-#
-#  # Normal colors
-#  normal:
-#    black:   '#1c1b19'
-#    red:     '#ef2f27'
-#    green:   '#519f50'
-#    yellow:  '#fbb829'
-#    blue:    '#2c78bf'
-#    magenta: '#e02c6d'
-#    cyan:    '#0aaeb3'
-#    white:   '#d0bfa1'
-#
-#  # Bright colors
-#  bright:
-#    black:   '#918175'
-#    red:     '#f75341'
-#    green:   '#98bc37'
-#    yellow:  '#fed06e'
-#    blue:    '#68a8e4'
-#    magenta: '#ff5c8f'
-#    cyan:    '#53fde9'
-#    white:   '#fce8c3'
-# Colors (Tomorrow Night Bright)
-# colors:
-  # Default colors
-  # primary:
-  # background: '#000000'
-  #  foreground: '#eaeaea'
-
-    # Bright and dim foreground colors
-    #
-    # The dimmed foreground color is calculated automatically if it is not present.
-    # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
-    # is `false`, the normal foreground color will be used.
-    #dim_foreground: '#9a9a9a'
-    #bright_foreground: '#ffffff'
 
   # Cursor colors
   #
@@ -332,7 +283,7 @@ colors:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 1.00
+background_opacity: 1.0
 
 #selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"

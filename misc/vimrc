@@ -37,12 +37,12 @@ Plug 'preservim/nerdtree' |
       \ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Flutter Plugins
-"Plug 'dart-lang/dart-vim-plugin' " for flutter
-"Plug 'thosakwe/vim-flutter' " for flutter
-"Plug 'natebosch/dartlang-snippets'
-"Plug 'natebosch/vim-lsc'
-"Plug 'natebosch/vim-lsc-dart'
-"Plug 'iamcco/coc-flutter'
+Plug 'dart-lang/dart-vim-plugin' " for flutter
+Plug 'thosakwe/vim-flutter' " for flutter
+Plug 'natebosch/dartlang-snippets'
+Plug 'natebosch/vim-lsc'
+Plug 'natebosch/vim-lsc-dart'
+Plug 'iamcco/coc-flutter'
 
 call plug#end()
 
@@ -118,7 +118,7 @@ nnoremap <C-S-j> <C-e>
 nnoremap <C-S-k> <C-y>
 nnoremap <leader><esc> :noh<return><esc>
 nnoremap <leader>e :call VimuxRunCommand("sh build.sh")<cr>
-nnoremap <leader>r :call VimuxRunCommand("sh run.sh")<cr>
+nnoremap <leader>R :call VimuxRunCommand("sh run.sh")<cr>
 noremap <leader>l :Autoformat<cr>
 if has('win32')
   inoremap <silent>  <S-Insert>  <C-R>+
@@ -136,6 +136,7 @@ let g:airline_theme='srcery'
 " Ale linter
 let g:ale_python_flake8_options = '-m flake8'
 let g:ale_python_flake8_executable = 'python3'
+let g:ale_pattern_options = {'\.java$': {'ale_enabled': 0}}
 let g:ale_linters = {
             \   'javascript': ['eslint'],
             \   'python': ['flake8']
@@ -197,12 +198,15 @@ autocmd bufnewfile *.cpp exe "1," . 8 . "g/$Date: $.*/s//$Date: " . strftime("%d
 autocmd bufnewfile *.cpp exe "1," . 8 . "g/$Version: $.*/s//$Version: 0.1 $"
 
 " flutter
-"nnoremap <leader>fa :FlutterRun<cr>
-"nnoremap <leader>fq :FlutterQuit<cr>
-"nnoremap <leader>fr :FlutterHotReload<cr>
-"nnoremap <leader>fR :FlutterHotRestart<cr>
-"nnoremap <leader>fD :FlutterVisualDebug<cr>
+nnoremap <leader>ra :FlutterRun<cr>
+nnoremap <leader>rq :FlutterQuit<cr>
+nnoremap <leader>rr :FlutterHotReload<cr>
+nnoremap <leader>rR :FlutterHotRestart<cr>
+nnoremap <leader>rD :FlutterVisualDebug<cr>
 
-"let g:dart_style_guide = 2
-"let g:dart_format_on_save = 1
-"let g:lsc_auto_map = v:true
+let g:flutter_show_log_on_run = "hidden"
+let g:flutter_use_last_run_option = 1
+
+let g:dart_style_guide = 2
+let g:dart_format_on_save = 1
+let g:lsc_auto_map = v:true
