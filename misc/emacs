@@ -7,32 +7,39 @@
 ; put c:\.emacs
 
 
-; define operating system
-(setq taguiar-aquamacs (eq system-type 'darwin))
+; define variables
+(setq taguiar-macos (eq system-type 'darwin))
 (setq taguiar-linux (featurep 'x))
-(setq taguiar-win32 (not (or taguiar-aquamacs taguiar-linux)))
+(setq taguiar-win32 (not (or taguiar-macos taguiar-linux)))
 (setq backup-directory-alist `(("." . "~/.saves")))
+(setq taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
 
-
-(when taguiar-aquamacs
+; init macosx
+(when taguiar-macos
   (setq taguiar-todo-file "~/work/handmade/todo.txt")
   (setq taguiar-log-file "~/work/handmade/log.txt")
   (setq taguiar-theme-dir "~/.emacs.d/themes")
-  (setq taguiar-emacs-file "~/.emacs"))
+  (setq taguiar-emacs-file "~/.emacs")
+  (split-window-horizontally))
 
+; init windows
 (when taguiar-win32
   (setq taguiar-makescript "build.bat")
   (setq taguiar-todo-file "w:/handmade/todo.txt")
   (setq taguiar-theme-dir "c:\\.emacs.d\\themes")
-  (setq taguiar-emacs-file "c:\\.emacs"))
+  (setq taguiar-emacs-file "c:\\.emacs")
+  (set-face-attribute 'default nil :font "Liberation Mono" :height 120))
 
 
-;; BASICS
+; BASICS
 (setq inhibit-startup-message t
       initial-scratch-message nil
       auto-save-default nil
       evil-insert-state-cursor '(box "green")
       evil-normal-state-cursor '(box "purple")
+      mouse-wheel-scroll-amount '(1)
+      mouse-wheel-progressive-speed nil
+      mac-command-modifier 'meta
 )
 
 (scroll-bar-mode -1)
@@ -40,28 +47,19 @@
 (tooltip-mode -1)
 (menu-bar-mode -1)
 (blink-cursor-mode 0)
-
-(global-hl-line-mode 0)
-(set-face-background 'hl-line "gray")
-(display-time)
-; (split-window-horizontally)
-
-
 (show-paren-mode t)
-(setq mouse-wheel-scroll-amount '(1))
-(setq mouse-wheel-progressive-speed nil)
+(global-hl-line-mode 0)
+(display-time)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
 
-(setq mac-command-modifier 'meta)
-
-
-;; Set up package.el to work with MELPA
+; Set up package.el to work with MELPA
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)
 
-;; Evil mode
+; Evil mode
 (unless (package-installed-p 'evil)
   (package-refresh-contents)
   (package-install 'evil))
@@ -70,16 +68,35 @@
 (evil-mode 1)
 
 
+(require 'compile)
+(require 'cc-mode) ; mode for editing files containing C, C++, Objective-C, Java
+(require 'ido)     ; interactively 'DO things' for files and navigation
+(ido-mode t)
 
-;; Theme
+
+
+; Themes
 (add-to-list 'custom-theme-load-path (file-name-as-directory taguiar-theme-dir))
 (load-theme 'taylor t t)
-;;(enable-theme 'taylor)
-;;(set-face-attribute 'default nil :font "Liberation Mono" :height 110)
+(enable-theme 'taylor)
+(set-face-background 'hl-line "gray")
+; (add-to-list 'default-frame-alist '(font . "Liberation Mono-11.5"))
+; (set-face-attribute 'default t :font "Liberation Mono-11.5")
+(set-face-attribute 'font-lock-builtin-face nil :foreground "#DAB98F")
+; (set-face-attribute 'font-lock-comment-face nil :foreground "gray50")
+(set-face-attribute 'font-lock-comment-face nil :foreground "green")
+(set-face-attribute 'font-lock-constant-face nil :foreground "olive drab")
+(set-face-attribute 'font-lock-doc-face nil :foreground "gray50")
+(set-face-attribute 'font-lock-function-name-face nil :foreground "burlywood3")
+(set-face-attribute 'font-lock-function-name-face nil :foreground "white")
+; (set-face-attribute 'font-lock-keyword-face nil :foreground "DarkGoldenrod3")
+; (set-face-attribute 'font-lock-string-face nil :foreground "olive drab")
+(set-face-attribute 'font-lock-string-face nil :foreground "cyan")
+; (set-face-attribute 'font-lock-type-face nil :foreground "burlywood3")
+(set-face-attribute 'font-lock-variable-name-face nil :foreground "burlywood3")
 
 
-
-;; My Configs
+;; Shortcuts
 (global-set-key (kbd "<f10>") (lambda () (interactive)
 				(find-file taguiar-emacs-file)
 				(message "Opened: %s" (buffer-name))))
@@ -88,16 +105,20 @@
 				(eval-buffer)
 				(message "Refresh: %s" (buffer-name))))
 
+(define-key global-map "\ef" 'find-file)
+(define-key global-map "\eF" 'find-file-other-window)
+(global-set-key (read-kbd-macro "\eb")  'ido-switch-buffer)
+(global-set-key (read-kbd-macro "\eB")  'ido-switch-buffer-other-window)
 
-
-(require 'compile)
-(require 'cc-mode) ; mode for editing files containing C, C++, Objective-C, Java
-(require 'ido)     ; interactively 'DO things' for files and navigation
-(ido-mode t)
+(define-key global-map "\et" 'load-todo)
+(define-key global-map "\er" 'revert-buffer)
+(define-key global-map "\ek" 'kill-this-buffer)
+(define-key global-map "\es" 'save-buffer)
+(define-key global-map "\eT" 'load-log)
 
 ; define functions
-
-(setq taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
+(defun test ()
+  (message "after-init-hook called"))
 
 (defun taguiar-ido-ignore-func (name)
   "Ignore all non-user (a.k.a. *starred*) buffers except those listed in variable `taguiar-unignored-buffers'."
@@ -106,61 +127,31 @@
 
 (setq ido-ignore-buffers '("\\` " taguiar-ido-ignore-func))
 
-(define-key global-map "\ef" 'find-file)
-(define-key global-map "\eF" 'find-file-other-window)
-(global-set-key (read-kbd-macro "\eb")  'ido-switch-buffer)
-(global-set-key (read-kbd-macro "\eB")  'ido-switch-buffer-other-window)
-
-
 (defun load-todo ()
   (interactive)
-  (find-file taguiar-todo-file)
-)
+  (find-file taguiar-todo-file))
 
-
-(define-key global-map "\et" 'load-todo)
-(define-key global-map "\er" 'revert-buffer)
-(define-key global-map "\ek" 'kill-this-buffer)
-(define-key global-map "\es" 'save-buffer)
-
-
-(defun test ()
-  (message "test")
-  )
 
 (add-hook 'after-init-hook 'test)
 
-; (add-to-list 'default-frame-alist '(font . "Liberation Mono-11.5"))
-; (set-face-attribute 'default t :font "Liberation Mono-11.5")
-; (set-face-attribute 'font-lock-builtin-face nil :foreground "#DAB98F")
-; (set-face-attribute 'font-lock-comment-face nil :foreground "gray50")
-; (set-face-attribute 'font-lock-constant-face nil :foreground "olive drab")
-; (set-face-attribute 'font-lock-doc-face nil :foreground "gray50")
-; (set-face-attribute 'font-lock-function-name-face nil :foreground "burlywood3")
-; (set-face-attribute 'font-lock-keyword-face nil :foreground "DarkGoldenrod3")
-; (set-face-attribute 'font-lock-string-face nil :foreground "olive drab")
-; (set-face-attribute 'font-lock-type-face nil :foreground "burlywood3")
-; (set-face-attribute 'font-lock-variable-name-face nil :foreground "burlywood3")
-
-
 ; Bright-red TODOs
- (setq fixme-modes '(c++-mode c-mode emacs-lisp-mode))
- (make-face 'font-lock-fixme-face)
- (make-face 'font-lock-study-face)
- (make-face 'font-lock-important-face)
- (make-face 'font-lock-note-face)
- (mapc (lambda (mode)
-	 (font-lock-add-keywords
-	  mode
-	  '(("\\<\\(TODO\\)" 1 'font-lock-fixme-face t)
-	    ("\\<\\(STUDY\\)" 1 'font-lock-study-face t)
-	    ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
-            ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
-	fixme-modes)
- (modify-face 'font-lock-fixme-face "Red" nil nil t nil t nil nil)
- (modify-face 'font-lock-study-face "Yellow" nil nil t nil t nil nil)
- (modify-face 'font-lock-important-face "Yellow" nil nil t nil t nil nil)
- (modify-face 'font-lock-note-face "Dark Green" nil nil t nil t nil nil)
+(setq fixme-modes '(c++-mode c-mode emacs-lisp-mode))
+(make-face 'font-lock-fixme-face)
+(make-face 'font-lock-study-face)
+(make-face 'font-lock-important-face)
+(make-face 'font-lock-note-face)
+(mapc (lambda (mode)
+ (font-lock-add-keywords
+  mode
+  '(("\\<\\(TODO\\)" 1 'font-lock-fixme-face t)
+    ("\\<\\(STUDY\\)" 1 'font-lock-study-face t)
+    ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
+           ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
+fixme-modes)
+(modify-face 'font-lock-fixme-face "Red" nil nil t nil t nil nil)
+(modify-face 'font-lock-study-face "Blue" nil nil t nil t nil nil)
+(modify-face 'font-lock-important-face "Yellow" nil nil t nil t nil nil)
+(modify-face 'font-lock-note-face "Orange" nil nil t nil t nil nil)
 
 ; Accepted file extensions and their appropriate modes
 (setq auto-mode-alist
@@ -170,18 +161,17 @@
          ("\\.cin$"    . c++-mode)
          ("\\.inl$"    . c++-mode)
          ("\\.rdc$"    . c++-mode)
-         ("\\.h$"    . c++-mode)
-         ("\\.c$"   . c++-mode)
-         ("\\.cc$"   . c++-mode)
-         ("\\.c8$"   . c++-mode)
-         ("\\.txt$" . indented-text-mode)
-         ("\\.emacs$" . emacs-lisp-mode)
-         ("\\.gen$" . gen-mode)
-         ("\\.ms$" . fundamental-mode)
-         ("\\.m$" . objc-mode)
-         ("\\.mm$" . objc-mode)
+         ("\\.h$"      . c++-mode)
+         ("\\.c$"      . c++-mode)
+         ("\\.cc$"     . c++-mode)
+         ("\\.c8$"     . c++-mode)
+         ("\\.txt$"    . indented-text-mode)
+         ("\\.emacs$"  . emacs-lisp-mode)
+         ("\\.gen$"    . gen-mode)
+         ("\\.ms$"     . fundamental-mode)
+         ("\\.m$"      . objc-mode)
+         ("\\.mm$"     . objc-mode)
          ) auto-mode-alist))
-
 
 ; C++ indentation style
 (defconst taguiar-big-fun-c-style
@@ -213,18 +203,18 @@
                                     list-close-comma
                                     defun-close-semi))
     (c-offsets-alist             . ((arglist-close         .  c-lineup-arglist)
-                                    (label                 . -2)
-                                    (access-label          . -2)
+                                    (label                 . -4)
+                                    (access-label          . -4)
                                     (substatement-open     .  0)
-                                    (statement-case-intro  .  2)
+                                    (statement-case-intro  .  4)
                                     (statement-block-intro .  c-lineup-for)
-                                    (case-label            .  2)
+                                    (case-label            .  4)
                                     (block-open            .  0)
                                     (inline-open           .  0)
                                     (topmost-intro-cont    .  0)
-                                    (knr-argdecl-intro     . -2)
+                                    (knr-argdecl-intro     . -4)
                                     (brace-list-open       .  0)
-                                    (brace-list-intro      .  2)))
+                                    (brace-list-intro      .  4)))
     (c-echo-syntactic-information-p . t))
     "Tiago's Big Fun C++ Style")
 
@@ -242,7 +232,6 @@
   (newline-and-indent)
   (end-of-buffer)
 )
-(define-key global-map "\eT" 'load-log)
 
 ; CC++ mode handling
 (defun taguiar-big-fun-c-hook ()
@@ -250,11 +239,11 @@
   (c-add-style "BigFun" taguiar-big-fun-c-style t)
 
   ; 4-space tabs
-  (setq tab-width 2
+  (setq tab-width 4
         indent-tabs-mode nil)
+
   ; Additional style stuff
   (c-set-offset 'member-init-intro '++)
-
 
   ; Handle super-tabbify (TAB completes, shift-TAB actually tabs)
   (setq dabbrev-case-replace t)
@@ -264,7 +253,7 @@
   ; Abbrevation expansion
   (abbrev-mode 1)
  
-  (defun casey-header-format ()
+  (defun taguiar-header-format ()
      "Format the given file as a header file."
      (interactive)
      (setq BaseFileName (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
@@ -278,8 +267,8 @@
      (insert "   $File: $\n")
      (insert "   $Date: $\n")
      (insert "   $Revision: $\n")
-     (insert "   $Creator: Casey Muratori $\n")
-     (insert "   $Notice: (C) Copyright 2015 by Molly Rocket, Inc. All Rights Reserved. $\n")
+     (insert "   $Creator: Tiago Aguiar $\n")
+     (insert "   $Notice: (C) Copyright 2022 by AT Digital LTDA. All Rights Reserved. $\n")
      (insert "   ======================================================================== */\n")
      (insert "\n")
      (insert "#define ")
@@ -291,7 +280,7 @@
      (insert "#endif")
   )
 
-  (defun casey-source-format ()
+  (defun taguiar-source-format ()
      "Format the given file as a source file."
      (interactive)
      (setq BaseFileName (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
@@ -299,18 +288,18 @@
      (insert "   $File: $\n")
      (insert "   $Date: $\n")
      (insert "   $Revision: $\n")
-     (insert "   $Creator: Casey Muratori $\n")
-     (insert "   $Notice: (C) Copyright 2015 by Molly Rocket, Inc. All Rights Reserved. $\n")
+     (insert "   $Creator: Tiago Aguiar $\n")
+     (insert "   $Notice: (C) Copyright 2022 by AT Digital LTDA. All Rights Reserved. $\n")
      (insert "   ======================================================================== */\n")
   )
 
   (cond ((file-exists-p buffer-file-name) t)
-        ((string-match "[.]hin" buffer-file-name) (casey-source-format))
-        ((string-match "[.]cin" buffer-file-name) (casey-source-format))
-        ((string-match "[.]h" buffer-file-name) (casey-header-format))
-        ((string-match "[.]cpp" buffer-file-name) (casey-source-format)))
+        ((string-match "[.]hin" buffer-file-name) (taguiar-source-format))
+        ((string-match "[.]cin" buffer-file-name) (taguiar-source-format))
+        ((string-match "[.]h" buffer-file-name) (taguiar-header-format))
+        ((string-match "[.]cpp" buffer-file-name) (taguiar-source-format)))
 
-  (defun casey-find-corresponding-file ()
+  (defun taguiar-find-corresponding-file ()
     "Find the file that corresponds to this one."
     (interactive)
     (setq CorrespondingFileName nil)
@@ -328,21 +317,17 @@
        (setq CorrespondingFileName (concat BaseFileName ".h")))
     (if CorrespondingFileName (find-file CorrespondingFileName)
        (error "Unable to find a corresponding file")))
-  (defun casey-find-corresponding-file-other-window ()
+  (defun taguiar-find-corresponding-file-other-window ()
     "Find the file that corresponds to this one."
     (interactive)
     (find-file-other-window buffer-file-name)
-    (casey-find-corresponding-file)
+    (taguiar-find-corresponding-file)
     (other-window -1))
 
 
-  ; Alternate bindings for F-keyless setups (ie MacOS X terminal)
-  ;(define-key c++-mode-map "\ec" 'casey-find-corresponding-file)
-  ;(define-key c++-mode-map "\eC" 'casey-find-corresponding-file-other-window)
-
-  (define-key c++-mode-map "\eo" 'casey-find-corresponding-file)
-  (define-key c++-mode-map "\eO" 'casey-find-corresponding-file-other-window)
-  (define-key c++-mode-map "\es" 'casey-save-buffer)
+  (define-key c++-mode-map "\eo" 'taguiar-find-corresponding-file)
+  (define-key c++-mode-map "\eO" 'taguiar-find-corresponding-file-other-window)
+  (define-key c++-mode-map "\es" 'taguiar-save-buffer)
   (define-key c++-mode-map "\t" 'dabbrev-expand)
   (define-key c++-mode-map [S-tab] 'indent-for-tab-command)
   (define-key c++-mode-map "\C-y" 'indent-for-tab-command)
@@ -352,17 +337,17 @@
   (define-key c++-mode-map "\e/" 'c-mark-function)
 
   ; devenv.com error parsing
-  (add-to-list 'compilation-error-regexp-alist 'casey-devenv)
-  (add-to-list 'compilation-error-regexp-alist-alist '(casey-devenv
+  (add-to-list 'compilation-error-regexp-alist 'taguiar-devenv)
+  (add-to-list 'compilation-error-regexp-alist-alist '(taguiar-devenv
    "*\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) : \\(?:see declaration\\|\\(?:warnin\\(g\\)\\|[a-z ]+\\) C[0-9]+:\\)"
     2 3 nil (4)))
 
-  ; Turn on line numbers
-  (linum-mode)
+  ; Turn off line numbers
+  (linum-mode -1)
 )
 
 
-; (add-hook 'c-mode-common-hook 'taguiar-big-fun-c-hook)
+(add-hook 'c-mode-common-hook 'taguiar-big-fun-c-hook)
 
 ; Setup my compilation mode
 (defun taguiar-big-fun-compilation-hook ()
@@ -371,8 +356,6 @@
 )
 
 (add-hook 'compilation-mode-hook 'taguiar-big-fun-compilation-hook)
-
-
 
 (setq compilation-directory-locked nil)
 
