@@ -8,7 +8,7 @@ if has('win32')
 else
   call plug#begin()
 endif
-Plug 'srcery-colors/srcery-vim'       " color scheme
+Plug 'srcery-colors/srcery-vim'       " colorscheme
 Plug 'loshjawrence/magicka.vim'       " coloscheme
 Plug 'vim-airline/vim-airline'        " status bar
 Plug 'vim-airline/vim-airline-themes' " status theme
@@ -37,8 +37,8 @@ Plug 'preservim/nerdtree' |
       \ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Flutter Plugins
-Plug 'dart-lang/dart-vim-plugin' " for flutter
-Plug 'thosakwe/vim-flutter' " for flutter
+Plug 'dart-lang/dart-vim-plugin' 
+Plug 'thosakwe/vim-flutter'
 Plug 'natebosch/dartlang-snippets'
 Plug 'natebosch/vim-lsc'
 Plug 'natebosch/vim-lsc-dart'
@@ -82,9 +82,10 @@ set guicursor+=i:blinkwait1
 "       Theme
 " ==================
 syntax enable
-colorscheme magicka
+"colorscheme magicka
 
-hi! Normal   guibg=NONE ctermbg=233  ctermfg=223
+" hi! Normal   guibg=NONE ctermbg=233  ctermfg=223 "Dark background
+hi! Normal   guibg=NONE ctermbg=NONE  ctermfg=NONE
 hi! Todo     guibg=NONE ctermbg=NONE ctermfg=196
 hi! Comment  guibg=NONE ctermbg=NONE ctermfg=28
 hi! Constant guibg=NONE ctermbg=NONE ctermfg=15
@@ -102,6 +103,7 @@ highlight link myTodo Todo
 "    GUI
 " ==========
 nnoremap <leader>/ I// <esc>j<esc>
+nnoremap <leader>d oimport ipdb; ipdb.set_trace()<esc>
 nnoremap <leader><F1> :mksession!<cr>
 nnoremap <leader><F10> :e ~/.vimrc<cr>
 nnoremap <leader><F12> :source %<cr>
@@ -118,7 +120,7 @@ nnoremap <C-S-j> <C-e>
 nnoremap <C-S-k> <C-y>
 nnoremap <leader><esc> :noh<return><esc>
 nnoremap <leader>e :call VimuxRunCommand("sh build.sh")<cr>
-nnoremap <leader>R :call VimuxRunCommand("sh run.sh")<cr>
+nnoremap <leader>r :call VimuxRunCommand("sh run.sh")<cr>
 noremap <leader>l :Autoformat<cr>
 if has('win32')
   inoremap <silent>  <S-Insert>  <C-R>+
@@ -189,8 +191,6 @@ endif
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-
-autocmd BufNewFile,BufRead *.swift set filetype=swift
 
 autocmd bufNewFile *.cpp 0r  ~/dotfiles/boilers/cpp_source.txt
 autocmd bufnewfile *.cpp exe "1," . 8 . "g/$File: $.*/s//$File: " . expand("%:t:r") . ".cpp $"

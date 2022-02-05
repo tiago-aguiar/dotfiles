@@ -60,7 +60,7 @@ window:
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
-  startup_mode: Windowed
+  startup_mode: Maximized
 
   # Window title
   #title: Alacritty
@@ -95,26 +95,26 @@ font:
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
   normal:
-    #family: JetBrains Mono
-    family: SF Mono
+    family: JetBrains Mono
+    #family: SF Mono
     #family: Liberation Mono for Powerline
     style: Regular
 
   bold:
-    #family: JetBrains Mono
-    family: SF Mono
+    family: JetBrains Mono
+    #family: SF Mono
     #family: Liberation Mono for Powerline
     style: Bold
 
   italic:
-    #family: JetBrains Mono
-    family: SF Mono
+    family: JetBrains Mono
+    #family: SF Mono
     #family: Liberation Mono for Powerline
     style: Italic
 
   bold_italic:
-    #family: JetBrains Mono
-    family: SF Mono
+    family: JetBrains Mono
+    #family: SF Mono
     #family: Liberation Mono for Powerline
     style: Bold Italic
 
@@ -188,7 +188,8 @@ colors:
   # unset, the cursor color will be the inverse of the cell color.
   cursor:
     text: '#000000'
-    cursor: '#92E499'
+    #cursor: '#92E499'
+    cursor: '#FF00FF'
 
   # Vi mode cursor colors
   #
@@ -196,7 +197,7 @@ colors:
   # cursor color will be the inverse of the cell color.
   vi_mode_cursor:
     text: '#000000'
-    cursor: '#92E499'
+    cursor: '#FF00FF'
 
   # Selection colors
   #
@@ -283,7 +284,7 @@ colors:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 1.0
+background_opacity: 0.8
 
 #selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"

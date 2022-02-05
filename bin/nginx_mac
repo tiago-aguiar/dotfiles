@@ -1,0 +1,10 @@
+#!/bin/bash
+
+
+if [ $1 = "start" ]; then
+    launchctl load /usr/local/Cellar/nginx/1.21.6/homebrew.mxcl.nginx.plist
+    echo "starting nginx server..."
+elif [ $1 = "stop" ]; then
+    launchctl unload /usr/local/Cellar/nginx/1.21.6/homebrew.mxcl.nginx.plist
+    echo "stopping nginx server..."
+fi
