@@ -16,10 +16,12 @@
 
 ; init macosx
 (when taguiar-macos
+  (setq taguiar-makescript "./osx_build.sh")
   (setq taguiar-todo-file "~/work/handmade/todo.txt")
   (setq taguiar-log-file "~/work/handmade/log.txt")
   (setq taguiar-theme-dir "~/.emacs.d/themes")
   (setq taguiar-emacs-file "~/.emacs")
+  (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 130)
   (split-window-horizontally))
 
 ; init windows
