@@ -21,7 +21,7 @@
   (setq taguiar-log-file "~/work/handmade/log.txt")
   (setq taguiar-theme-dir "~/.emacs.d/themes")
   (setq taguiar-emacs-file "~/.emacs")
-  (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 130)
+  (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 140)
   (split-window-horizontally))
 
 ; init windows
@@ -107,8 +107,10 @@
 				(eval-buffer)
 				(message "Refresh: %s" (buffer-name))))
 
-(define-key global-map "\ef" 'find-file)
-(define-key global-map "\eF" 'find-file-other-window)
+(define-key global-map "\el" 'evil-window-right)
+(define-key global-map "\eh" 'evil-window-left)
+(define-key global-map "\ef" 'projectile-find-file)
+(define-key global-map "\eF" 'projectile-find-file-other-window)
 (global-set-key (read-kbd-macro "\eb")  'ido-switch-buffer)
 (global-set-key (read-kbd-macro "\eB")  'ido-switch-buffer-other-window)
 
@@ -169,6 +171,7 @@ fixme-modes)
          ("\\.c8$"     . c++-mode)
          ("\\.txt$"    . indented-text-mode)
          ("\\.emacs$"  . emacs-lisp-mode)
+         ("\\emacs$"  . emacs-lisp-mode)
          ("\\.gen$"    . gen-mode)
          ("\\.ms$"     . fundamental-mode)
          ("\\.m$"      . objc-mode)
@@ -402,3 +405,21 @@ fixme-modes)
   (if (find-project-directory) (compile taguiar-makescript))
   (other-window 1))
 (define-key global-map "\em" 'make-without-asking)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(cmake-mode kotlin-mode yaml-mode dart-mode projectile swift-mode evil)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(projectile-mode +1)
+;; Recommended keymap prefix on macOS
+;; Recommended keymap prefix on Windows/Linux
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
