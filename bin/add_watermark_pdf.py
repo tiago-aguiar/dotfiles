@@ -63,11 +63,12 @@ def main():
         ],
         "values": [
             {
-                "password": "1234",
-                "name": "FulanoDaSilva",
-                "address": "Rua A"
+                "password": "",
+                "name": "",
+                "address": ""
             },
         ]
+
     }
 
     values = source["values"]
@@ -75,10 +76,10 @@ def main():
 
     for item in values:
         for origin in origins:
-            print(origin + "para " + item['name'])
+            print(origin + " para " + item['name'])
             set_watermark("{0}{1}".format("/Volumes/GoogleDrive/My Drive/AT Digital/eBooks/", origin),
                           item['password'],
-                          "Licenciado: {0}, CPF:{1},{2}".format(item['name'],
+                          "Licenciado: {0}, {1},CPF:{2}".format(item['name'],
                                                                 item['password'],
                                                                 item['address']),
                           "{0}-{1}".format(item["name"], origin))

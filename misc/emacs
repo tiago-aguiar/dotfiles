@@ -6,6 +6,10 @@
 ; create a folder c:\.emacs.d\themes
 ; put c:\.emacs
 
+; --- TIPS ---
+; fix encoding when open a file 
+; M-x revert-buffer-with-coding-system
+; utf8
 
 ; define variables
 (setq taguiar-macos (eq system-type 'darwin))
