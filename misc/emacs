@@ -17,6 +17,7 @@
 (setq taguiar-win32 (not (or taguiar-macos taguiar-linux)))
 (setq backup-directory-alist `(("." . "~/.saves")))
 (setq taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
+(setq ring-bell-function 'ignore)
 
 ; init macosx
 (when taguiar-macos
