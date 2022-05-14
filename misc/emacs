@@ -32,8 +32,8 @@
 (when taguiar-win32
   (setq taguiar-makescript "build.bat")
   (setq taguiar-todo-file "w:/handmade/todo.txt")
-  (setq taguiar-theme-dir "c:\\.emacs.d\\themes")
-  (setq taguiar-emacs-file "c:\\.emacs")
+  (setq taguiar-theme-dir "e:\\Tiago\\.emacs.d\\themes")
+  (setq taguiar-emacs-file "e:\\Tiago\\.emacs")
   (set-face-attribute 'default nil :font "Liberation Mono" :height 120))
 
 
@@ -69,6 +69,9 @@
 (unless (package-installed-p 'evil)
   (package-refresh-contents)
   (package-install 'evil))
+
+(unless (package-installed-p 'projectile)
+  (package-install 'projectile))
 
 (require 'evil)
 (evil-mode 1)
