@@ -30,9 +30,9 @@
 
 ; init windows
 (when taguiar-win32
-  (setq taguiar-makescript "w:\\handmade\\code\\build.bat")
-  (setq taguiar-todo-file "w:\\handmade\\todo.txt")
-  (setq taguiar-theme-dir "e:\\Tiago\\.emacs.d\\themes")
+  (setq taguiar-makescript "e:\\Tiago\\work\\handmade\\code\\build.bat")
+  (setq taguiar-todo-file  "e:\\Tiago\\work\\handmade\\todo.txt")
+  (setq taguiar-theme-dir  "e:\\Tiago\\.emacs.d\\themes")
   (setq taguiar-emacs-file "e:\\Tiago\\.emacs")
   (set-face-attribute 'default nil :font "Liberation Mono" :height 120))
 
