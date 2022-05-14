@@ -31,6 +31,7 @@
 
 ; init windows
 (when taguiar-win32
+  (setq taguiar-log-file   "e:\\Tiago\\work\\handmade\\log.txt")
   (setq taguiar-makescript "e:\\Tiago\\work\\handmade\\code\\build.bat")
   (setq taguiar-todo-file  "e:\\Tiago\\work\\handmade\\todo.txt")
   (setq taguiar-theme-dir  "e:\\Tiago\\.emacs.d\\themes")
@@ -74,6 +75,9 @@
 (unless (package-installed-p 'projectile)
   (package-install 'projectile))
 
+(unless (package-installed-p 'ido-vertical-mode)
+  (package-install 'ido-vertical-mode))
+
 (require 'evil)
 (evil-mode 1)
 
@@ -81,7 +85,20 @@
 (require 'compile)
 (require 'cc-mode) ; mode for editing files containing C, C++, Objective-C, Java
 (require 'ido)     ; interactively 'DO things' for files and navigation
+(require 'ido-vertical-mode)     ; interactively 'DO things' for files and navigation
 (ido-mode t)
+
+(setq ido-use-faces t)
+(set-face-attribute 'ido-vertical-first-match-face nil
+                    :background "#333333")
+(set-face-attribute 'ido-vertical-only-match-face nil
+                    :background "#e52b50"
+                    :foreground "#a0ff00ff")
+(set-face-attribute 'ido-vertical-match-face nil
+                    :foreground "#b00000")
+(ido-vertical-mode 1)
+(setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+(setq ido-vertical-show-count t)
 
 
 
