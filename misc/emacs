@@ -88,6 +88,8 @@
 (require 'ido-vertical-mode)     ; interactively 'DO things' for files and navigation
 (ido-mode t)
 
+(setq lsp-dart-sdk-dir "e:\\flutter\\bin\\cache\\dart-sdk")
+
 (setq ido-use-faces t)
 (set-face-attribute 'ido-vertical-first-match-face nil
                     :background "#333333")
@@ -167,6 +169,7 @@
 (setq fixme-modes '(c++-mode c-mode emacs-lisp-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
+(make-face 'font-lock-test-face)
 (make-face 'font-lock-important-face)
 (make-face 'font-lock-note-face)
 (mapc (lambda (mode)
@@ -174,11 +177,13 @@
   mode
   '(("\\<\\(TODO\\)" 1 'font-lock-fixme-face t)
     ("\\<\\(STUDY\\)" 1 'font-lock-study-face t)
+    ("\\<\\(TEST\\)" 1 'font-lock-test-face t)
     ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
            ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
 fixme-modes)
 (modify-face 'font-lock-fixme-face "Red" nil nil t nil t nil nil)
 (modify-face 'font-lock-study-face "Blue" nil nil t nil t nil nil)
+(modify-face 'font-lock-test-face "#ff00ff" nil nil t nil t nil nil)
 (modify-face 'font-lock-important-face "Yellow" nil nil t nil t nil nil)
 (modify-face 'font-lock-note-face "Orange" nil nil t nil t nil nil)
 
