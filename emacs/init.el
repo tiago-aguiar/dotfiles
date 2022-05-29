@@ -1,11 +1,13 @@
-;; M-x: describe-function command
-;; C-h v: describe-variable
+;; M-x:     describe-function command
+;; C-h v:   describe-variable
+;; C-x C-e: eval last expression
 
 (setq inhibit-startup-message t) ;; disable splash screen
 (scroll-bar-mode -1)             ;; disable scroll bar
 (tool-bar-mode -1)               ;; disable toolbar 
 (menu-bar-mode -1)               ;; disable menubar
 (setq visible-bell t)            ;; flash screen hit end line
+(column-number-mode t)           ;; enable line and column at modeline (bar)
 
 ;; change font (height = percent)
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)
@@ -14,6 +16,8 @@
 
 ;; make ESC quit
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+
 
 ;; initialize package sources
 (require 'package)
@@ -58,3 +62,14 @@
   
   :config
   (ivy-mode 1))
+
+;; highlight parentheses on elisp
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;; suggestion for emacs command C-x
+(use-package which-key
+  :init (which-key-mode)
+  :diminish wich-key-mode
+  :config
+  (setq which-key-idle-delay 0.3))
