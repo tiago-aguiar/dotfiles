@@ -2,21 +2,54 @@
 ;; C-h v:   describe-variable
 ;; C-x C-e: eval last expression
 
-(setq inhibit-startup-message t) ;; disable splash screen
-(scroll-bar-mode -1)             ;; disable scroll bar
-(tool-bar-mode -1)               ;; disable toolbar 
-(menu-bar-mode -1)               ;; disable menubar
-(setq visible-bell t)            ;; flash screen hit end line
-(column-number-mode t)           ;; enable line and column at modeline (bar)
+;; list-faces-display:  show colors used
+;; list-colors-display: palette colors
+
+;; ALT-s:   save file
+;; ALT-k:   kill buffer
+;; ALT-b:   switch buffer
+;; ALT-B:   switch buffer (new window)
+;; ALT-f:   open file
+;; ALT-F:   open file (new window)
+
+;; global variables
+(setq is-macos (eq system-type 'darwin))
+
+
+(setq inhibit-startup-message t)   ;; disable splash screen
+(setq initial-scratch-message nil) ;; disable scratch
+(scroll-bar-mode -1)               ;; disable scroll bar
+(tool-bar-mode -1)                 ;; disable toolbar 
+(menu-bar-mode -1)                 ;; disable menubar
+(setq visible-bell t)              ;; flash screen hit end line
+(column-number-mode t)             ;; enable line and column at modeline (bar)
+(show-paren-mode t)                ;; enable pair brackets/parentheses
+(global-hl-line-mode -1)           ;; disable highlight current line
+
 
 ;; change font (height = percent)
 (set-face-attribute 'default nil :font "Fira Code Retina" :height 120)
 
+;; change yes-no to y-n
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; (load-theme 'wheat-grass) ;; load a theme
+
+(add-to-list 'custom-theme-load-path (file-name-as-directory "."))
+(load-theme 'taguiar t t)
+(enable-theme 'taguiar)
 
 ;; make ESC quit
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+(define-key global-map "\es" 'save-buffer)
+(define-key global-map "\ek" 'kill-current-buffer)
+
+(define-key global-map "\eb" 'ivy-switch-buffer)
+(define-key global-map "\eB" 'ivy-switch-buffer-other-window)
+
+(define-key global-map "\ef" 'find-file)
+(define-key global-map "\eF" 'find-file-other-window)
 
 
 ;; initialize package sources
@@ -26,7 +59,6 @@
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			 ("org"   . "https://orgmode.org/elpa/")
 			 ("elpa"  . "https://elpa.gnu.org/packages")))
-
 
 (package-initialize)
 
