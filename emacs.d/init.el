@@ -28,6 +28,8 @@
 ;; C-c p p: Switch to project
 ;; C-c p f: Find files
 
+;; TODO: Anotar todos os comandos mais utilizados no workflow
+
 ;; global variables
 (setq is-macos (eq system-type 'darwin))
 (setq is-linux (featurep 'x))
