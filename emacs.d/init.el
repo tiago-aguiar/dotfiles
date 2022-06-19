@@ -1,4 +1,4 @@
-;;2 M-x:     describe-function command
+;; M-x:     describe-function command
 ;; C-h v:   describe-variable
 ;; C-x C-e: eval last expression
 
@@ -19,6 +19,11 @@
 ;; C-w v:    Split vertically
 ;; C-w q:    Close window
 ;; C-w hjkl: Move to window
+
+;; PROJECTILE
+;; C-c p: open command map
+;; C-c p p: Switch to project
+;; C-c p f: Find files
 
 ;; global variables
 (setq is-macos (eq system-type 'darwin))
@@ -146,6 +151,23 @@
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))  
 
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom (projectile-completion-system 'ivy)
+  :bind-keymap
+  ("C-c p" . projectile-command-map))
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+
+
+;; TODO: try to install emacs 28 for magit 
+;; (use-package magit)
+
+;; (use-package evil-magit
+;;   :after magit)
+
 ;; (use-package evil-collection
 ;;   :after evil
 ;;   :config
@@ -164,3 +186,16 @@
 
 (define-key global-map "\ef" 'find-file)
 (define-key global-map "\eF" 'find-file-other-window)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(evil-magit magit counsel-projectile projectile which-key use-package rainbow-delimiters modus-themes ivy-rich evil counsel)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
