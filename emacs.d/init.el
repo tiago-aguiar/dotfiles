@@ -33,7 +33,7 @@
 (global-hl-line-mode -1)           ;; disable highlight current line
 
 (when (not is-macos)
-  setq visible-bell t) ;; flash screen hit end line
+  (setq visible-bell t)) ;; flash screen hit end line
 
 ;; change font (height = percent)
 (when (member "Fira Code Retina" (font-family-list)) 
@@ -134,7 +134,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump nil)
-  :hook (evil-mode . rune/evil-hook)
+  ;;:hook (evil-mode . rune/evil-hook)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state) ;; return to normal mode
