@@ -1,4 +1,4 @@
-;; M-x:     describe-function command
+;;2 M-x:     describe-function command
 ;; C-h v:   describe-variable
 ;; C-x C-e: eval last expression
 
@@ -12,9 +12,16 @@
 ;; ALT-f:   open file
 ;; ALT-F:   open file (new window)
 
+;; C-y: Yank emacs
+;; C-w: Cut emacs
+
+;; EVIL MODE
+;; C-w v:    Split vertically
+;; C-w q:    Close window
+;; C-w hjkl: Move to window
+
 ;; global variables
 (setq is-macos (eq system-type 'darwin))
-
 
 (setq inhibit-startup-message t)   ;; disable splash screen
 (setq initial-scratch-message nil) ;; disable scratch
@@ -37,13 +44,6 @@
 
 ;; change yes-no to y-n
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-;; (load-theme 'wheat-grass) ;; load a theme
-
-(add-to-list 'custom-theme-load-path (file-name-as-directory "."))
-(load-theme 'taguiar t t)
-(enable-theme 'taguiar)
-
 
 ;; initialize package sources
 (require 'package)
@@ -108,6 +108,48 @@
   :init
   (ivy-rich-mode 1))
 
+(use-package modus-themes
+  :init
+  (setq modus-themes-mode-line '(borderless (padding . 4) (height . 0.9))
+        modus-themes-region '(bg-only no-extend))
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-vivendi)) ;; OR (modus-themes-load-operandi)
+
+;; (load-theme 'wheat-grass) ;; load a theme
+(add-to-list 'custom-theme-load-path (file-name-as-directory "."))
+(load-theme 'taguiar t t)
+(enable-theme 'taguiar)
+
+;; run when evil is ready
+(defun rune/evil-hook ()
+  (dolist (mode '(custom-mode
+		  eshell-mode
+		  term-mode))
+    (add-to-list 'evil-emacs-state-modes mode))) ;; disable evil-mode for this list modes
+
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  :hook (evil-mode . rune/evil-hook)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state) ;; return to normal mode
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join) ;; backspace with C-h
+
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))  
+
+;; (use-package evil-collection
+;;   :after evil
+;;   :config
+;;   (evil-collection-init))
 
 (setq mac-command-modifier 'meta) ;; switch Option to Command key (meta)
 
@@ -117,7 +159,7 @@
 (define-key global-map "\es" 'save-buffer)
 (define-key global-map "\ek" 'kill-current-buffer)
 
-(define-key global-map "\eb" 'counsel-ibuffer)
+(define-key global-map "\eb" 'counsel-switch-buffer) ;; OR counsel-ibuffer
 (define-key global-map "\eB" 'ivy-switch-buffer-other-window)
 
 (define-key global-map "\ef" 'find-file)
