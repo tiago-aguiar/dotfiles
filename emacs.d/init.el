@@ -15,6 +15,9 @@
 ;; C-y: Yank emacs
 ;; C-w: Cut emacs
 
+;; F10 - Open init.el
+;; F12 - Refresh (eval-buffer)
+
 ;; EVIL MODE
 ;; C-w v:    Split vertically
 ;; C-w q:    Close window
@@ -27,15 +30,21 @@
 
 ;; global variables
 (setq is-macos (eq system-type 'darwin))
+(setq is-linux (featurep 'x))
+(setq is-win32 (not (or is-macos is-linux)))
+(setq emacs-file "~/dotfiles/emacs.d/init.el")
 
-(setq inhibit-startup-message t)   ;; disable splash screen
-(setq initial-scratch-message nil) ;; disable scratch
+(setq inhibit-startup-message t)         ;; disable splash screen
+(setq initial-scratch-message nil)       ;; disable scratch
+(setq mouse-wheel-progressive-speed nil) ;; fluid scroll 
+
 (scroll-bar-mode -1)               ;; disable scroll bar
 (tool-bar-mode -1)                 ;; disable toolbar 
 (menu-bar-mode -1)                 ;; disable menubar
 (column-number-mode t)             ;; enable line and column at modeline (bar)
 (show-paren-mode t)                ;; enable pair brackets/parentheses
 (global-hl-line-mode -1)           ;; disable highlight current line
+(display-time)
 
 (when (not is-macos)
   (setq visible-bell t)) ;; flash screen hit end line
@@ -49,6 +58,9 @@
 
 ;; change yes-no to y-n
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+;; startup fullscreen
+(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
 
 ;; initialize package sources
 (require 'package)
@@ -138,6 +150,8 @@
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
+  (setq evil-insert-state-cursor '(box "green"))
+  (setq evil-normal-state-cursor '(box "red"))
   (setq evil-want-C-i-jump nil)
   ;;:hook (evil-mode . rune/evil-hook)
   :config
@@ -149,7 +163,7 @@
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))  
+  (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package projectile
   :diminish projectile-mode
@@ -173,10 +187,48 @@
 ;;   :config
 ;;   (evil-collection-init))
 
+
+;;
+;; Bright COMMENTS
+;;
+(setq fixme-modes '(c++-mode c-mode emacs-lisp-mode))
+(make-face 'font-lock-fixme-face)
+(make-face 'font-lock-study-face)
+(make-face 'font-lock-test-face)
+(make-face 'font-lock-important-face)
+(make-face 'font-lock-note-face)
+(mapc (lambda (mode)
+ (font-lock-add-keywords
+  mode
+  '(("\\<\\(TODO\\)" 1 'font-lock-fixme-face t)
+    ("\\<\\(STUDY\\)" 1 'font-lock-study-face t)
+    ("\\<\\(TEST\\)" 1 'font-lock-test-face t)
+    ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
+           ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
+fixme-modes)
+(modify-face 'font-lock-fixme-face "Red" nil nil t nil t nil nil)
+(modify-face 'font-lock-study-face "Blue" nil nil t nil t nil nil)
+(modify-face 'font-lock-test-face "#ff00ff" nil nil t nil t nil nil)
+(modify-face 'font-lock-important-face "Yellow" nil nil t nil t nil nil)
+(modify-face 'font-lock-note-face "Orange" nil nil t nil t nil nil)
+
+
+
 (setq mac-command-modifier 'meta) ;; switch Option to Command key (meta)
 
 ;; make ESC quit
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+(global-set-key (kbd "<f10>") (lambda () (interactive)
+				(find-file emacs-file)
+				(message "Opened: %s" (buffer-name))))
+
+(global-set-key (kbd "<f12>") (lambda () (interactive)
+				(eval-buffer)
+				(message "Refresh: %s" (buffer-name))))
+
+(define-key global-map "\el" 'evil-window-right)
+(define-key global-map "\eh" 'evil-window-left)
 
 (define-key global-map "\es" 'save-buffer)
 (define-key global-map "\ek" 'kill-current-buffer)
@@ -186,16 +238,3 @@
 
 (define-key global-map "\ef" 'find-file)
 (define-key global-map "\eF" 'find-file-other-window)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(evil-magit magit counsel-projectile projectile which-key use-package rainbow-delimiters modus-themes ivy-rich evil counsel)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
