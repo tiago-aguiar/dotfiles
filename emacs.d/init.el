@@ -177,6 +177,10 @@
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
 
+(use-package org
+  :config
+  (setq org-hide-emphasis-markers t))
+
 
 ;; TODO: try to install emacs 28 for magit 
 ;; (use-package magit)
@@ -206,15 +210,13 @@
     ("\\<\\(STUDY\\)" 1 'font-lock-study-face t)
     ("\\<\\(TEST\\)" 1 'font-lock-test-face t)
     ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
-           ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
+    ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
 fixme-modes)
 (modify-face 'font-lock-fixme-face "Red" nil nil t nil t nil nil)
 (modify-face 'font-lock-study-face "Blue" nil nil t nil t nil nil)
 (modify-face 'font-lock-test-face "#ff00ff" nil nil t nil t nil nil)
 (modify-face 'font-lock-important-face "Yellow" nil nil t nil t nil nil)
 (modify-face 'font-lock-note-face "Orange" nil nil t nil t nil nil)
-
-
 
 (setq mac-command-modifier 'meta) ;; switch Option to Command key (meta)
 
