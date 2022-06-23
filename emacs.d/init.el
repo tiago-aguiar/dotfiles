@@ -181,6 +181,9 @@
   :config
   (setq org-hide-emphasis-markers t))
 
+;; enable line-wrap when is org-mode
+(add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
+
 
 ;; TODO: try to install emacs 28 for magit 
 ;; (use-package magit)
