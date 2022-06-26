@@ -1,3 +1,5 @@
+
+
 ;; M-x:     describe-function command
 ;; C-h v:   describe-variable
 ;; C-x C-e: eval last expression
@@ -5,36 +7,46 @@
 ;; list-faces-display:  show colors used
 ;; list-colors-display: palette colors
 
-;; ALT-s:   save file
-;; ALT-k:   kill buffer
-;; ALT-b:   switch buffer
-;; ALT-B:   switch buffer (new window)
-;; ALT-f:   open file
-;; ALT-F:   open file (new window)
-
-;; C-y: Yank emacs
+; C-y: Yank emacs
 ;; C-w: Cut emacs
-
-;; F10 - Open init.el
-;; F12 - Refresh (eval-buffer)
-
-;; EVIL MODE
-;; C-w v:    Split vertically
-;; C-w q:    Close window
-;; C-w hjkl: Move to window
 
 ;; PROJECTILE
 ;; C-c p: open command map
-;; C-c p p: Switch to project
-;; C-c p f: Find files
 
 ;; TODO: Anotar todos os comandos mais utilizados no workflow
+
+
+;; ALT-s:    save file
+;; ALT-k:    kill buffer
+;; ALT-b:    switch buffer
+;; ALT-B:    switch buffer (new window)
+;; ALT-f:    open file
+;; ALT-F:    open file (new window)
+;; ALT-hjkl: switch buffer
+;; ALT-HL: swap buffer
+
+;; F2:  Open eshell
+;; F10: Open init.el
+;; F12: Refresh (eval-buffer)
+
+;; PROJECTILE
+;; C-c p p: Switch to project
+;; C-c p f: Find files (inside project dir)
+
+;; EVIL MODE
+;; C-w v:      Split vertically
+;; C-w q:      Close window
+;; C-w hjkl:   Switch to window
+;; C-w S-hjkl: Swap window
+
+;
 
 ;; global variables
 (setq is-macos (eq system-type 'darwin))
 (setq is-linux (featurep 'x))
 (setq is-win32 (not (or is-macos is-linux)))
 (setq emacs-file "~/dotfiles/emacs.d/init.el")
+(setq backup-directory-alist `(("." . "~/.saves")))
 
 (setq inhibit-startup-message t)         ;; disable splash screen
 (setq initial-scratch-message nil)       ;; disable scratch
@@ -191,10 +203,10 @@
 ;; (use-package evil-magit
 ;;   :after magit)
 
-;; (use-package evil-collection
-;;   :after evil
-;;   :config
-;;   (evil-collection-init))
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init 'dired))
 
 
 ;;
@@ -234,8 +246,17 @@ fixme-modes)
 				(eval-buffer)
 				(message "Refresh: %s" (buffer-name))))
 
+(global-set-key (kbd "<f2>") (lambda () (interactive)
+			       (let ((buf (eshell)))
+				 (message "Open shell: %s" (buffer-name))
+				 (switch-to-buffer (other-buffer buf))
+				 (switch-to-buffer-other-window buf))))
+
 (define-key global-map "\el" 'evil-window-right)
 (define-key global-map "\eh" 'evil-window-left)
+
+(define-key global-map "\eL" 'evil-window-move-far-right)
+(define-key global-map "\eH" 'evil-window-move-far-left)
 
 (define-key global-map "\es" 'save-buffer)
 (define-key global-map "\ek" 'kill-current-buffer)
@@ -244,4 +265,18 @@ fixme-modes)
 (define-key global-map "\eB" 'ivy-switch-buffer-other-window)
 
 (define-key global-map "\ef" 'find-file)
+(define-key global-map "\ed" 'counsel-dired)
 (define-key global-map "\eF" 'find-file-other-window)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(buffer-move evil-collection which-key use-package rainbow-delimiters modus-themes ivy-rich evil counsel-projectile)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
