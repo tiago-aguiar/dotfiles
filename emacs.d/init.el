@@ -29,6 +29,11 @@
 ;; F10: Open init.el
 ;; F12: Refresh (eval-buffer)
 
+;; C-s: search text in file
+;; C-x C-+ : increase font
+;; C-x C-- : decrease font
+;; C-x C-0 : reset font
+
 ;; PROJECTILE
 ;; C-c p p: Switch to project
 ;; C-c p f: Find files (inside project dir)
