@@ -202,6 +202,17 @@
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 
 
+;; setup c mode
+(defun taguiar/c-hook ()
+  (setq c-basic-offset 4)
+  (setq c-indent-level 4) 
+  (setq tab-width 4)
+  (setq indent-tabs-mode nil)
+  )
+
+(add-hook 'c-mode-common-hook 'taguiar/c-hook)
+
+
 ;; TODO: try to install emacs 28 for magit 
 ;; (use-package magit)
 
