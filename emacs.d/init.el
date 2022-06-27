@@ -198,6 +198,11 @@
   :config
   (setq org-hide-emphasis-markers t))
 
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown"))
+
 ;; enable line-wrap when is org-mode
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 
@@ -289,10 +294,12 @@ fixme-modes)
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(buffer-move evil-collection which-key use-package rainbow-delimiters modus-themes ivy-rich evil counsel-projectile)))
+   '(markdown-mode buffer-move evil-collection which-key use-package rainbow-delimiters modus-themes ivy-rich evil counsel-projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+; TODO: autocomplete buffer, find declaration
