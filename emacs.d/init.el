@@ -51,6 +51,7 @@
 (setq is-linux (featurep 'x))
 (setq is-win32 (not (or is-macos is-linux)))
 (setq emacs-file "~/dotfiles/emacs.d/init.el")
+(setq log-file "~/daily.org")
 (setq backup-directory-alist `(("." . "~/.saves")))
 
 (setq inhibit-startup-message t)         ;; disable splash screen
@@ -64,6 +65,7 @@
 (show-paren-mode t)                ;; enable pair brackets/parentheses
 (global-hl-line-mode -1)           ;; disable highlight current line
 (display-time)
+
 
 (when (not is-macos)
   (setq visible-bell t)) ;; flash screen hit end line
@@ -217,6 +219,18 @@
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
 
+(defun insert-timeofday ()
+  (interactive "*")
+  (insert (format-time-string "* %d/%m/%y: %I:%M%p ===============")))
+(defun load-log ()
+  (interactive)
+  (find-file log-file)
+  (end-of-buffer)
+  (newline-and-indent)
+  (insert-timeofday)
+  (end-of-buffer)
+)
+
 
 ;; TODO: try to install emacs 28 for magit 
 ;; (use-package magit)
@@ -288,6 +302,10 @@ fixme-modes)
 (define-key global-map "\ef" 'find-file)
 (define-key global-map "\ed" 'counsel-dired)
 (define-key global-map "\eF" 'find-file-other-window)
+
+(define-key global-map "\em" 'compile)
+(define-key global-map "\eT" 'load-log)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
