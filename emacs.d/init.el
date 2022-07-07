@@ -205,6 +205,8 @@
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "multimarkdown"))
 
+(use-package dotenv-mode)
+
 ;; enable line-wrap when is org-mode
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 
@@ -305,19 +307,5 @@ fixme-modes)
 
 (define-key global-map "\em" 'compile)
 (define-key global-map "\eT" 'load-log)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(markdown-mode buffer-move evil-collection which-key use-package rainbow-delimiters modus-themes ivy-rich evil counsel-projectile)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 ; TODO: autocomplete buffer, find declaration

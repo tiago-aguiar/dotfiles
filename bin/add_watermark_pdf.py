@@ -17,6 +17,7 @@ def set_watermark(input_pdf, user_password, user_name, output_pdf):
     # create a new PDF with Reportlab
     can = canvas.Canvas(packet, pagesize=letter)
     can.setFillColorRGB(1, 0, 0)
+    can.setFont("Helvetica", 50) #choose your font type and font size
     can.drawString(20, 20, user_name)
     can.save()
 
@@ -57,16 +58,22 @@ def main():
 
     source = {
         "origins": [
-            "ebooktaticasdemonetizacao.pdf",
-            "eBookLancamentodeaplicativos.pdf",
-            "ebookmarketingdeaplicativos.pdf",
+            "amx-bailarina.pdf",
+            "amx-fran.pdf",
+            "amx-luluzinha.pdf",
+            "amx-pijama.pdf",
+            "amx-princesa.pdf",
+            # "ebook_aprd.pdf",
+            #"ebooktaticasdemonetizacao.pdf",
+            #"eBookLancamentodeaplicativos.pdf",
+            #"ebookmarketingdeaplicativos.pdf",
         ],
         "values": [
-            {
-                "password": "",
-                "name": "",
-                "address": ""
-            },
+        {
+            "name": "Maria guretti",
+            "address": "421.098.336-53 | (34) 997691917",
+            "password": "gurettivasc@gmail.com"
+         }
         ]
 
     }
@@ -78,6 +85,7 @@ def main():
         for origin in origins:
             print(origin + " para " + item['name'])
             set_watermark("{0}{1}".format("/Volumes/GoogleDrive/My Drive/AT Digital/eBooks/", origin),
+            #set_watermark("{0}{1}".format("/Users/tiagoaguiar/Downloads/final/", origin),
                           item['password'],
                           "Licenciado: {0}, {1},CPF:{2}".format(item['name'],
                                                                 item['password'],
