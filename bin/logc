@@ -1,0 +1,49 @@
+#!/bin/bash
+
+file=$1
+
+color='
+    // { }
+    /(.ERROR)/        {print "\033[5;31m" $0 "\033[0m"}
+    /(.WARN|WARNING)/ {print "\033[1;33m" $0 "\033[0m"}
+    /(.INFO)/         {print "\033[0;96m" $0 "\033[0m"}
+    /(.DEBUG)/        {print "\033[7;32m" $0 "\033[0m"}
+    /(.VERBOSE)/      {print "\033[0;95m" $0 "\033[0m"}
+    '
+
+if [[ -n "$1" ]]; then
+
+    if [[ -n "$2" ]]; then
+	color='
+	    // {print "\033[37m" $0 "\033[39m"}
+    	    /('$2')/ {print "\033[1;31m" $0 "\033[0m"}
+    	    '
+    fi
+
+    tail -5000f $file | awk "$color"
+
+else
+
+    awk "$color"
+    
+fi
+
+# Formatting
+# 0 - reset
+# 1 - bold
+# 2 - dim (opaque)
+# 4 - underline
+# 5 - blink
+# 7 - inverter (background)
+# 8 - hidden (for passwords)
+
+# Colors
+# 30 - black   34 - blue
+# 31 - red     35 - magenta
+# 32 - green   36 - cyan
+# 33 - yellow  39 - default fg
+
+# 90 - dark gray     94 - light blue
+# 91 - light red     95 - light magenta
+# 92 - light green   96 - light cyan
+# 93 - light yellow  97 - white

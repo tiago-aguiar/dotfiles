@@ -163,6 +163,7 @@
 (defun rune/evil-hook ()
   (dolist (mode '(custom-mode
 		  eshell-mode
+		  vterm-mode
 		  term-mode))
     (add-to-list 'evil-emacs-state-modes mode))) ;; disable evil-mode for this list modes
 
@@ -206,6 +207,8 @@
   :init (setq markdown-command "multimarkdown"))
 
 (use-package dotenv-mode)
+
+(use-package vterm)
 
 ;; enable line-wrap when is org-mode
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
@@ -284,7 +287,7 @@ fixme-modes)
 				(message "Refresh: %s" (buffer-name))))
 
 (global-set-key (kbd "<f2>") (lambda () (interactive)
-			       (let ((buf (eshell)))
+			       (let ((buf (projectile-run-vterm)))
 				 (message "Open shell: %s" (buffer-name))
 				 (switch-to-buffer (other-buffer buf))
 				 (switch-to-buffer-other-window buf))))
@@ -301,11 +304,25 @@ fixme-modes)
 (define-key global-map "\eb" 'counsel-switch-buffer) ;; OR counsel-ibuffer
 (define-key global-map "\eB" 'ivy-switch-buffer-other-window)
 
-(define-key global-map "\ef" 'find-file)
-(define-key global-map "\ed" 'counsel-dired)
+(define-key global-map "\ef" 'projectile-find-file)
+(define-key global-map "\ed" 'projectile-dired)
+(define-key global-map "\eD" 'dired)
 (define-key global-map "\eF" 'find-file-other-window)
 
-(define-key global-map "\em" 'compile)
+(define-key global-map "\em" 'projectile-compile-project)
 (define-key global-map "\eT" 'load-log)
 
 ; TODO: autocomplete buffer, find declaration
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(vterm multi-vterm swift-mode which-key use-package rainbow-delimiters modus-themes markdown-mode kotlin-mode ivy-rich gradle-mode evil-collection dotenv-mode counsel-projectile)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
