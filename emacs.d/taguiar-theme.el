@@ -6,7 +6,8 @@
  'taguiar
 
  '(default ((t (:background "gray6" :foreground "bisque1"))))
- '(font-lock-comment-face ((t (:foreground "gray40"))))
+ ;'(font-lock-comment-face ((t (:foreground "gray40"))))
+ '(font-lock-comment-face ((t (:foreground "gold1"))))
  '(font-lock-string-face ((t (:foreground "turquoise1"))))
  '(font-lock-builtin-face ((t (:foreground "white"))))
  '(font-lock-keyword-face ((t (:foreground "GhostWhite"))))

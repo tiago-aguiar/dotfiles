@@ -7,8 +7,11 @@
 ;; list-faces-display:  show colors used
 ;; list-colors-display: palette colors
 
-; C-y: Yank emacs
+;; C-y: Yank emacs
 ;; C-w: Cut emacs
+;; C-x C-; Comment current line
+;; C-c C-c Comment block
+;; M-;     If not comment exists then add it, otherwise, reindent current comment
 
 ;; PROJECTILE
 ;; C-c p: open command map
@@ -71,8 +74,9 @@
   (setq visible-bell t)) ;; flash screen hit end line
 
 ;; change font (height = percent)
-(when (member "Fira Code Retina" (font-family-list)) 
- (set-face-attribute 'default nil :font "Fira Code Retina" :height 120))
+(when (member "Fira Code Retina" (font-family-list))
+ (set-face-attribute 'default nil :font "Fira Code Retina" :height 130))
+
 
 (when (member "Inconsolata for Powerline" (font-family-list)) 
  (set-face-attribute 'default nil :font "Inconsolata for Powerline" :height 180))
@@ -313,16 +317,3 @@ fixme-modes)
 (define-key global-map "\eT" 'load-log)
 
 ; TODO: autocomplete buffer, find declaration
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(vterm multi-vterm swift-mode which-key use-package rainbow-delimiters modus-themes markdown-mode kotlin-mode ivy-rich gradle-mode evil-collection dotenv-mode counsel-projectile)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

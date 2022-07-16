@@ -58,22 +58,8 @@ def main():
 
     source = {
         "origins": [
-            "amx-bailarina.pdf",
-            "amx-fran.pdf",
-            "amx-luluzinha.pdf",
-            "amx-pijama.pdf",
-            "amx-princesa.pdf",
-            # "ebook_aprd.pdf",
-            #"ebooktaticasdemonetizacao.pdf",
-            #"eBookLancamentodeaplicativos.pdf",
-            #"ebookmarketingdeaplicativos.pdf",
         ],
         "values": [
-        {
-            "name": "Maria guretti",
-            "address": "421.098.336-53 | (34) 997691917",
-            "password": "gurettivasc@gmail.com"
-         }
         ]
 
     }
@@ -84,7 +70,7 @@ def main():
     for item in values:
         for origin in origins:
             print(origin + " para " + item['name'])
-            set_watermark("{0}{1}".format("/Volumes/GoogleDrive/My Drive/AT Digital/eBooks/", origin),
+            set_watermark("{0}{1}".format("/eBooks/", origin),
             #set_watermark("{0}{1}".format("/Users/tiagoaguiar/Downloads/final/", origin),
                           item['password'],
                           "Licenciado: {0}, {1},CPF:{2}".format(item['name'],
