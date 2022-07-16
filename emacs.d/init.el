@@ -212,7 +212,8 @@
 
 (use-package dotenv-mode)
 
-(use-package vterm)
+(when (not is-win32)
+  (use-package vterm))
 
 ;; enable line-wrap when is org-mode
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
@@ -291,10 +292,17 @@ fixme-modes)
 				(message "Refresh: %s" (buffer-name))))
 
 (global-set-key (kbd "<f2>") (lambda () (interactive)
-			       (let ((buf (projectile-run-vterm)))
-				 (message "Open shell: %s" (buffer-name))
-				 (switch-to-buffer (other-buffer buf))
-				 (switch-to-buffer-other-window buf))))
+			       (if (not (or is-macos is-linux))
+				   (let ((buf (eshell)))
+				     (message "Open shell: %s" (buffer-name))
+				     (switch-to-buffer (other-buffer buf))
+				     (switch-to-buffer-other-window buf))
+
+				 (let ((buf (projectile-run-vterm)))
+				   (message "Open vterm: %s" (buffer-name))
+				   (switch-to-buffer (other-buffer buf))
+				   (switch-to-buffer-other-window buf)))))
+
 
 (define-key global-map "\el" 'evil-window-right)
 (define-key global-map "\eh" 'evil-window-left)
