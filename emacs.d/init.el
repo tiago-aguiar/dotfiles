@@ -212,12 +212,14 @@
 
 (use-package dotenv-mode)
 
+(use-package kotlin-mode)
+
 (when (not is-win32)
   (use-package vterm))
 
+
 ;; enable line-wrap when is org-mode
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
-
 
 ;; setup c mode
 (defun taguiar/c-hook ()
@@ -322,6 +324,7 @@ fixme-modes)
 (define-key global-map "\eF" 'find-file-other-window)
 
 (define-key global-map "\em" 'projectile-compile-project)
+(define-key global-map "\en" 'next-error)
 (define-key global-map "\eT" 'load-log)
 
-; TODO: autocomplete buffer, find declaration
+(define-key global-map "\e0" 'delete-other-windows)
