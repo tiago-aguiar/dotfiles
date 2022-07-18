@@ -75,17 +75,17 @@
 
 ;; change font (height = percent)
 
-(when (member "Fira Code Retina" (font-family-list))
- (set-face-attribute 'default nil :font "Fira Code Retina" :height 120))
-
 (when (member "Inconsolata for Powerline" (font-family-list)) 
  (set-face-attribute 'default nil :font "Inconsolata for Powerline" :height 180))
+
+(when (member "Fira Code Retina" (font-family-list))
+ (set-face-attribute 'default nil :font "Fira Code Retina" :height 120))
 
 (when (member "Liberation Mono" (font-family-list)) 
  (set-face-attribute 'default nil :font "Liberation Mono" :height 120))
 
 (when (member "Lucida Console" (font-family-list))
-  (setq-default line-spacing 4)
+  (setq-default line-spacing 1)
   (set-face-attribute 'default nil :font "Lucida Console" :height 120))
 
 ;; change yes-no to y-n
