@@ -56,6 +56,7 @@
 (setq emacs-file "~/dotfiles/emacs.d/init.el")
 (setq log-file "~/daily.org")
 (setq backup-directory-alist `(("." . "~/.saves")))
+(setq compilation-scroll-output t)
 
 (setq inhibit-startup-message t)         ;; disable splash screen
 (setq initial-scratch-message nil)       ;; disable scratch
@@ -189,8 +190,8 @@
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
-  (setq evil-insert-state-cursor '(box "green"))
-  (setq evil-normal-state-cursor '(box "red"))
+  (setq evil-insert-state-cursor '(box "LightGreen"))
+  (setq evil-normal-state-cursor '(box "White"))
   (setq evil-want-C-i-jump nil)
   ;; :hook (evil-mode . rune/evil-hook)
   :config
@@ -318,13 +319,13 @@ fixme-modes)
 (defun launch-app ()
   "Launch the application."
   (interactive)
-  (if (find-project-directory) (compile taguiar-launchscript))
+  (compile taguiar-launchscript)
   (other-window 1))
 
 (defun make-without-asking ()
   "Make the current build."
   (interactive)
-  (if (find-project-directory) (compile taguiar-makescript))
+  (compile taguiar-makescript)
   (other-window 1))
 
 (define-key global-map "\el" 'evil-window-right)
