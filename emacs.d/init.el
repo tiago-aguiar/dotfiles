@@ -23,10 +23,10 @@
 ;; ALT-k:    kill buffer
 ;; ALT-b:    switch buffer
 ;; ALT-B:    switch buffer (new window)
-;; ALT-f:    open file
-;; ALT-F:    open file (new window)
+;; ALT-f:    open file (projectile)
+;; ALT-F:    open file
 ;; ALT-hjkl: switch buffer
-;; ALT-HL: swap buffer
+;; ALT-HL:   swap buffer
 
 ;; F2:  Open eshell
 ;; F10: Open init.el
@@ -69,6 +69,10 @@
 (global-hl-line-mode -1)           ;; disable highlight current line
 (display-time)
 
+(when is-macos
+  (setq mac-command-modifier 'meta) ;; switch Option to Command key (meta)
+  (setq taguiar-launchscript "./launch.sh")
+  (setq taguiar-makescript "./build.sh"))
 
 (when (not is-macos)
   (setq visible-bell t)) ;; flash screen hit end line
@@ -166,14 +170,13 @@
 
   (modus-themes-load-vivendi)) ;; OR (modus-themes-load-operandi)
 
-;; (load-theme 'wheat-grass) ;; load a theme
 (add-to-list 'custom-theme-load-path (file-name-as-directory "."))
 
-
+;; load a theme
 (load-theme 'taguiar-retro t t)
 (enable-theme 'taguiar-retro)
 
-;; run when evil is ready
+;; run when evil when is ready
 (defun rune/evil-hook ()
   (dolist (mode '(custom-mode
 		  eshell-mode
@@ -189,7 +192,7 @@
   (setq evil-insert-state-cursor '(box "green"))
   (setq evil-normal-state-cursor '(box "red"))
   (setq evil-want-C-i-jump nil)
-  ;;:hook (evil-mode . rune/evil-hook)
+  ;; :hook (evil-mode . rune/evil-hook)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state) ;; return to normal mode
@@ -201,6 +204,7 @@
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
 
+;; project management
 (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode)
@@ -208,6 +212,7 @@
   :bind-keymap
   ("C-c p" . projectile-command-map))
 
+;; tips for project management
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
 
@@ -224,9 +229,9 @@
 
 (use-package kotlin-mode)
 
+;; windows does not support vterm, so use standard eshell
 (when (not is-win32)
   (use-package vterm))
-
 
 ;; enable line-wrap when is org-mode
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
@@ -236,23 +241,21 @@
   (setq c-basic-offset 4)
   (setq c-indent-level 4) 
   (setq tab-width 4)
-  (setq indent-tabs-mode nil)
-  )
+  (setq indent-tabs-mode nil))
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
 
 (defun insert-timeofday ()
   (interactive "*")
   (insert (format-time-string "* %d/%m/%y: %I:%M%p ===============")))
+
 (defun load-log ()
   (interactive)
   (find-file log-file)
   (end-of-buffer)
   (newline-and-indent)
   (insert-timeofday)
-  (end-of-buffer)
-)
-
+  (end-of-buffer))
 
 ;; TODO: try to install emacs 28 for magit 
 ;; (use-package magit)
@@ -264,7 +267,6 @@
   :after evil
   :config
   (evil-collection-init 'dired))
-
 
 ;;
 ;; Bright COMMENTS
@@ -290,8 +292,6 @@ fixme-modes)
 (modify-face 'font-lock-important-face "Yellow" nil nil t nil t nil nil)
 (modify-face 'font-lock-note-face "Orange" nil nil t nil t nil nil)
 
-(setq mac-command-modifier 'meta) ;; switch Option to Command key (meta)
-
 ;; make ESC quit
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -315,6 +315,17 @@ fixme-modes)
 				   (switch-to-buffer (other-buffer buf))
 				   (switch-to-buffer-other-window buf)))))
 
+(defun launch-app ()
+  "Launch the application."
+  (interactive)
+  (if (find-project-directory) (compile taguiar-launchscript))
+  (other-window 1))
+
+(defun make-without-asking ()
+  "Make the current build."
+  (interactive)
+  (if (find-project-directory) (compile taguiar-makescript))
+  (other-window 1))
 
 (define-key global-map "\el" 'evil-window-right)
 (define-key global-map "\eh" 'evil-window-left)
@@ -329,12 +340,16 @@ fixme-modes)
 (define-key global-map "\eB" 'ivy-switch-buffer-other-window)
 
 (define-key global-map "\ef" 'projectile-find-file)
-(define-key global-map "\ed" 'projectile-dired)
-(define-key global-map "\eD" 'dired)
 (define-key global-map "\eF" 'find-file-other-window)
 
+(define-key global-map "\ed" 'projectile-dired)
+(define-key global-map "\eD" 'dired)
+
 (define-key global-map "\em" 'projectile-compile-project)
+(define-key global-map "\eM" 'make-without-asking)
 (define-key global-map "\en" 'next-error)
 (define-key global-map "\eT" 'load-log)
 
 (define-key global-map "\e0" 'delete-other-windows)
+
+(define-key global-map "\eR" 'launch-app)

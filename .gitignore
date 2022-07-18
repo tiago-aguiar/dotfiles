@@ -12,8 +12,8 @@
 \#*\#
 /.emacs.desktop
 /.emacs.desktop.lock
-dotfiles/emacs.d/eshell/history
-dotfiles/emacs.d/eshell/lastdir
+emacs.d/eshell/history
+emacs.d/eshell/lastdir
 *.elc
 *.data
 *.cache
