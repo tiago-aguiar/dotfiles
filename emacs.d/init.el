@@ -74,12 +74,19 @@
   (setq visible-bell t)) ;; flash screen hit end line
 
 ;; change font (height = percent)
-(when (member "Fira Code Retina" (font-family-list))
- (set-face-attribute 'default nil :font "Fira Code Retina" :height 130))
 
+(when (member "Fira Code Retina" (font-family-list))
+ (set-face-attribute 'default nil :font "Fira Code Retina" :height 120))
 
 (when (member "Inconsolata for Powerline" (font-family-list)) 
  (set-face-attribute 'default nil :font "Inconsolata for Powerline" :height 180))
+
+(when (member "Liberation Mono" (font-family-list)) 
+ (set-face-attribute 'default nil :font "Liberation Mono" :height 120))
+
+(when (member "Lucida Console" (font-family-list))
+  (setq-default line-spacing 4)
+  (set-face-attribute 'default nil :font "Lucida Console" :height 120))
 
 ;; change yes-no to y-n
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -153,15 +160,18 @@
 (use-package modus-themes
   :init
   (setq modus-themes-mode-line '(borderless (padding . 4) (height . 0.9))
-        modus-themes-region '(bg-only no-extend))
+	modus-themes-region '(bg-only no-extend))
   (modus-themes-load-themes)
   :config
+
   (modus-themes-load-vivendi)) ;; OR (modus-themes-load-operandi)
 
 ;; (load-theme 'wheat-grass) ;; load a theme
 (add-to-list 'custom-theme-load-path (file-name-as-directory "."))
-(load-theme 'taguiar t t)
-(enable-theme 'taguiar)
+
+
+(load-theme 'taguiar-retro t t)
+(enable-theme 'taguiar-retro)
 
 ;; run when evil is ready
 (defun rune/evil-hook ()
