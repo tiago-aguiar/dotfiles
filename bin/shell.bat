@@ -12,3 +12,4 @@ set JAVA_HOME="e:\Android Studio\jre"
 
 alias l=ls -al --color $*
 alias gst=git status
+alias ggpull=git pull

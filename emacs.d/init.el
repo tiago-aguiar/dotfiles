@@ -70,6 +70,10 @@
 (global-hl-line-mode -1)           ;; disable highlight current line
 (display-time)
 
+(when is-win32
+  (setq taguiar-launchscript "launch.bat")
+  (setq taguiar-makescript "build.bat"))
+
 (when is-macos
   (setq mac-command-modifier 'meta) ;; switch Option to Command key (meta)
   (setq taguiar-launchscript "./launch.sh")
