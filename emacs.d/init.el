@@ -246,7 +246,22 @@
   (setq c-basic-offset 4)
   (setq c-indent-level 4) 
   (setq tab-width 4)
-  (setq indent-tabs-mode nil))
+  (setq indent-tabs-mode nil)
+
+  ; Handle super-tabbify (TAB completes, shift-TAB actually tabs)
+  (setq dabbrev-case-replace t)
+  (setq dabbrev-case-fold-search t)
+  (setq dabbrev-upcase-means-case-search t)
+  (abbrev-mode 1)
+
+  (define-key c-mode-map "\t" 'dabbrev-expand)
+  (define-key c-mode-map [S-tab] 'indent-for-tab-command)
+  (define-key c-mode-map "\C-y" 'indent-for-tab-command)
+  (define-key c-mode-map [C-tab] 'indent-region)
+  (define-key c-mode-map "	" 'indent-region)
+  (define-key c-mode-map "\ej" 'imenu)
+  (define-key c-mode-map "\e/" 'c-mark-function)
+)
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
 
