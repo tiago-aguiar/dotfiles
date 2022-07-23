@@ -364,8 +364,9 @@ fixme-modes)
 (define-key global-map "\eb" 'counsel-switch-buffer) ;; OR counsel-ibuffer
 (define-key global-map "\eB" 'ivy-switch-buffer-other-window)
 
-(define-key global-map "\ef" 'projectile-find-file)
+(define-key global-map "\ef" 'find-file)
 (define-key global-map "\eF" 'find-file-other-window)
+(define-key global-map "\eO" 'projectile-find-file)
 
 (define-key global-map "\ed" 'projectile-dired)
 (define-key global-map "\eD" 'dired)
