@@ -146,9 +146,9 @@
   :config
   (ivy-mode 1))
 
-;; highlight parentheses on elisp
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+;; highlight parentheses
+;; (use-package rainbow-delimiters
+;;  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; suggestion for emacs command C-x
 (use-package which-key
