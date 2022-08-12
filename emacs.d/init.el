@@ -1,4 +1,7 @@
 
+;; NOTE: Access Desktop files from MacOS: Emacs.app actually launches using a ruby script. As a result, MacOS Catalina uses the permissions set for ruby,
+;; not the permissions for Emacs.app. Open General Settings -> Security & Privacy -> Privacy,
+;; select Full Disk Access in the left pane, then click + and add /usr/bin/ruby to resolve your issue.
 
 ;; M-x:     describe-function command
 ;; C-h v:   describe-variable
@@ -85,7 +88,7 @@
 ;; change font (height = percent)
 
 (when (member "Inconsolata for Powerline" (font-family-list)) 
- (set-face-attribute 'default nil :font "Inconsolata for Powerline" :height 180))
+ (set-face-attribute 'default nil :font "Inconsolata for Powerline" :height 166))
 
 (when (member "Fira Code Retina" (font-family-list))
  (set-face-attribute 'default nil :font "Fira Code Retina" :height 120))
