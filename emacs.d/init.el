@@ -85,19 +85,23 @@
 ;; change font (height = percent)
 
 (when (member "Inconsolata for Powerline" (font-family-list)) 
+ (message "Load Inconsolata")
  (set-face-attribute 'default nil :font "Inconsolata for Powerline" :height 166))
 
 (when (member "Fira Code Retina" (font-family-list))
+ (message "Load Fira Code")
  (set-face-attribute 'default nil :font "Fira Code Retina" :height 120))
 
 (when (member "Liberation Mono" (font-family-list)) 
+ (message "Load Liberation Mono")
  (set-face-attribute 'default nil :font "Liberation Mono" :height 120))
 
 (when (member "Lucida Console" (font-family-list))
+ (message "Load Lucida Console")
   (setq-default line-spacing 1)
-  (set-face-attribute 'default nil :font "Lucida Console" :height 120))
+  (set-face-attribute 'default nil :font "Lucida Console" :height 140))
 
-;; change yes-no to y-n
+;; ;; change yes-no to y-n
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; startup fullscreen
