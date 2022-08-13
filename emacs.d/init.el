@@ -238,6 +238,19 @@
 
 (use-package kotlin-mode)
 
+;; NOTE: depends of spinner. M-x package-install-file <emacs.d/spinner.el>
+(use-package lsp-mode
+  :init
+  ;; (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-keymap-prefix "M-RET")
+  :hook
+  ;; NOTE: need install kotlin lsp - https://github.com/fwcd/kotlin-language-server/blob/main/BUILDING.md
+  (kotlin-mode . lsp))
+
+(use-package lsp-ui)
+
+(use-package flycheck)
+
 ;; windows does not support vterm, so use standard eshell
 (when (not is-win32)
   (use-package vterm))
@@ -252,22 +265,41 @@
   (setq tab-width 4)
   (setq indent-tabs-mode nil)
 
+  (abbrev-mode 1)
+
+  (define-key c++-mode-map "\t" 'dabbrev-expand)
+  (define-key c++-mode-map [S-tab] 'indent-for-tab-command)
+  (define-key c++-mode-map "\C-y" 'indent-for-tab-command)
+  (define-key c++-mode-map [C-tab] 'indent-region)
+  (define-key c++-mode-map "	" 'indent-region)
+  (define-key c++-mode-map "\ej" 'imenu)
+  (define-key c++-mode-map "\e/" 'c-mark-function)
   ; Handle super-tabbify (TAB completes, shift-TAB actually tabs)
   (setq dabbrev-case-replace t)
   (setq dabbrev-case-fold-search t)
   (setq dabbrev-upcase-means-case-search t)
+)
+
+;; setup kotlin mode
+(defun taguiar/kotlin-hook ()
+  (setq c-basic-offset 4)
+  (setq c-indent-level 4) 
+  (setq tab-width 4)
+  (setq indent-tabs-mode nil)
+
   (abbrev-mode 1)
 
-  (define-key c-mode-map "\t" 'dabbrev-expand)
-  (define-key c-mode-map [S-tab] 'indent-for-tab-command)
-  (define-key c-mode-map "\C-y" 'indent-for-tab-command)
-  (define-key c-mode-map [C-tab] 'indent-region)
-  (define-key c-mode-map "	" 'indent-region)
-  (define-key c-mode-map "\ej" 'imenu)
-  (define-key c-mode-map "\e/" 'c-mark-function)
+  (define-key kotlin-mode-map "\t" 'dabbrev-expand)
+  (define-key kotlin-mode-map [S-tab] 'indent-for-tab-command)
+  (define-key kotlin-mode-map "\C-y" 'indent-for-tab-command)
+  (define-key kotlin-mode-map [C-tab] 'indent-region)
+  (define-key kotlin-mode-map "	" 'indent-region)
+  (define-key kotlin-mode-map "\ej" 'imenu)
+  (define-key kotlin-mode-map "\e/" 'c-mark-function)
 )
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
+(add-hook 'kotlin-mode-hook 'taguiar/kotlin-hook)
 
 (defun insert-timeofday ()
   (interactive "*")
@@ -291,6 +323,7 @@
   :after evil
   :config
   (evil-collection-init 'dired))
+
 
 ;;
 ;; Bright COMMENTS
@@ -339,12 +372,6 @@ fixme-modes)
 				   (switch-to-buffer (other-buffer buf))
 				   (switch-to-buffer-other-window buf)))))
 
-(defun launch-app ()
-  "Launch the application."
-  (interactive)
-  (compile taguiar-launchscript)
-  (other-window 1))
-
 (setq compilation-directory-locked nil)
 
 (defun find-project-directory-recursive ()
@@ -370,6 +397,13 @@ fixme-modes)
   (if (find-project-directory) (compile taguiar-makescript))
   (other-window 1))
 
+(defun launch-without-asking ()
+  "Make the current build."
+  (interactive)
+  (if (find-project-directory) (compile taguiar-launchscript))
+  (other-window 1))
+
+
 
 (define-key global-map "\el" 'evil-window-right)
 (define-key global-map "\eh" 'evil-window-left)
@@ -392,10 +426,23 @@ fixme-modes)
 
 (define-key global-map "\em" 'projectile-compile-project)
 (define-key global-map "\eM" 'make-without-asking)
+(define-key global-map "\eR" 'launch-without-asking)
 (define-key global-map "\en" 'next-error)
 (define-key global-map "\eT" 'load-log)
 
 (define-key global-map "\e0" 'delete-other-windows)
 
-(define-key global-map "\eR" 'launch-app)
 (define-key global-map "\e;" 'comment-line)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(lsp-ui spinner gnu-elpa-keyring-update lsp-mode evil-collection kotlin-mode dotenv-mode markdown-mode counsel-projectile projectile evil modus-themes ivy-rich counsel which-key swiper use-package)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

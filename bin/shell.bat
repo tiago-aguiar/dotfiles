@@ -5,8 +5,9 @@ call "%ConEmuDir%"\..\init.bat"
 set path=e:\Tiago\bin;%path%
 set PATH=c:\Program Files (x86)\GnuWin32\bin;%PATH%
 set PATH=c:\MinGW\bin;%PATH%
-set PATH=e:\Tiago\AppData\Local\Android\Sdk\emulator;%PATH%
-set PATH=e:\Tiago\AppData\Local\Android\Sdk\platform-tools;%PATH%
+set PATH=e:\Android\Sdk\emulator;%PATH%
+set PATH=e:\Android\Sdk\platform-tools;%PATH%
+set PATH=e:\Tiago\programming\kotlin-language-server\server\build\install\server\bin;%PATH%
 set PKG_CONFIG_PATH=c:\PkgConfigs
 set JAVA_HOME="e:\Android Studio\jre"
 
