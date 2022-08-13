@@ -14,22 +14,19 @@
 ;; C-w: Cut emacs
 ;; C-x C-; Comment current line
 ;; C-c C-c Comment block
-;; M-;     If not comment exists then add it, otherwise, reindent current comment
 
 ;; PROJECTILE
 ;; C-c p: open command map
 
-;; TODO: Anotar todos os comandos mais utilizados no workflow
 
-
+;; ALT-;     Comment line
 ;; ALT-s:    save file
 ;; ALT-k:    kill buffer
 ;; ALT-b:    switch buffer
-;; ALT-B:    switch buffer (new window)
-;; ALT-f:    open file (projectile)
-;; ALT-F:    open file
+;; ALT-f:    find file
 ;; ALT-hjkl: switch buffer
 ;; ALT-HL:   swap buffer
+;; ALT-SHIFT-O:    find file (projectile)
 
 ;; F2:  Open eshell
 ;; F10: Open init.el
@@ -104,7 +101,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; startup fullscreen
-(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+;; (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
 
 ;; initialize package sources
 (require 'package)
@@ -397,3 +394,4 @@ fixme-modes)
 (define-key global-map "\e0" 'delete-other-windows)
 
 (define-key global-map "\eR" 'launch-app)
+(define-key global-map "\e;" 'comment-line)
