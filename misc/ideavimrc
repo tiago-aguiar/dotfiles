@@ -11,10 +11,14 @@ nnoremap <leader>dd :action Debug<cr>
 
 nnoremap <leader>f :action GotoFile<cr>
 nnoremap <leader>b :action RecentFiles<cr>
+nnoremap <leader>k :action CloseContent<cr>
+nnoremap <leader>K :action CloseAllEditors<cr>
 nnoremap <leader>a :action GotoAction<cr>
-nnoremap <leader>u :action FindUsages<cr>
+nnoremap <leader>j :action GotoImplementation<cr>
+nnoremap <leader>u :action ShowUsages<cr>
 nnoremap <leader>l :action ReformatCode<cr>
 nnoremap <leader>n :action NewClass<cr>
 nnoremap <leader>o :action OptimizeImports<cr>
 nnoremap <leader>h :action HideAllWindows<cr>
-nnoremap <leader>su :action ShowUsages<cr>
+
+nnoremap <leader>fu :action FindUsages<cr>
