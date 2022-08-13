@@ -21,4 +21,4 @@ nnoremap <leader>n :action NewClass<cr>
 nnoremap <leader>o :action OptimizeImports<cr>
 nnoremap <leader>h :action HideAllWindows<cr>
 
-nnoremap <leader>fu :action FindUsages<cr>
+nnoremap <leader>su :action FindUsages<cr>
