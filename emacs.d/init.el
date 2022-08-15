@@ -85,21 +85,23 @@
 ;; change font (height = percent)
 
 (when (member "Inconsolata for Powerline" (font-family-list)) 
- (message "Load Inconsolata")
- (set-face-attribute 'default nil :font "Inconsolata for Powerline" :height 166))
+  (message "Load Inconsolata")
+  (set-face-attribute 'default nil :font "Inconsolata for Powerline" :height 166))
 
 (when (member "Fira Code Retina" (font-family-list))
- (message "Load Fira Code")
- (set-face-attribute 'default nil :font "Fira Code Retina" :height 120))
+  (message "Load Fira Code")
+  (set-face-attribute 'default nil :font "Fira Code Retina" :height 120))
 
-(when (member "Liberation Mono" (font-family-list)) 
- (message "Load Liberation Mono")
- (set-face-attribute 'default nil :font "Liberation Mono" :height 120))
+(when is-macos
+  (when (member "Liberation Mono for Powerline" (font-family-list)) 
+    (message "Load Liberation Mono")
+    (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 140)))
 
-(when (member "Lucida Console" (font-family-list))
- (message "Load Lucida Console")
-  (setq-default line-spacing 1)
-  (set-face-attribute 'default nil :font "Lucida Console" :height 140))
+(when is-win32
+  (when (member "Lucida Console" (font-family-list))
+    (message "Load Lucida Console")
+    (setq-default line-spacing 1)
+    (set-face-attribute 'default nil :font "Lucida Console" :height 140)))
 
 ;; ;; change yes-no to y-n
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -433,16 +435,3 @@ fixme-modes)
 (define-key global-map "\e0" 'delete-other-windows)
 
 (define-key global-map "\e;" 'comment-line)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(lsp-ui spinner gnu-elpa-keyring-update lsp-mode evil-collection kotlin-mode dotenv-mode markdown-mode counsel-projectile projectile evil modus-themes ivy-rich counsel which-key swiper use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
