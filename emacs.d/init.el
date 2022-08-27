@@ -101,7 +101,7 @@
   (when (member "Lucida Console" (font-family-list))
     (message "Load Lucida Console")
     (setq-default line-spacing 1)
-    (set-face-attribute 'default nil :font "Lucida Console" :height 140)))
+    (set-face-attribute 'default nil :font "Lucida Console" :height 110)))
 
 ;; ;; change yes-no to y-n
 (defalias 'yes-or-no-p 'y-or-n-p)
