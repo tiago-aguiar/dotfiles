@@ -18,7 +18,6 @@
 ;; PROJECTILE
 ;; C-c p: open command map
 
-
 ;; ALT-;     Comment line
 ;; ALT-s:    save file
 ;; ALT-k:    kill buffer
@@ -47,6 +46,8 @@
 ;; C-w hjkl:   Switch to window
 ;; C-w S-hjkl: Swap window
 
+;; DIRED
+;; gr: refresh-buffer
 ;
 
 ;; global variables
@@ -219,6 +220,7 @@
 (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode)
+  :init (setq projectile-indexing-method 'native)
   :custom (projectile-completion-system 'ivy)
   :bind-keymap
   ("C-c p" . projectile-command-map))
@@ -245,9 +247,10 @@
   :init
   ;; (setq lsp-keymap-prefix "C-c l")
   (setq lsp-keymap-prefix "M-RET")
-  :hook
+  ;;:hook
   ;; NOTE: need install kotlin lsp - https://github.com/fwcd/kotlin-language-server/blob/main/BUILDING.md
-  (kotlin-mode . lsp))
+  ;;(kotlin-mode . lsp)
+)
 
 (use-package lsp-ui)
 
@@ -267,41 +270,38 @@
   (setq tab-width 4)
   (setq indent-tabs-mode nil)
 
-  (abbrev-mode 1)
-
-  (define-key c++-mode-map "\t" 'dabbrev-expand)
-  (define-key c++-mode-map [S-tab] 'indent-for-tab-command)
-  (define-key c++-mode-map "\C-y" 'indent-for-tab-command)
-  (define-key c++-mode-map [C-tab] 'indent-region)
-  (define-key c++-mode-map "	" 'indent-region)
-  (define-key c++-mode-map "\ej" 'imenu)
-  (define-key c++-mode-map "\e/" 'c-mark-function)
-  ; Handle super-tabbify (TAB completes, shift-TAB actually tabs)
   (setq dabbrev-case-replace t)
   (setq dabbrev-case-fold-search t)
-  (setq dabbrev-upcase-means-case-search t)
-)
+  (setq dabbrev-upcase-means-case-search t))
+
+;; setup html mode
+(defun taguiar/html-hook ()
+  (setq c-basic-offset 4)
+  (setq c-indent-level 4) 
+  (setq tab-width 4)
+  (setq indent-tabs-mode nil))
 
 ;; setup kotlin mode
 (defun taguiar/kotlin-hook ()
   (setq c-basic-offset 4)
   (setq c-indent-level 4) 
   (setq tab-width 4)
-  (setq indent-tabs-mode nil)
+  (setq indent-tabs-mode nil))
 
-  (abbrev-mode 1)
+(abbrev-mode 1)
 
-  (define-key kotlin-mode-map "\t" 'dabbrev-expand)
-  (define-key kotlin-mode-map [S-tab] 'indent-for-tab-command)
-  (define-key kotlin-mode-map "\C-y" 'indent-for-tab-command)
-  (define-key kotlin-mode-map [C-tab] 'indent-region)
-  (define-key kotlin-mode-map "	" 'indent-region)
-  (define-key kotlin-mode-map "\ej" 'imenu)
-  (define-key kotlin-mode-map "\e/" 'c-mark-function)
-)
+(define-key global-map "\t" 'dabbrev-expand)
+(define-key global-map [S-tab] 'indent-for-tab-command)
+(define-key global-map "\C-y" 'indent-for-tab-command)
+(define-key global-map [C-tab] 'indent-region)
+(define-key global-map "	" 'indent-region)
+(define-key global-map "\ej" 'imenu)
+(define-key global-map "\e/" 'c-mark-function)
+
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
 (add-hook 'kotlin-mode-hook 'taguiar/kotlin-hook)
+(add-hook 'html-mode-hook 'taguiar/html-hook)
 
 (defun insert-timeofday ()
   (interactive "*")
