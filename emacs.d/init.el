@@ -436,3 +436,16 @@ fixme-modes)
 (define-key global-map "\e0" 'delete-other-windows)
 
 (define-key global-map "\e;" 'comment-line)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("0c2d7f410f835d59a0293f2a55744e9d3be13aab8753705c6ad4a9a968fb3b28" "4cc1cc7efd5c2362ef684657eec7d7e482223b1def4edeb0fab52ba1d334d38a" "b446f2c372764727e44c75614aaa9086b8865e852e168308e7c6ce1fb629e741" "f3f43ccfff420ce247ea3ba41030172708c7e957859e4c412bcdef4866af8d8d" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
