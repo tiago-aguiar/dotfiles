@@ -96,7 +96,7 @@
 (when is-macos
   (when (member "Liberation Mono for Powerline" (font-family-list)) 
     (message "Load Liberation Mono")
-    (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 140)))
+    (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 150)))
 
 (when is-win32
   (when (member "Lucida Console" (font-family-list))
