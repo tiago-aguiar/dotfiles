@@ -27,8 +27,8 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 	echo "zshell macosx started!\n"
 
-    export ANDROID_SDK_ROOT=$HOME/Library/Android/Sdk
-    ANDROID_HOME=$HOME/Library/Android/sdk
+    export ANDROID_SDK_ROOT=~/Library/Android/Sdk
+    ANDROID_HOME=~/Library/Android/Sdk
     export PATH=$PATH:/Library/TeX/texbin
 
 elif [[ "$OSTYPE" == "win32" ]]; then
@@ -96,12 +96,6 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-alias pip='noglob pip'
-alias homewin='cd $HOME/..'    
-alias tmk="tmux kill-session -t DEVENV"
-alias tms="tmux attach -t DEVENV || tmux new -s DEVENV"
-alias vim="nvim"
-
 export DISPLAY=:0.0
 export TERM="xterm-256color"
 export LANG=en_US.UTF-8
@@ -135,6 +129,15 @@ export LANG=en_US.UTF-8
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 alias studio="open -a /Applications/Android\ Studio.app"
+alias pip='noglob pip'
+alias homewin='cd $HOME/..'    
+alias tmk="tmux kill-session -t DEVENV"
+alias tms="tmux attach -t DEVENV || tmux new -s DEVENV"
+alias vim="nvim"
+alias ems="emacs -daemon"
+alias emx="emacsclient --no-wait --create-frame"
+alias emt="emacsclient -nw"
+alias emk='emacsclient -e "(kill-emacs)"'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
