@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: swift-heightForHeader
+# key: heightForHeader
+# --
+func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    $0
+}

@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: swift-initView
+# key: initView
+# --
+override init(frame: CGRect) {
+    super.init(frame: frame)
+    $0
+}
+
+required init?(coder: NSCoder) {
+    fatalError()
+}

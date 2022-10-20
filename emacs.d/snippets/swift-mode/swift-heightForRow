@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: swift-heightForRow
+# key: heightForRow
+# --
+func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+     $0
+}

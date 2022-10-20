@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: swift-cellForItem
+# key: cellForItem
+# --
+func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+     $0
+}
