@@ -1,2 +1,2 @@
 # dotfiles
-Run `linkall.zsh` for build symlink of vim, tmux, android studio, anything else.
+Run `linkall.zsh` for build symlink of emacs, vim, tmux, binaries and anything else.

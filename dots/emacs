@@ -1,0 +1,329 @@
+;;; package --- Summary;
+
+;;; Commentary:
+;; NOTE: How to access desktop files from MacOSX:
+;; Emacsapp actually launches using a ruby script  . As a result, MacOS uses the permissions set for
+;; ruby, not the permissions for Emacsapp  . So, Open General Settings -> Security & Privacy -> Privacy,
+;; select "Full Disk Access" in the left pane, then click + and add /usr/bin/ruby to resolve the issue.
+
+;; NOTE: How to use find (grep) on Windows:
+;; Install the gnuwin32 and add the bin folder to $PATH for Emacs see "find" executable.
+
+;;; Code:
+
+;;;;;;;;;;;;;;;
+;; Variables ;;
+;;;;;;;;;;;;;;;
+(setq is-macosx (eq system-type 'darwin))
+(setq is-linux (featurep 'x))
+(setq is-win32 (not (or is-macosx is-linux)))
+(setq emacs-file "~/.emacs")
+
+
+
+;;;;;;;;;;;;;;
+;; Emacs UI ;;
+;;;;;;;;;;;;;;
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(show-paren-mode t)
+(column-number-mode t)
+(setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
+(display-time)
+
+(setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
+(setq compilation-scroll-output t)
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;;;;;;;;;;;;
+;; Themes ;;
+;;;;;;;;;;;;
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'taguiar t)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Operation System Definitions ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(when is-macosx
+  (setq taguiar-launchscript "./launch.sh")
+  (setq taguiar-makescript "./build.sh")
+  (setq mac-command-modifier 'meta)
+  (set-face-attribute 'default nil :height 130))
+
+(when (not is-macosx)
+  (setq visible-bell t))
+
+(when is-win32
+  (defvar taguiar-launchscript "launch.bat")
+  (defvar taguiar-makescript "build.bat")
+  (when (member "Consolas" (font-family-list))
+    (message "Load Consolas Font")
+    (set-face-attribute 'default nil :font "Consolas" :height 125)))
+
+;; (set-face-attribute 'default nil :height 140)
+
+
+;;;;;;;;;;;;;;;;;;
+;; Repositories ;;
+;;;;;;;;;;;;;;;;;;
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
+
+
+;;;;;;;;;;;;;;
+;; Packages ;;
+;;;;;;;;;;;;;;
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-insert-state-cursor '(box "LightGreen"))
+  (setq evil-normal-state-cursor '(box "Cyan"))
+  :config
+  (evil-mode 1)
+  (evil-set-initial-state 'shell-script-mode 'emacs))
+
+(use-package flycheck
+  :ensure t
+  :init
+  (setq flycheck-display-errors-delay 0.0)
+  (setq sentence-end-double-space nil) ; fix "flycheck elisp there should be two spaces after period"
+  (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
+  :config
+  (global-flycheck-mode))
+
+(use-package swiper
+  :ensure t)
+
+(use-package ivy
+  :ensure t
+  :init
+  (setq ivy-height 20)
+  :config
+  (ivy-mode 1)
+  (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
+  (define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
+  (define-key ivy-minibuffer-map (kbd "C-l") 'ivy-alt-done)
+
+  (define-key ivy-switch-buffer-map (kbd "C-j") 'ivy-next-line)
+  (define-key ivy-switch-buffer-map (kbd "C-d") 'ivy-switch-buffer-kill) ; Delete current item minibuffer
+  (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line))
+
+(use-package counsel
+  :ensure t)
+
+(use-package haml-mode
+  :ensure t)
+
+(use-package sass-mode
+  :ensure t)
+
+(use-package yasnippet
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'yas-minor-mode))
+
+(use-package web-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
+
+(use-package kotlin-mode
+  :config
+  (setq exec-path (append exec-path '("/Users/tiagoaguiar/kotlin/kotlin-language-server/server/build/install/server/bin")))
+  :ensure t)
+
+(use-package swift-mode
+  :ensure t)
+
+(use-package which-key
+  :ensure t)
+
+(use-package lsp-mode
+  :ensure t
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
+  (setq lsp-pyls-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
+  (setq lsp-pylsp-plugins-flake8-ignore ["E501"])
+  (setq lsp-keymap-prefix "M-g")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (python-mode . lsp)
+         (kotlin-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package lsp-ui)
+
+(use-package company
+  :ensure t
+  :bind (:map company-active-map
+         ("C-j" . company-select-next)
+         ("C-k" . company-select-previous))
+  :config
+  (setq company-idle-delay 0.3)
+  (global-company-mode t))
+
+;; lsp-sourcekit não funciona! Ao invés disso, usamos o company-sourcekit com o SourceKittenDaemon compilado direto do Xcode.
+;; Há um bug que precisa ser corrigido para que o autocomplete funcione. Então, baixe o projeto original do repositório (https://github.com/terhechte/SourceKittenDaemon)
+;; e substitua a variavel 'PLATFORM_PREFERRED_ARCH' do arquivo 'Project.swift' para "ARCHS_STANDARD".
+;; Compile normalmente usando o Xcode.
+;; Encontre o binário em Preferences > Location > DerivedData > Build > Products > Debug > sourcekittend.
+;; Mova-o para /usr/local/bin.
+;;    Optional: É possível iniciar pelo terminal o server:
+;;
+;;   $ sourcekittend start --port 8081 --project <myproject>.xcodeproj
+;;
+;; NOTA1: Essa alteração é necessário para pegar a arquitetura do projeto usando o recurso de buildSettings onde mostra todas as opções de build definidas no xcodeproj.
+;; NOTA2: para visualizar o buildSettings do projeto:
+;;
+;;   $ xcodebuild -configuration Debug -showBuildSettings
+;;
+(use-package company-sourcekit
+  :ensure t
+  :config
+  (setq company-sourcekit-verbose nil)
+  (setq sourcekit-verbose nil)
+  (setq sourcekit-sourcekittendaemon-executable "/usr/local/bin/sourcekittend")
+  (add-to-list 'company-backends 'company-sourcekit))
+
+;;;;;;;;;;;
+;; Hooks ;;
+;;;;;;;;;;;
+(add-hook 'emacs-startup-hook 'toggle-frame-maximized) ; full screen when startup
+
+(defun taguiar/c-hook ()
+  "Styling cpp."
+  (setq c-basic-offset 4)
+
+  (defvar c-indent-level 4)
+  (setq tab-width 4)
+  (setq indent-tabs-mode nil)
+
+  (defvar dabbrev-case-replace t)
+  (defvar dabbrev-case-fold-search t)
+  (defvar dabbrev-upcase-means-case-search t))
+
+(add-hook 'c-mode-common-hook 'taguiar/c-hook)
+
+(setq compilation-directory-locked nil)
+
+(defun find-project-directory-recursive ()
+  "Recursively search for a makefile."
+  (interactive)
+  (if (file-exists-p taguiar-makescript) t
+      (cd "../")
+      (find-project-directory-recursive)))
+
+(defun find-project-directory ()
+  "Find the project directory."
+  (interactive)
+  (defvar find-project-from-directory default-directory)
+  (switch-to-buffer-other-window "*compilation*")
+  (if compilation-directory-locked (cd last-compilation-directory)
+  (cd find-project-from-directory)
+  (find-project-directory-recursive)
+  (defvar last-compilation-directory default-directory)))
+
+(defun make-without-asking ()
+  "Make the current build."
+  (interactive)
+  (if (find-project-directory) (compile taguiar-makescript))
+  (other-window 1))
+
+
+;;;;;;;;;;;;
+;; Abbrev ;;
+;;;;;;;;;;;;
+(abbrev-mode 1)
+(global-set-key (kbd "S-SPC") 'dabbrev-completion)
+(define-key global-map [S-tab] 'indent-for-tab-command)
+(define-key global-map "\C-y" 'indent-for-tab-command)
+(define-key global-map [C-tab] 'indent-region)
+(define-key global-map "\ej" 'imenu)
+
+(defun conditionally-disable-abbrev ()
+  "Disable abbrev when enter at minibuffer."
+  (if (string-match "counsel-find-file" (format "%s" this-command))
+    (define-key global-map [tab] 'nil)
+    (abbrev-mode -1)))
+
+;; Disable temporarily abbrev-mode with TAB when searching from 'counsel-find-file
+(add-hook 'minibuffer-setup-hook 'conditionally-disable-abbrev)
+(add-hook 'minibuffer-exit-hook (lambda ()
+				  (abbrev-mode 1)
+				  (define-key global-map [tab] 'dabbrev-expand)))
+
+
+
+;;;;;;;;;;;;;;;;;;;;
+;; Global key map ;;
+;;;;;;;;;;;;;;;;;;;;
+(global-set-key (kbd "<f10>") (lambda () (interactive)
+				(find-file emacs-file)
+				(message "Opened: %s" (buffer-name))))
+			
+
+(global-set-key (kbd "<f12>") 'eval-buffer)
+
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "C-s") 'swiper-isearch)
+
+(define-key global-map "\ex" 'counsel-M-x)
+(define-key global-map "\es" 'save-buffer)
+(define-key global-map "\ep" 'project-find-file)
+(define-key global-map "\ef" 'counsel-find-file)
+(define-key global-map "\eF" 'counsel-git-grep)
+(define-key global-map "\eo" 'grep-find)
+(define-key global-map "\ed" 'dired)
+(define-key global-map "\eb" 'switch-to-buffer)
+(define-key global-map "\ek" 'kill-current-buffer)
+(define-key global-map "\e/" 'comment-line)
+(define-key global-map "\e?" 'comment-dwim)
+(define-key global-map "\e0" 'delete-other-windows)
+(define-key global-map "\eM" 'make-without-asking)
+
+(define-key global-map "\el" 'evil-window-right)
+(define-key global-map "\eh" 'evil-window-left)
+(define-key global-map "\eL" 'evil-window-move-far-right)
+(define-key global-map "\eH" 'evil-window-move-far-left)
+
+
+;; =========================
+;; commands utils
+;; =========================
+
+;; comment-box
+
+(provide 'emacs)
+;;; .emacs ends here
+
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(company-sourcekit company lsp-sourcekit swift-mode which-key kotlin-mode web-mode lsp yasnippet sass-mode haml-mode counsel swiper flycheck use-package)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+

@@ -20,8 +20,7 @@ if [ $# -gt 0 ]; then
 Usage: $me [OPTIONS]
 
     Options:
-    -f    Force 'ln' to create a new link, even if one already exists with the
-          same name.
+    -f    Force symbolic link 'ln' to create a new one, even if one already exists with the same name.
 EOF
     exit 1
   fi
@@ -34,7 +33,7 @@ echo "current platform is: $platform"
 pushd `dirname $0` > /dev/null
 SCRIPTPATH=`pwd`
 BINPATH="$SCRIPTPATH/bin"
-SCRIPTPATH="$SCRIPTPATH/misc"
+SCRIPTPATH="$SCRIPTPATH/dots"
 popd > /dev/null
 
 pushd ~ > /dev/null
@@ -44,39 +43,45 @@ echo "Creating symlinks for all configuration files in $SCRIPTPATH"
 echo ""
 
 # setup ohmyzsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
+FILE=/bin/zsh
+if [ ! -f "$FILE" ]; then
+    echo "Downloading zshell."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
+else 
+    echo "$FILE already exists."
+fi
 rm -rf $HOME/.zshrc
 
+# make symlink to folder $SCRIPTPATH
 for dotfile in `find $SCRIPTPATH -mindepth 1 -maxdepth 1`; do
-    linkfile=".${dotfile##*/}"
+	linkfile=".${dotfile##*/}"
 
-    #if [ -d "./$linkfile" ]
+	if [ -e "$linkfile" ]; then
+		echo -n "${yellow}Exists${reset}"
+	else
+		ln -s $LNOPTS "$dotfile" "./$linkfile" > /dev/null 2>&1
 
-    if [ -e "$linkfile" ]; then
-        echo -n "${yellow}Exists${reset}"
-    else
-        ln -s $LNOPTS "$dotfile" "./$linkfile" > /dev/null 2>&1
+		if [ $? -eq 0 ]; then
+			echo -n "${green}OK${reset}"
+		else
+			echo -n "${red}Failed${reset}"
+		fi
+	fi
 
-        if [ $? -eq 0 ]; then
-            echo -n "${green}OK${reset}    "
-        else
-            echo -n "${red}Failed${reset}"
-        fi
-    fi
-
-    echo " $dotfile -> $linkfile... "
+	echo " $dotfile -> $linkfile... "
 done
 
+# Build the bin
 if [ ! -d "$HOME/bin" ]; then
   echo "Creating ~/bin directory."
   mkdir "$HOME/bin"
 fi
 
+# Build the config for vim or alacritty 
 if [ ! -d "$HOME/.config" ]; then
 	echo "Creating .config directory."
 	mkdir "$HOME/.config"
 fi
-
 
 if [ ! -d "$HOME/.config/nvim" ]; then
 	echo "Creating nvim directory."
@@ -91,35 +96,55 @@ popd > /dev/null
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	sudo apt-get install silversearcher-ag -y
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" 
 
-	brew install the_silver_searcher
-	brew install zsh
-	brew install neovim
-	brew install tmux
+    FILE=/usr/local/bin/brew
+    if [ ! -f "$FILE" ]; then
+        echo "Download Homebrew."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" 
+
+        brew install the_silver_searcher
+        brew install neovim
+        brew install tmux
+
+    else 
+        echo "$FILE already exists."
+    fi
 fi
 
-
 # install vim-plug
-if [ ! -d "$HOME/.config/nvim/autoload" ]; then
-	echo "download... vim-plug."
-	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+if [ ! -d "$HOME/.vim/autoload" ]; then
+    echo "download... vim-plug."
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+else 
+    echo "Vim-Plug already exists."
 fi
 
 if [ ! -d "$HOME/.tmux/plugins" ]; then
 	echo "download... tmux plugin manager."
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+else 
+    echo "Tmux plugin manager already exists."
 fi
 
 ln -s $LNOPTS "`pwd`/init.vim" "$HOME/.config/nvim/init.vim" > /dev/null 2>&1
-ln -s $LNOPTS "`pwd`/settings/alacritty.yml" "$HOME/.config/alacritty.yml" > /dev/null 2>&1
+ln -s $LNOPTS "`pwd`/alacritty.yml" "$HOME/.config/alacritty.yml" > /dev/null 2>&1
+# TODO: change to forloop
+ln -s $LNOPTS "`pwd`/boilers/cpp.txt" "$HOME/.vim/boilers/cpp.txt" > /dev/null 2>&1
 
-# force install pynvim
-pip3 install pynvim
-pip3 install --user neovim
 
-# install vim plugin
-nvim -c "PlugInstall"
+FILE=/usr/local/bin/nvim
+if [ ! -f "$FILE" ]; then
+    # force install pynvim
+    pip3 install pynvim
+    pip3 install --user neovim
+
+    # install vim plugin
+    nvim -c "PlugInstall"
+else
+    echo "$Nvim already exists"
+fi  
+
 
 # Move into bin dir.
 pushd "$HOME/bin" > /dev/null
