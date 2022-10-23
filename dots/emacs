@@ -154,7 +154,10 @@ fixme-modes)
   (global-flycheck-mode))
 
 (use-package swiper
-  :ensure t)
+  :ensure t
+  :config
+  '(counsel--mark-ring-highlight ((t (:inherit highlight :background "moccasin"))))
+  '(swiper-line-face ((t (:inherit highlight :background "bisque")))))
 
 (use-package ivy
   :ensure t
@@ -165,7 +168,6 @@ fixme-modes)
   (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
   (define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
   (define-key ivy-minibuffer-map (kbd "C-l") 'ivy-alt-done)
-
   (define-key ivy-switch-buffer-map (kbd "C-j") 'ivy-next-line)
   (define-key ivy-switch-buffer-map (kbd "C-d") 'ivy-switch-buffer-kill) ; Delete current item minibuffer
   (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line))
@@ -369,22 +371,3 @@ fixme-modes)
 
 (provide 'emacs)
 ;;; .emacs ends here
-
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("d252e32478ae6c81c9ad91efa5755da4beb5c647ab0b984c1c487c48f5ccd0c2" default))
- '(package-selected-packages
-   '(company-sourcekit company lsp-sourcekit swift-mode which-key kotlin-mode web-mode lsp yasnippet sass-mode haml-mode counsel swiper flycheck use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
