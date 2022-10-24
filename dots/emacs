@@ -181,6 +181,7 @@ fixme-modes)
 (use-package sass-mode
   :ensure t)
 
+;; IF yasnippet not working, try M-x yas-load-directory
 (use-package yasnippet
   :ensure t
   :config
