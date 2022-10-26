@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: swift-didSelectItem
+# key: didSelectItem
+# --
+func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+     $0
+}
