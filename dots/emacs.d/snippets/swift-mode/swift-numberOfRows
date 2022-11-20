@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: swift-numberOfRows
+# key: numberOfRows
+# --
+func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    $0
+}

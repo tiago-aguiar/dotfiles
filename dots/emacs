@@ -78,7 +78,7 @@ fixme-modes)
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-makescript "./build.sh")
   (setq mac-command-modifier 'meta)
-  (set-face-attribute 'default nil :height 130))
+  (set-face-attribute 'default nil :height 140))
 
 (when (not is-macosx)
   (setq visible-bell t))
@@ -181,6 +181,7 @@ fixme-modes)
 (use-package sass-mode
   :ensure t)
 
+;; IF yasnippet not working, try M-x yas-load-directory
 (use-package yasnippet
   :ensure t
   :config

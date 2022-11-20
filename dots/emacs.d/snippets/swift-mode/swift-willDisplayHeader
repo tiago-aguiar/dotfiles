@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: swift-willDisplayHeader
+# key: willDisplayHeader
+# --
+func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    $0
+}
