@@ -12,5 +12,8 @@ set PKG_CONFIG_PATH=c:\PkgConfigs
 set JAVA_HOME="e:\Android Studio\jre"
 
 alias l=ls -al --color $*
-alias gst=git status
-alias ggpull=git pull
+alias gs=git status
+alias gp=git pull origin $1
+alias gc=git commit -m $1
+alias ga=git add $1
+alias gpp=git push origin
