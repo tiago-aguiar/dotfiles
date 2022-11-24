@@ -169,3 +169,6 @@ if [ -d '/usr/local/go/bin' ]; then
 fi
 export PATH="/Users/tiagoaguiar/.deta/bin:$PATH"
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+chruby ruby-3.1.2

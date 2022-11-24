@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: swift-didSelectRow
+# key: didSelectRow
+# --
+func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+     $0
+}
