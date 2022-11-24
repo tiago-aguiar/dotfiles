@@ -377,4 +377,4 @@ fixme-modes)
 ;; comment-box
 
 (provide 'emacs)
-;;; .emacs ends here
+;;; emacs ends here
