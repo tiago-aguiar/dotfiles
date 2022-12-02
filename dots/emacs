@@ -147,7 +147,7 @@ fixme-modes)
 (use-package flycheck
   :ensure t
   :init
-  (setq flycheck-display-errors-delay 0.0)
+  (setq flycheck-display-errors-delay 0.3)
   (setq sentence-end-double-space nil) ; fix "flycheck elisp there should be two spaces after period"
   (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
   :config
@@ -210,10 +210,12 @@ fixme-modes)
   (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
   (setq lsp-pyls-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
   (setq lsp-pylsp-plugins-flake8-ignore ["E501", "E221"])
+  (setq lsp-clients-clangd-executable "c:\\Clangd\\bin\\clangd.exe") ;; download clangd standalone for windows
   (setq lsp-keymap-prefix "M-g")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (python-mode . lsp)
          (kotlin-mode . lsp)
+	 (c++-mode . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
@@ -244,13 +246,14 @@ fixme-modes)
 ;;
 ;;   $ xcodebuild -configuration Debug -showBuildSettings
 ;;
-(use-package company-sourcekit
-  :ensure t
-  :config
-  (setq company-sourcekit-verbose nil)
-  (setq sourcekit-verbose nil)
-  (setq sourcekit-sourcekittendaemon-executable "/usr/local/bin/sourcekittend")
-  (add-to-list 'company-backends 'company-sourcekit))
+(when is-macosx
+  (use-package company-sourcekit
+    :ensure t
+    :config
+    (setq company-sourcekit-verbose nil)
+    (setq sourcekit-verbose nil)
+    (setq sourcekit-sourcekittendaemon-executable "/usr/local/bin/sourcekittend")
+    (add-to-list 'company-backends 'company-sourcekit)))
 
 (use-package gradle-mode
   :ensure t)
