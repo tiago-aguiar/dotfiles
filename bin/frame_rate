@@ -1,0 +1,9 @@
+#!/bin/sh
+
+SOURCE=$1
+DEST=$2
+FRAME_RATE=`echo | awk "{print 1.0/$3}"`
+
+echo $FRAME_RATE 
+
+ffmpeg -i $SOURCE -filter_complex "[0:v]setpts=$FRAME_RATE*PTS[v];[0:a]atempo=$3[a]" -map "[v]" -map "[a]" $DEST
