@@ -86,9 +86,9 @@ fixme-modes)
 (when is-win32
   (defvar taguiar-launchscript "launch.bat")
   (defvar taguiar-makescript "build.bat")
-  (when (member "Consolas" (font-family-list))
-    (message "Load Consolas Font")
-    (set-face-attribute 'default nil :font "Consolas" :height 125)))
+  (when (member "Liberation Mono" (font-family-list))
+    (message "Load Liberation Mono Font")
+    (set-face-attribute 'default nil :font "Liberation Mono" :height 125)))
 
 ; Accepted file extensions and their appropriate modes
 (setq auto-mode-alist
@@ -378,6 +378,8 @@ fixme-modes)
 (define-key global-map "\eh" 'evil-window-left)
 (define-key global-map "\eL" 'evil-window-move-far-right)
 (define-key global-map "\eH" 'evil-window-move-far-left)
+(define-key global-map "\eB" 'lsp-ui-peek-find-definitions)
+(define-key global-map "\eI" 'lsp-ui-peek-find-references)
 
 
 ;; =========================
