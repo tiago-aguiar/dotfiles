@@ -10,7 +10,7 @@ set PATH=e:\Android\Sdk\emulator;%PATH%
 set PATH=e:\Android\Sdk\platform-tools;%PATH%
 set PATH=e:\Tiago\programming\kotlin-language-server\server\build\install\server\bin;%PATH%
 set PKG_CONFIG_PATH=c:\PkgConfigs
-set JAVA_HOME="C:\Java\jdk-19.0.1"
+set JAVA_HOME="E:\Android Studio\jre\bin"
 
 alias l=ls -al --color $*
 alias gs=git status

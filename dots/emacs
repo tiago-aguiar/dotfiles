@@ -88,7 +88,7 @@ fixme-modes)
   (defvar taguiar-makescript "build.bat")
   (when (member "Liberation Mono" (font-family-list))
     (message "Load Liberation Mono Font")
-    (set-face-attribute 'default nil :font "Liberation Mono" :height 125)))
+    (set-face-attribute 'default nil :font "Liberation Mono" :height 120)))
 
 ; Accepted file extensions and their appropriate modes
 (setq auto-mode-alist
@@ -266,6 +266,8 @@ fixme-modes)
 ;;;;;;;;;;;
 (add-hook 'emacs-startup-hook 'toggle-frame-maximized) ; full screen when startup
 
+
+
 (defun taguiar/c-hook ()
   "Styling cpp."
   (setq c-basic-offset 4)
@@ -286,6 +288,25 @@ fixme-modes)
 (setq compilation-error-regexp-alist
     (cons '("^\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) : \\(?:fatal error\\|warnin\\(g\\)\\) C[0-9]+:" 2 3 nil (4))
      compilation-error-regexp-alist))
+
+(defun find-corresponding-file ()
+  "Find the file that corresponds to this one."
+  (interactive)
+  (setq CorrespondingFileName nil)
+  (setq BaseFileName (file-name-sans-extension buffer-file-name))
+  (if (string-match "\\.c" buffer-file-name)
+      (setq CorrespondingFileName (concat BaseFileName ".h")))
+  (if (string-match "\\.h" buffer-file-name)
+      (if (file-exists-p (concat BaseFileName ".c")) (setq CorrespondingFileName (concat BaseFileName ".c"))
+	(setq CorrespondingFileName (concat BaseFileName ".cpp"))))
+  (if (string-match "\\.hin" buffer-file-name)
+      (setq CorrespondingFileName (concat BaseFileName ".cin")))
+  (if (string-match "\\.cin" buffer-file-name)
+      (setq CorrespondingFileName (concat BaseFileName ".hin")))
+  (if (string-match "\\.cpp" buffer-file-name)
+      (setq CorrespondingFileName (concat BaseFileName ".h")))
+  (if CorrespondingFileName (find-file CorrespondingFileName)
+    (error "Unable to find a corresponding file")))
 
 (defun find-project-directory-recursive ()
   "Recursively search for a makefile."
@@ -381,6 +402,7 @@ fixme-modes)
 (define-key global-map "\eB" 'lsp-ui-peek-find-definitions)
 (define-key global-map "\eI" 'lsp-ui-peek-find-references)
 
+(define-key c++-mode-map "\ec" 'find-corresponding-file)
 
 ;; =========================
 ;; commands utils
