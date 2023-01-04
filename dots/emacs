@@ -49,7 +49,7 @@
 (load-theme 'taguiar t)
 
 ; Bright todos
-(setq fixme-modes '(c++-mode c-mode java-mode emacs-lisp-mode swift-mode kotlin-mode python-mode))
+(setq fixme-modes '(objc-mode c++-mode c-mode java-mode emacs-lisp-mode swift-mode kotlin-mode python-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
