@@ -22,3 +22,5 @@ nnoremap <leader>o :action OptimizeImports<cr>
 nnoremap <leader>h :action HideAllWindows<cr>
 
 nnoremap <leader>su :action FindUsages<cr>
+
+set visualbell
