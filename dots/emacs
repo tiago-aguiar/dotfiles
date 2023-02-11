@@ -86,7 +86,6 @@ fixme-modes)
   (setq visible-bell t))
 
 (when is-win32
-  (setq default-directory "w:/")
   (defvar taguiar-launchscript "launch.bat")
   (defvar taguiar-makescript "build.bat")
   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe") ;; download clangd standalone for windows
