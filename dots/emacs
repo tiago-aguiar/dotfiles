@@ -86,6 +86,7 @@ fixme-modes)
   (setq visible-bell t))
 
 (when is-win32
+  (setq default-directory "w:/")
   (defvar taguiar-launchscript "launch.bat")
   (defvar taguiar-makescript "build.bat")
   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe") ;; download clangd standalone for windows
@@ -308,7 +309,7 @@ fixme-modes)
       (setq CorrespondingFileName (concat BaseFileName ".hin")))
   (if (string-match "\\.cpp" buffer-file-name)
       (setq CorrespondingFileName (concat BaseFileName ".h")))
-  (if CorrespondingFileName (find-file CorrespondingFileName)
+  (if CorrespondingFileName (find-file-other-window CorrespondingFileName)
     (error "Unable to find a corresponding file")))
 
 (defun find-project-directory-recursive ()
