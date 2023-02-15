@@ -20,6 +20,7 @@
 (setq is-linux (featurep 'x))
 (setq is-win32 (not (or is-macosx is-linux)))
 (setq emacs-file "~/.emacs")
+(setq taguiar-todo-file "G:/Meu Drive/AT Digital/today.org")
 (setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
 (setq taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
 
@@ -33,6 +34,7 @@
 (scroll-bar-mode -1)
 (show-paren-mode t)
 (column-number-mode t)
+(electric-pair-mode 1)
 (blink-cursor-mode 0)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
@@ -89,7 +91,7 @@ fixme-modes)
   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe") ;; download clangd standalone for windows
   (when (member "Liberation Mono" (font-family-list))
     (message "Load Liberation Mono Font")
-    (set-face-attribute 'default nil :font "Liberation Mono" :height 120)))
+    (set-face-attribute 'default nil :font "Liberation Mono" :height 110)))
 
 ; Accepted file extensions and their appropriate modes
 (setq auto-mode-alist
@@ -310,7 +312,7 @@ fixme-modes)
       (setq CorrespondingFileName (concat BaseFileName ".hin")))
   (if (string-match "\\.cpp" buffer-file-name)
       (setq CorrespondingFileName (concat BaseFileName ".h")))
-  (if CorrespondingFileName (find-file CorrespondingFileName)
+  (if CorrespondingFileName (find-file-other-window CorrespondingFileName)
     (error "Unable to find a corresponding file")))
 
 (defun find-project-directory-recursive ()
