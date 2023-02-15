@@ -20,7 +20,6 @@
 (setq is-linux (featurep 'x))
 (setq is-win32 (not (or is-macosx is-linux)))
 (setq emacs-file "~/.emacs")
-(setq taguiar-todo-file "~/Desktop/today.org")
 (setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
 (setq taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
 
@@ -122,7 +121,8 @@ fixme-modes)
 ;; Repositories ;;
 ;;;;;;;;;;;;;;;;;;
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -175,6 +175,9 @@ fixme-modes)
   (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line))
 
 (use-package counsel
+  :ensure t)
+
+(use-package magit
   :ensure t)
 
 (use-package haml-mode
@@ -414,3 +417,16 @@ fixme-modes)
 
 (provide 'emacs)
 ;;; emacs ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(magit yasnippet which-key web-mode use-package swift-mode sass-mode lsp-ui lsp-sourcekit kotlin-mode groovy-mode gradle-mode flycheck evil counsel company-sourcekit)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
