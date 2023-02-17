@@ -16,13 +16,12 @@
 ;;;;;;;;;;;;;;;
 ;; Variables ;;
 ;;;;;;;;;;;;;;;
-(defvar is-macosx (eq system-type 'darwin))
-(defvar is-linux (featurep 'x))
-(defvar is-win32 (not (or is-macosx is-linux)))
-(defvar emacs-file "~/.emacs")
-(defvar backup-directory-alist '(("." . "~/.emacs.d/.saves")))
-(defvar taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
->>>>>>> e1c90c4bf2733c7618be454b52cc6096731d407e
+(setq is-macosx (eq system-type 'darwin))
+(setq is-linux (featurep 'x))
+(setq is-win32 (not (or is-macosx is-linux)))
+(setq emacs-file "~/.emacs")
+(setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
+(setq taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
 
 (setq auto-save-default nil)
 (setq undo-limit 20000000)
@@ -43,7 +42,7 @@
 (setq initial-scratch-message nil)
 (display-time)
 
-(defvar compilation-scroll-output t)
+(setq compilation-scroll-output t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;;;;;;;;;;;
@@ -55,7 +54,7 @@
 
 
 ; Bright todos
-(defvar fixme-modes '(objc-mode c++-mode c-mode java-mode emacs-lisp-mode swift-mode kotlin-mode python-mode))
+(setq fixme-modes '(objc-mode c++-mode c-mode java-mode emacs-lisp-mode swift-mode kotlin-mode python-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -81,21 +80,22 @@ fixme-modes)
 ;; Operation System Definitions ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (when is-macosx
-  (defvar taguiar-launchscript "./launch.sh")
-  (defvar taguiar-makescript "./build.sh")
-  (defvar taguiar-todo-file "~/today.org")
-  (defvar taguiar-clangd-executable "/usr/bin/clangd") ;; download clangd standalone for windows
-  (defvar mac-command-modifier 'meta)
+  (message "Loading from MACOSX")
+  (setq taguiar-launchscript "./launch.sh")
+  (setq taguiar-makescript "./build.sh")
+  (setq taguiar-todo-file "~/today.org")
+  (setq taguiar-clangd-executable "/usr/bin/clangd") ;; download clangd standalone for windows
+  (setq mac-command-modifier 'meta)
   (set-face-attribute 'default nil :height 140))
 
 (when (not is-macosx)
   (setq visible-bell t))
 
 (when is-win32
-  (defvar taguiar-launchscript "launch.bat")
-  (defvar taguiar-todo-file "G:/Meu Drive/AT Digital/today.org")
-  (defvar taguiar-makescript "build.bat")
-  (defvar taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe") ;; download clangd standalone for windows
+  (setq taguiar-launchscript "launch.bat")
+  (setq taguiar-todo-file "G:/Meu Drive/AT Digital/today.org")
+  (setq taguiar-makescript "build.bat")
+  (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe") ;; download clangd standalone for windows
   (when (member "Liberation Mono" (font-family-list))
     (message "Load Liberation Mono Font")
     (set-face-attribute 'default nil :font "Liberation Mono" :height 115)))
@@ -215,10 +215,10 @@ fixme-modes)
   :ensure t
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (defvar lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
-  (defvar lsp-pyls-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
-  (defvar lsp-pylsp-plugins-flake8-ignore ["E501", "E221"])
-  (defvar lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
+  (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
+  (setq lsp-pyls-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
+  (setq lsp-pylsp-plugins-flake8-ignore ["E501", "E221"])
+  (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
   (setq lsp-keymap-prefix "M-g")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (python-mode . lsp)
@@ -278,7 +278,7 @@ fixme-modes)
   "Styling cpp."
   (setq c-basic-offset 4)
 
-  (defvar c-indent-level 4)
+  (setq c-indent-level 4)
   (setq tab-width 4)
   (setq indent-tabs-mode nil)
 
@@ -320,13 +320,13 @@ fixme-modes)
         ((string-match "[.]h" buffer-file-name) (taguiar-header-format))
         ((string-match "[.]cpp" buffer-file-name) (taguiar-source-format)))
 
-  (defvar dabbrev-case-replace t)
-  (defvar dabbrev-case-fold-search t)
-  (defvar dabbrev-upcase-means-case-search t))
+  (setq dabbrev-case-replace t)
+  (setq dabbrev-case-fold-search t)
+  (setq dabbrev-upcase-means-case-search t))
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
 
-(defvar compilation-directory-locked nil)
+(setq compilation-directory-locked nil)
 
 (setq compilation-context-lines 0)
 (setq compilation-error-regexp-alist
@@ -339,7 +339,7 @@ fixme-modes)
   (setq CorrespondingFileName nil)
   (setq BaseFileName (file-name-sans-extension buffer-file-name))
   (if (string-match "\\.c" buffer-file-name)
-      (defvar CorrespondingFileName (concat BaseFileName ".h")))
+      (setq CorrespondingFileName (concat BaseFileName ".h")))
   (if (string-match "\\.h" buffer-file-name)
       (if (file-exists-p (concat BaseFileName ".c")) (setq CorrespondingFileName (concat BaseFileName ".c"))
 	(setq CorrespondingFileName (concat BaseFileName ".cpp"))))
@@ -362,12 +362,12 @@ fixme-modes)
 (defun find-project-directory ()
   "Find the project directory."
   (interactive)
-  (defvar find-project-from-directory default-directory)
+  (setq find-project-from-directory default-directory)
   (switch-to-buffer-other-window "*compilation*")
   (if compilation-directory-locked (cd last-compilation-directory)
   (cd find-project-from-directory)
   (find-project-directory-recursive)
-  (defvar last-compilation-directory default-directory)))
+  (setq last-compilation-directory default-directory)))
 
 (defun make-without-asking ()
   "Make the current build."
@@ -451,16 +451,10 @@ fixme-modes)
 (define-key global-map "\e/" 'comment-line)
 (define-key global-map "\e?" 'comment-dwim)
 (define-key global-map "\e0" 'delete-other-windows)
-<<<<<<< HEAD
-(define-key global-map "\eM" 'make-without-asking)
-(define-key global-map "\eN" 'next-error)
-(define-key global-map "\eR" 'launch-without-asking)
-=======
 (define-key global-map "\em" 'make-without-asking)
 (define-key global-map "\en" 'next-error)
 (define-key global-map "\eN" 'previous-error)
 (define-key global-map "\er" 'launch-without-asking)
->>>>>>> e1c90c4bf2733c7618be454b52cc6096731d407e
 
 (define-key global-map "\el" 'evil-window-right)
 (define-key global-map "\eh" 'evil-window-left)
