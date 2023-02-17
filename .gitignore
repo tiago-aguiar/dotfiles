@@ -13,6 +13,7 @@
 /.emacs.desktop
 /.emacs.desktop.lock
 emacs.d/eshell/history
+**/emacs.d/transient
 **/emacs.d/packages
 emacs.d/eshell/lastdir
 **/emacs.d/.lsp-session-v1

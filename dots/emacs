@@ -20,7 +20,6 @@
 (setq is-linux (featurep 'x))
 (setq is-win32 (not (or is-macosx is-linux)))
 (setq emacs-file "~/.emacs")
-(setq taguiar-todo-file "G:/Meu Drive/AT Digital/today.org")
 (setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
 (setq taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
 
@@ -79,6 +78,7 @@ fixme-modes)
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-clangd-executable "/usr/bin/clangd") ;; download clangd standalone for windows
+  (setq taguiar-todo-file "~/today.org")
   (setq mac-command-modifier 'meta)
   (set-face-attribute 'default nil :height 140))
 
@@ -400,6 +400,7 @@ fixme-modes)
 (define-key global-map "\e?" 'comment-dwim)
 (define-key global-map "\e0" 'delete-other-windows)
 (define-key global-map "\eM" 'make-without-asking)
+(define-key global-map "\eN" 'next-error)
 (define-key global-map "\eR" 'launch-without-asking)
 
 (define-key global-map "\el" 'evil-window-right)
