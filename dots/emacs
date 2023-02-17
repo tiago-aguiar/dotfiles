@@ -396,6 +396,7 @@ fixme-modes)
 (define-key global-map "\e?" 'comment-dwim)
 (define-key global-map "\e0" 'delete-other-windows)
 (define-key global-map "\eM" 'make-without-asking)
+(define-key global-map "\eN" 'next-error)
 (define-key global-map "\eR" 'launch-without-asking)
 
 (define-key global-map "\el" 'evil-window-right)
