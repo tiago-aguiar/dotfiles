@@ -16,15 +16,17 @@
 ;;;;;;;;;;;;;;;
 ;; Variables ;;
 ;;;;;;;;;;;;;;;
-(setq is-macosx (eq system-type 'darwin))
-(setq is-linux (featurep 'x))
-(setq is-win32 (not (or is-macosx is-linux)))
-(setq emacs-file "~/.emacs")
-(setq taguiar-todo-file "G:/Meu Drive/AT Digital/today.org")
-(setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
-(setq taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
+(defvar is-macosx (eq system-type 'darwin))
+(defvar is-linux (featurep 'x))
+(defvar is-win32 (not (or is-macosx is-linux)))
+(defvar emacs-file "~/.emacs")
+(defvar taguiar-todo-file "G:/Meu Drive/AT Digital/today.org")
+(defvar backup-directory-alist '(("." . "~/.emacs.d/.saves")))
+(defvar taguiar-unignored-buffers '("*scratch*" "*foo*" "*bar*"))
 
 (setq auto-save-default nil)
+(setq undo-limit 20000000)
+(setq undo-strong-limit 40000000)
 
 ;;;;;;;;;;;;;;
 ;; Emacs UI ;;
@@ -34,23 +36,26 @@
 (scroll-bar-mode -1)
 (show-paren-mode t)
 (column-number-mode t)
+(global-hl-line-mode t)
 (electric-pair-mode 1)
 (blink-cursor-mode 0)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (display-time)
 
-(setq compilation-scroll-output t)
+(defvar compilation-scroll-output t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;;;;;;;;;;;
 ;; Themes ;;
 ;;;;;;;;;;;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'taguiar t)
+(load-theme 'casey t)
+(set-face-background 'hl-line "midnight blue")
+
 
 ; Bright todos
-(setq fixme-modes '(objc-mode c++-mode c-mode java-mode emacs-lisp-mode swift-mode kotlin-mode python-mode))
+(defvar fixme-modes '(objc-mode c++-mode c-mode java-mode emacs-lisp-mode swift-mode kotlin-mode python-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -63,23 +68,23 @@
     ("\\<\\(STUDY\\)" 1 'font-lock-study-face t)
     ("\\<\\(TEST\\)" 1 'font-lock-test-face t)
     ("\\<\\(IMPORTANT\\)" 1 'font-lock-important-face t)
-           ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
+    ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
 fixme-modes)
 (modify-face 'font-lock-fixme-face "Red" nil nil t nil t nil nil)
 (modify-face 'font-lock-study-face "Blue" nil nil t nil t nil nil)
-(modify-face 'font-lock-test-face "#ff00ff" nil nil t nil t nil nil)
+(modify-face 'font-lock-test-face "Red" nil nil t nil t nil nil)
 (modify-face 'font-lock-important-face "Yellow" nil nil t nil t nil nil)
-(modify-face 'font-lock-note-face "Orange" nil nil t nil t nil nil)
+(modify-face 'font-lock-note-face "Dark Green" nil nil t nil t nil nil)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Operation System Definitions ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (when is-macosx
-  (setq taguiar-launchscript "./launch.sh")
-  (setq taguiar-makescript "./build.sh")
-  (setq taguiar-clangd-executable "/usr/bin/clangd") ;; download clangd standalone for windows
-  (setq mac-command-modifier 'meta)
+  (defvar taguiar-launchscript "./launch.sh")
+  (defvar taguiar-makescript "./build.sh")
+  (defvar taguiar-clangd-executable "/usr/bin/clangd") ;; download clangd standalone for windows
+  (defvar mac-command-modifier 'meta)
   (set-face-attribute 'default nil :height 140))
 
 (when (not is-macosx)
@@ -88,10 +93,10 @@ fixme-modes)
 (when is-win32
   (defvar taguiar-launchscript "launch.bat")
   (defvar taguiar-makescript "build.bat")
-  (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe") ;; download clangd standalone for windows
+  (defvar taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe") ;; download clangd standalone for windows
   (when (member "Liberation Mono" (font-family-list))
     (message "Load Liberation Mono Font")
-    (set-face-attribute 'default nil :font "Liberation Mono" :height 110)))
+    (set-face-attribute 'default nil :font "Liberation Mono" :height 115)))
 
 ; Accepted file extensions and their appropriate modes
 (setq auto-mode-alist
@@ -114,8 +119,6 @@ fixme-modes)
          ("\\.mm$"     . objc-mode)
          ) auto-mode-alist))
 
-
-
 ;; (set-face-attribute 'default nil :height 140)
 
 
@@ -135,15 +138,14 @@ fixme-modes)
   (setq use-package-always-ensure t
         use-package-expand-minimally t))
 
-
 ;;;;;;;;;;;;;;
 ;; Packages ;;
 ;;;;;;;;;;;;;;
 (use-package evil
   :ensure t
   :init
-  (setq evil-insert-state-cursor '(box "LightGreen"))
-  (setq evil-normal-state-cursor '(box "Cyan"))
+  (setq evil-insert-state-cursor '(box "Green"))
+  (setq evil-normal-state-cursor '(box "Yellow"))
   :config
   (evil-mode 1)
   (evil-set-initial-state 'shell-script-mode 'emacs))
@@ -179,9 +181,6 @@ fixme-modes)
 (use-package counsel
   :ensure t)
 
-(use-package magit
-  :ensure t)
-
 (use-package haml-mode
   :ensure t)
 
@@ -214,10 +213,10 @@ fixme-modes)
   :ensure t
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
-  (setq lsp-pyls-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
-  (setq lsp-pylsp-plugins-flake8-ignore ["E501", "E221"])
-  (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
+  (defvar lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
+  (defvar lsp-pyls-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
+  (defvar lsp-pylsp-plugins-flake8-ignore ["E501", "E221"])
+  (defvar lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
   (setq lsp-keymap-prefix "M-g")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (python-mode . lsp)
@@ -273,8 +272,6 @@ fixme-modes)
 ;;;;;;;;;;;
 (add-hook 'emacs-startup-hook 'toggle-frame-maximized) ; full screen when startup
 
-
-
 (defun taguiar/c-hook ()
   "Styling cpp."
   (setq c-basic-offset 4)
@@ -283,13 +280,51 @@ fixme-modes)
   (setq tab-width 4)
   (setq indent-tabs-mode nil)
 
+  (defun taguiar-header-format ()
+     "Format the given file as a header file."
+     (interactive)
+     (setq BaseFileName (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+     (insert "#ifndef ")
+     (push-mark)
+     (insert BaseFileName)
+     (upcase-region (mark) (point))
+     (pop-mark)
+     (insert "_H\n")
+     (insert "#define ")
+     (push-mark)
+     (insert BaseFileName)
+     (upcase-region (mark) (point))
+     (pop-mark)
+     (insert "_H\n")
+     (insert "#endif")
+  )
+
+  (defun taguiar-source-format ()
+     "Format the given file as a source file."
+     (interactive)
+     (setq BaseFileName (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+     (insert "/* ========================================================================\n")
+     (insert "   $File: $\n")
+     (insert "   $Date: $\n")
+     (insert "   $Revision: $\n")
+     (insert "   $Creator: Taguiar Muratori $\n")
+     (insert "   $Notice: (C) Copyright 2014 by Molly Rocket, Inc. All Rights Reserved. $\n")
+     (insert "   ======================================================================== */\n")
+  )
+
+  (cond ((file-exists-p buffer-file-name) t)
+        ((string-match "[.]hin" buffer-file-name) (taguiar-source-format))
+        ((string-match "[.]cin" buffer-file-name) (taguiar-source-format))
+        ((string-match "[.]h" buffer-file-name) (taguiar-header-format))
+        ((string-match "[.]cpp" buffer-file-name) (taguiar-source-format)))
+
   (defvar dabbrev-case-replace t)
   (defvar dabbrev-case-fold-search t)
   (defvar dabbrev-upcase-means-case-search t))
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
 
-(setq compilation-directory-locked nil)
+(defvar compilation-directory-locked nil)
 
 (setq compilation-context-lines 0)
 (setq compilation-error-regexp-alist
@@ -302,7 +337,7 @@ fixme-modes)
   (setq CorrespondingFileName nil)
   (setq BaseFileName (file-name-sans-extension buffer-file-name))
   (if (string-match "\\.c" buffer-file-name)
-      (setq CorrespondingFileName (concat BaseFileName ".h")))
+      (defvar CorrespondingFileName (concat BaseFileName ".h")))
   (if (string-match "\\.h" buffer-file-name)
       (if (file-exists-p (concat BaseFileName ".c")) (setq CorrespondingFileName (concat BaseFileName ".c"))
 	(setq CorrespondingFileName (concat BaseFileName ".cpp"))))
@@ -345,8 +380,16 @@ fixme-modes)
   (other-window 1))
 
 (defun load-todo ()
+  "Loading a todo file."
   (interactive)
   (find-file taguiar-todo-file))
+
+(defun kill-compilation-buffer ()
+  "Kill the *compilation* buffer."
+  (interactive)
+  (let ((buffer (get-buffer "*compilation*")))
+    (when buffer
+      (kill-buffer buffer))))
 
 ;;;;;;;;;;;;
 ;; Abbrev ;;
@@ -357,6 +400,7 @@ fixme-modes)
 (define-key global-map "\C-y" 'indent-for-tab-command)
 (define-key global-map [C-tab] 'indent-region)
 (define-key global-map "\ej" 'imenu)
+
 
 (defun conditionally-disable-abbrev ()
   "Disable abbrev when enter at minibuffer."
@@ -386,6 +430,11 @@ fixme-modes)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-s") 'swiper-isearch)
 
+(define-key c++-mode-map "\ec" 'find-corresponding-file)
+(define-key c++-mode-map "\eC" 'find-corresponding-file-other-window)
+
+(define-key global-map [f9] 'first-error)
+
 (define-key global-map "\et" 'load-todo)
 (define-key global-map "\ex" 'counsel-M-x)
 (define-key global-map "\es" 'save-buffer)
@@ -396,12 +445,14 @@ fixme-modes)
 (define-key global-map "\ed" 'dired)
 (define-key global-map "\eb" 'switch-to-buffer)
 (define-key global-map "\ek" 'kill-current-buffer)
+(define-key global-map "\eK" 'kill-compilation-buffer)
 (define-key global-map "\e/" 'comment-line)
 (define-key global-map "\e?" 'comment-dwim)
 (define-key global-map "\e0" 'delete-other-windows)
-(define-key global-map "\eM" 'make-without-asking)
-(define-key global-map "\eN" 'next-error)
-(define-key global-map "\eR" 'launch-without-asking)
+(define-key global-map "\em" 'make-without-asking)
+(define-key global-map "\en" 'next-error)
+(define-key global-map "\eN" 'previous-error)
+(define-key global-map "\er" 'launch-without-asking)
 
 (define-key global-map "\el" 'evil-window-right)
 (define-key global-map "\eh" 'evil-window-left)
@@ -410,26 +461,13 @@ fixme-modes)
 (define-key global-map "\eB" 'lsp-ui-peek-find-definitions)
 (define-key global-map "\eI" 'lsp-ui-peek-find-references)
 
-(define-key c++-mode-map "\ec" 'find-corresponding-file)
-
 ;; =========================
 ;; commands utils
 ;; =========================
 
 ;; comment-box
 
+
 (provide 'emacs)
 ;;; emacs ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(magit yasnippet which-key web-mode use-package swift-mode sass-mode lsp-ui lsp-sourcekit kotlin-mode groovy-mode gradle-mode flycheck evil counsel company-sourcekit)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
