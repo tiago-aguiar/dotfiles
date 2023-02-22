@@ -86,7 +86,7 @@ fixme-modes)
   (setq taguiar-todo-file "~/today.org")
   (setq taguiar-clangd-executable "/usr/bin/clangd") ;; download clangd standalone for windows
   (setq mac-command-modifier 'meta)
-  (set-face-attribute 'default nil :height 140))
+  (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 115))
 
 (when (not is-macosx)
   (setq visible-bell t))
