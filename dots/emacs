@@ -36,7 +36,7 @@
 (show-paren-mode t)
 (column-number-mode t)
 (global-hl-line-mode t)
-(electric-pair-mode 1)
+(electric-pair-mode 0)
 (blink-cursor-mode 0)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
@@ -305,13 +305,6 @@ fixme-modes)
      "Format the given file as a source file."
      (interactive)
      (setq BaseFileName (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
-     (insert "/* ========================================================================\n")
-     (insert "   $File: $\n")
-     (insert "   $Date: $\n")
-     (insert "   $Revision: $\n")
-     (insert "   $Creator: Taguiar Muratori $\n")
-     (insert "   $Notice: (C) Copyright 2014 by Molly Rocket, Inc. All Rights Reserved. $\n")
-     (insert "   ======================================================================== */\n")
   )
 
   (cond ((file-exists-p buffer-file-name) t)
@@ -460,8 +453,8 @@ fixme-modes)
 (define-key global-map "\eh" 'evil-window-left)
 (define-key global-map "\eL" 'evil-window-move-far-right)
 (define-key global-map "\eH" 'evil-window-move-far-left)
-(define-key global-map "\eB" 'lsp-ui-peek-find-definitions)
-(define-key global-map "\eI" 'lsp-ui-peek-find-references)
+(define-key global-map "\eu" 'lsp-ui-peek-find-definitions)
+(define-key global-map "\ei" 'lsp-ui-peek-find-references)
 
 ;; =========================
 ;; commands utils
