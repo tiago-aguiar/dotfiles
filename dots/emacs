@@ -49,8 +49,8 @@
 ;; Themes ;;
 ;;;;;;;;;;;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'casey t)
-(set-face-background 'hl-line "midnight blue")
+(load-theme 'once t)
+(set-face-background 'hl-line "DarkSlateGrey")
 
 
 ; Bright todos
@@ -146,8 +146,8 @@ fixme-modes)
 (use-package evil
   :ensure t
   :init
-  (setq evil-insert-state-cursor '(box "Green"))
-  (setq evil-normal-state-cursor '(box "Yellow"))
+  (setq evil-insert-state-cursor '(box "green1"))
+  (setq evil-normal-state-cursor '(box "green3"))
   :config
   (evil-mode 1)
   (evil-set-initial-state 'shell-script-mode 'emacs))
@@ -274,10 +274,23 @@ fixme-modes)
 ;;;;;;;;;;;
 (add-hook 'emacs-startup-hook 'toggle-frame-maximized) ; full screen when startup
 
+(defun my/enter-insert-state-hook()
+    (interactive)
+    (set-face-background 'hl-line "grey15"))
+
+  (defun my/exit-insert-state-hook()
+    (interactive)
+    (set-face-background 'hl-line "DarkSlateGrey"))
+    
+
+(add-hook 'evil-insert-state-entry-hook 'my/enter-insert-state-hook)
+(add-hook 'evil-insert-state-exit-hook  'my/exit-insert-state-hook)
+(add-hook 'evil-replace-state-entry-hook 'my/enter-insert-state-hook)
+(add-hook 'evil-replace-state-exit-hook  'my/exit-insert-state-hook)
+
 (defun taguiar/c-hook ()
   "Styling cpp."
   (setq c-basic-offset 4)
-
   (setq c-indent-level 4)
   (setq tab-width 4)
   (setq indent-tabs-mode nil)
@@ -462,7 +475,5 @@ fixme-modes)
 
 ;; comment-box
 
-
 (provide 'emacs)
 ;;; emacs ends here
-
