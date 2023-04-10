@@ -83,7 +83,7 @@ set guicursor+=i:blinkwait1
 "       Theme
 " ==================
 syntax enable
-"colorscheme magicka
+colorscheme magicka
 
 " hi! Normal   guibg=NONE ctermbg=233  ctermfg=223 "Dark background
 hi! Normal   guibg=NONE ctermbg=NONE  ctermfg=NONE
