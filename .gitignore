@@ -15,6 +15,7 @@
 emacs.d/eshell/history
 **/emacs.d/transient
 **/emacs.d/eshell
+**/emacs.d/request
 **/emacs.d/packages
 emacs.d/eshell/lastdir
 **/emacs.d/.lsp-session-v1

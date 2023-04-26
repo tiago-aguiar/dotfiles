@@ -12,11 +12,13 @@
 ;; NOTE: For Windows you need set environment variable HOME
 ;;
 ;; NOTE: Shortcuts
-;; C-c l =>   LSP mode
+;; C-c l  LSP mode
 ;; C-c l d   => go to definition
 ;; C-c l b   => go to buffer usage
 ;; C-c l r r => rename symbol
-
+;;
+;; NOTE: Commands
+;; Show yasnippets available: yas-describe-tables
 
 ;;; Code:
 
@@ -93,6 +95,7 @@ fixme-modes)
 (when is-macosx
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-pylsp "/usr/local/bin/pylsp")
+  (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-todo-file "~/today.org")
   (setq taguiar-clangd-executable "/usr/bin/clangd")
@@ -180,52 +183,42 @@ fixme-modes)
   (define-key ivy-switch-buffer-map (kbd "C-d") 'ivy-switch-buffer-kill) ; Delete current item minibuffer
   (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line))
 
-;; IF yasnippet not working, try M-x yas-load-directory
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; IMPORTANT: required!!!			  ;;
-;;  M-x package-install RET yasnippet-snippets    ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; IF yasnippet not working, try M-x yas-load-directory    ;;
+;; IMPORTANT: required!!!				   ;;
+;;  M-x package-install RET yasnippet-snippets	           ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package yasnippet
   :hook
-  ((python-mode) . yas-minor-mode))
-  ;; :config
-  ;; (add-hook 'kotlin-mode-hook #'yas-minor-mode))
+  ((python-mode swift-mode) . yas-minor-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; IMPORTANT: required!!!			  ;;
-;; Python: pip3 install 'python-lsp-server[all]'  ;;
-;; Python: add .flake8 file to root project dir   ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; IMPORTANT: required!!!			 ;;
+;; Python: pip3 install 'python-lsp-server[all]' ;;
+;; Python: add .flake8 file to root project dir	 ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package lsp-mode
   :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100","D103"])
   ;; (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
   ;; (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq lsp-pyls-server-command taguiar-pylsp)
-
-  ;; :bind (:map lsp-mode-map 
-	      ;; )
-
-  ;; M-u    : find usage
-  ;; M-i    : find implementation
   :hook 
   (python-mode . lsp-deferred)
+  (swift-mode . lsp-deferred)
 	 ;; (c++-mode . lsp)
          ;; if you want which-key integration
          ;; (lsp-mode . lsp-enable-which-key-integration)
   :bind 
   ("M-RET" . lsp-execute-code-action)
-
   :commands (lsp lsp-deferred))
 
 (use-package bind-key
   :bind
   (("C-c l d" . lsp-ui-peek-find-definitions))
-  (("C-c l b" . lsp-ui-peek-find-references))
-  )
+  (("C-c l b" . lsp-ui-peek-find-references)))
 
 (use-package lsp-ui
   :after lsp-mode
@@ -244,8 +237,7 @@ fixme-modes)
          ("C-k"   . company-select-previous)
 	 ("C-SPC" . company-complete))
   :hook
-  ((python-mode) . company-mode)
-  )
+  ((python-mode swift-mode) . company-mode))
 
 (use-package flycheck
   :init
@@ -253,10 +245,7 @@ fixme-modes)
   (setq sentence-end-double-space nil) ; fix "flycheck elisp there should be two spaces after period"
   (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
   :hook
-  ((python-mode) . flycheck-mode)
-  )
-
-
+  ((python-mode swift-mode) . flycheck-mode))
 
 ;; (use-package haml-mode
 ;;   :disabled t
@@ -272,39 +261,43 @@ fixme-modes)
 ;;   :config
 ;;   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
 
-;; (use-package swift-mode
-;;   :disabled t
-;;   :ensure t)
 
 ;; (use-package which-key
 ;;   :disabled t
 ;;   :ensure t)
 
 
-;; ;; lsp-sourcekit não funciona! Ao invés disso, usamos o company-sourcekit com o SourceKittenDaemon compilado direto do Xcode.
-;; ;; Há um bug que precisa ser corrigido para que o autocomplete funcione. Então, baixe o projeto original do repositório (https://github.com/terhechte/SourceKittenDaemon)
-;; ;; e substitua a variavel 'PLATFORM_PREFERRED_ARCH' do arquivo 'Project.swift' para "ARCHS_STANDARD".
-;; ;; Compile normalmente usando o Xcode.
-;; ;; Encontre o binário em Preferences > Location > DerivedData > Build > Products > Debug > sourcekittend.
-;; ;; Mova-o para /usr/local/bin.
-;; ;;    Optional: É possível iniciar pelo terminal o server:
-;; ;;
-;; ;;   $ sourcekittend start --port 8081 --project <myproject>.xcodeproj
-;; ;;
-;; ;; NOTA1: Essa alteração é necessário para pegar a arquitetura do projeto usando o recurso de buildSettings onde mostra todas as opções de build definidas no xcodeproj.
-;; ;; NOTA2: para visualizar o buildSettings do projeto:
-;; ;;
-;; ;;   $ xcodebuild -configuration Debug -showBuildSettings
-;; ;;
-;; (when is-macosx
-;;   (use-package company-sourcekit
-;;     :ensure t
-;;     :disabled t
-;;     :config
-;;     (setq company-sourcekit-verbose nil)
-;;     (setq sourcekit-verbose nil)
-;;     (setq sourcekit-sourcekittendaemon-executable "/usr/local/bin/sourcekittend")
-;;     (add-to-list 'company-backends 'company-sourcekit)))
+;; NOTE1: lsp-sourcekit não funciona muito bem em projetos iOS pois não encontra referencia do Sdk
+;; Logo, usamos em conjunto o 'company-sourcekit' com o 'SourceKittenDaemon' compilado direto do Xcode.
+;; Há um bug que precisa ser corrigido para que o autocomplete funcione.
+;; Então, baixe o projeto original do repositório (https://github.com/terhechte/SourceKittenDaemon)
+;; e substitua a variavel 'PLATFORM_PREFERRED_ARCH' do arquivo 'Project.swift' para "ARCHS_STANDARD".
+;; Compile normalmente usando o Xcode.
+;; Encontre o binário em Preferences > Location > DerivedData > Build > Products > Debug > sourcekittend.
+;;
+;; Mova-o para /usr/local/bin.
+;;
+;;    Optional: É possível iniciar pelo terminal o server:
+;;   $ sourcekittend start --port 8081 --project <myproject>.xcodeproj
+;;
+;; NOTE2: Essa alteração é necessário para pegar a arquitetura do projeto usando o recurso de buildSettings onde mostra todas as opções de build definidas no xcodeproj.
+;; NOTE3: para visualizar o buildSettings do projeto:
+;;
+;;   $ xcodebuild -configuration Debug -showBuildSettings
+;;
+(use-package lsp-sourcekit
+  :after lsp-mode
+  :config
+  (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
+
+(when is-macosx
+  (use-package company-sourcekit
+    :ensure t
+    :config
+    (setq company-sourcekit-verbose nil)
+    (setq sourcekit-verbose nil)
+    (setq sourcekit-sourcekittendaemon-executable taguiar-sourcekit)
+    (add-to-list 'company-backends 'company-sourcekit)))
 
 ;; (use-package gradle-mode
 ;;     :disabled t
@@ -314,8 +307,7 @@ fixme-modes)
 (use-package markdown-mode)
 (use-package groovy-mode)
 (use-package kotlin-mode)
-
-
+;; M-x package-install RET swift-mode
 
 ;;;;;;;;;;;
 ;; Hooks ;;
@@ -555,4 +547,4 @@ fixme-modes)
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))
+   '(company-sourcekit lsp-sourcekit swift-mode yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))
