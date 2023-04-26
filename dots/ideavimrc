@@ -17,7 +17,7 @@ nnoremap <leader>a :action GotoAction<cr>
 nnoremap <leader>j :action GotoImplementation<cr>
 nnoremap <leader>u :action ShowUsages<cr>
 nnoremap <leader>l :action ReformatCode<cr>
-nnoremap <leader>n :action NewClass<cr>
+nnoremap <leader>n :action NewFile<cr>
 nnoremap <leader>o :action OptimizeImports<cr>
 nnoremap <leader>h :action HideAllWindows<cr>
 
