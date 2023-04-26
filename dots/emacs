@@ -2,22 +2,25 @@
 
 ;;; Commentary:
 ;; NOTE: How to access desktop files from MacOSX:
-;; Emacsapp actually launches using a ruby script  . As a result, MacOS uses the permissions set for
-;; ruby, not the permissions for Emacsapp  . So, Open General Settings -> Security & Privacy -> Privacy,
+;; Emacsapp actually launches using a ruby script. As a result, MacOS uses the permissions set for
+;; ruby, not the permissions for Emacsapp. So,
 ;; select "Full Disk Access" in the left pane, then click + and add /usr/bin/ruby to resolve the issue.
-
+;;
 ;; NOTE: How to use find (grep) on Windows:
 ;; Install the gnuwin32 and add the bin folder to $PATH for Emacs see "find" executable.
-
+;;
 ;; NOTE: For Windows you need set environment variable HOME
+;;
+;; NOTE: Shortcuts
+;; C-c l =>   LSP mode
+;; C-c l d   => go to definition
+;; C-c l b   => go to buffer usage
+;; C-c l r r => rename symbol
 
-;; NOTE: Special shortcuts
-;; LSP >
-;; C-l rr: Rename symbol
 
 ;;; Code:
 
-;; IMPORTANT: keep this on top of your .emacs
+;; keep this on top of your .emacs!!!
 (defvar *emacs-load-start* (current-time))
 (defun taguiar/time-to-ms (time)
   (+ (* (+ (* (car time) (expt 2 16)) (car (cdr time))) 1000000) (car (cdr (cdr time)))))
@@ -25,7 +28,6 @@
   "time the loading of the .emacs"
   (message ".emacs loaded in %fms" (/ (- (taguiar/time-to-ms (current-time)) (taguiar/time-to-ms *emacs-load-start*)) 1000000.0)))
 (add-hook 'after-init-hook 'taguiar/display-timing t)
-(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
 
 ;;;;;;;;;;;;;;;
 ;; Variables ;;
@@ -52,6 +54,8 @@
 (setq inhibit-startup-message t)
 (setq compilation-scroll-output t)
 (defalias 'yes-or-no-p 'y-or-n-p)
+(when is-win32
+  (add-hook 'emacs-startup-hook 'toggle-frame-maximized))
 
 ;;;;;;;;;;;;
 ;; Themes ;;
@@ -59,8 +63,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'once t)
 
-; Bright todos
-(setq fixme-modes '(objc-mode c++-mode c-mode java-mode emacs-lisp-mode swift-mode kotlin-mode python-mode org-mode))
+(setq fixme-modes '(emacs-lisp-mode prog-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -84,28 +87,26 @@ fixme-modes)
 (modify-face 'font-lock-note-face "Dark Green" nil nil t nil t nil nil)
 (modify-face 'font-lock-doing-face "Orange" nil nil t nil t nil nil)
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Operation System Definitions ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (when is-macosx
-  (message "Loading from MACOSX")
   (setq taguiar-launchscript "./launch.sh")
+  (setq taguiar-pylsp "/usr/local/bin/pylsp")
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-todo-file "~/today.org")
   (setq taguiar-clangd-executable "/usr/bin/clangd")
   (setq mac-command-modifier 'meta)
-  (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 135))
-
-(when (not is-macosx)
-  (setq visible-bell t))
+  (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 150))
 
 (when is-win32
   (setq taguiar-launchscript "launch.bat")
+  (setq visible-bell t)
   (setq taguiar-todo-file "e:\\Tiago\\today.org")
   (setq taguiar-makescript "build.bat")
-
+  (setq taguiar-pylsp "TODO")
   ;; IMPORTANT: It's necessary to download clangd standalone for windows
-  (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe") 
+  (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
   (when (member "Liberation Mono" (font-family-list))
     (set-face-attribute 'default nil :font "Liberation Mono" :height 115)))
 
@@ -122,7 +123,7 @@ fixme-modes)
          ("\\.c8$"     . c++-mode)
          ("\\.txt$"    . indented-text-mode)
          ("\\.emacs$"  . emacs-lisp-mode)
-         ("\\emacs$"  . emacs-lisp-mode)
+         ("\\emacs$"   . emacs-lisp-mode)
          ("\\.gen$"    . gen-mode)
          ("\\.ms$"     . fundamental-mode)
          ("\\.m$"      . objc-mode)
@@ -149,11 +150,8 @@ fixme-modes)
 ;; Packages ;;
 ;;;;;;;;;;;;;;
 (use-package counsel)
-(use-package swiper)
 
-(use-package markdown-mode)
-(use-package groovy-mode)
-(use-package kotlin-mode)
+(use-package swiper)
 
 (use-package evil
   :init
@@ -175,36 +173,59 @@ fixme-modes)
   (setq ivy-height 20)
   :config
   (ivy-mode 1)
-  (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
-  (define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)
-  (define-key ivy-minibuffer-map (kbd "C-l") 'ivy-alt-done)
+  (define-key ivy-minibuffer-map    (kbd "C-j") 'ivy-next-line)
+  (define-key ivy-minibuffer-map    (kbd "C-k") 'ivy-previous-line)
+  (define-key ivy-minibuffer-map    (kbd "C-l") 'ivy-alt-done)
   (define-key ivy-switch-buffer-map (kbd "C-j") 'ivy-next-line)
   (define-key ivy-switch-buffer-map (kbd "C-d") 'ivy-switch-buffer-kill) ; Delete current item minibuffer
   (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line))
 
+;; IF yasnippet not working, try M-x yas-load-directory
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; IMPORTANT: required!!!			  ;;
+;;  M-x package-install RET yasnippet-snippets    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package yasnippet
+  :hook
+  ((python-mode) . yas-minor-mode))
+  ;; :config
+  ;; (add-hook 'kotlin-mode-hook #'yas-minor-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; IMPORTANT: required!!!			  ;;
+;; Python: pip3 install 'python-lsp-server[all]'  ;;
+;; Python: add .flake8 file to root project dir   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package lsp-mode
-  :ensure t
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-l")
+  (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100","D103"])
   ;; (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
-  ;; (setq lsp-pyls-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
-  ;; (setq lsp-pylsp-plugins-flake8-ignore ["E501", "E221"])
   ;; (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
   (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-pyls-server-command taguiar-pylsp)
+
+  ;; :bind (:map lsp-mode-map 
+	      ;; )
 
   ;; M-u    : find usage
   ;; M-i    : find implementation
-  :hook (
-         ;; (python-mode . lsp)
-         (kotlin-mode . lsp)
+  :hook 
+  (python-mode . lsp-deferred)
 	 ;; (c++-mode . lsp)
          ;; if you want which-key integration
          ;; (lsp-mode . lsp-enable-which-key-integration)
-	 )
-  :bind
+  :bind 
   ("M-RET" . lsp-execute-code-action)
-  :commands lsp)
+
+  :commands (lsp lsp-deferred))
+
+(use-package bind-key
+  :bind
+  (("C-c l d" . lsp-ui-peek-find-definitions))
+  (("C-c l b" . lsp-ui-peek-find-references))
+  )
 
 (use-package lsp-ui
   :after lsp-mode
@@ -214,31 +235,25 @@ fixme-modes)
   (lsp-ui-doc-position 'at-point))
 
 (use-package company
-  :ensure t
+  :init
+  (setq company-idle-delay 0.1)
+  (setq company-echo-delay 0)
+  (setq company-minimum-prefix-length 1)
   :bind (:map company-active-map
-         ("C-j" . company-select-next)
-         ("C-k" . company-select-previous))
-  :custom
-  (company-idle-delay 0.2)
-  (company-echo-delay 0)
-  (company-minimum-prefix-length 1)
-  :bind
-  ("C-SPC" . company-complete))
-
-;; IF yasnippet not working, try M-x yas-load-directory
-(use-package yasnippet
-  :config
-  (add-hook 'kotlin-mode-hook #'yas-minor-mode))
-
+         ("C-j"   . company-select-next)
+         ("C-k"   . company-select-previous)
+	 ("C-SPC" . company-complete))
+  :hook
+  ((python-mode) . company-mode)
+  )
 
 (use-package flycheck
-  :ensure t
   :init
-  (setq flycheck-display-errors-delay 0.3)
+  (setq flycheck-display-errors-delay 0.1)
   (setq sentence-end-double-space nil) ; fix "flycheck elisp there should be two spaces after period"
   (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
-  ;; :config
-  ;; (global-flycheck-mode))
+  :hook
+  ((python-mode) . flycheck-mode)
   )
 
 
@@ -294,6 +309,12 @@ fixme-modes)
 ;; (use-package gradle-mode
 ;;     :disabled t
 ;;   :ensure t)
+
+;; programming languages
+(use-package markdown-mode)
+(use-package groovy-mode)
+(use-package kotlin-mode)
+
 
 
 ;;;;;;;;;;;
@@ -528,3 +549,10 @@ fixme-modes)
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(error ((t (:foreground "firebrick2" :weight bold)))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))
