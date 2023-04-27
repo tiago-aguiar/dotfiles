@@ -99,6 +99,7 @@ fixme-modes)
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-todo-file "~/today.org")
   (setq taguiar-clangd-executable "/usr/bin/clangd")
+  (setq exec-path (append exec-path '("~/kotlin/kotlin-language-server/server/build/install/server/bin")))
   (setq mac-command-modifier 'meta)
   (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 150))
 
@@ -108,6 +109,7 @@ fixme-modes)
   (setq taguiar-todo-file "e:\\Tiago\\today.org")
   (setq taguiar-makescript "build.bat")
   (setq taguiar-pylsp "TODO")
+  (setq exec-path (append exec-path '("TODO kotlin path server")))
   ;; IMPORTANT: It's necessary to download clangd standalone for windows
   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
   (when (member "Liberation Mono" (font-family-list))
@@ -190,13 +192,17 @@ fixme-modes)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package yasnippet
   :hook
-  ((python-mode swift-mode) . yas-minor-mode))
+  ((python-mode swift-mode kotlin-mode) . yas-minor-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; IMPORTANT: required!!!			 ;;
-;; Python: pip3 install 'python-lsp-server[all]' ;;
-;; Python: add .flake8 file to root project dir	 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; IMPORTANT: required!!!			 			   ;;
+;; Python: pip3 install 'python-lsp-server[all]'			   ;;
+;; Python: add .flake8 file to root project dir				   ;;
+;; Kotlin:                             					   ;;
+;;   Download -> https://github.com/fwcd/kotlin-language-server		   ;;
+;;   build    -> ./gradlew :server:installDist				   ;;
+;;   add path -> above exe-path						   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
@@ -207,7 +213,8 @@ fixme-modes)
   (setq lsp-pyls-server-command taguiar-pylsp)
   :hook 
   (python-mode . lsp-deferred)
-  (swift-mode . lsp-deferred)
+  (kotlin-mode . lsp-deferred)
+  (swift-mode  . lsp-deferred)
 	 ;; (c++-mode . lsp)
          ;; if you want which-key integration
          ;; (lsp-mode . lsp-enable-which-key-integration)
@@ -237,7 +244,7 @@ fixme-modes)
          ("C-k"   . company-select-previous)
 	 ("C-SPC" . company-complete))
   :hook
-  ((python-mode swift-mode) . company-mode))
+  ((python-mode swift-mode kotlin-mode) . company-mode))
 
 (use-package flycheck
   :init
@@ -245,7 +252,7 @@ fixme-modes)
   (setq sentence-end-double-space nil) ; fix "flycheck elisp there should be two spaces after period"
   (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
   :hook
-  ((python-mode swift-mode) . flycheck-mode))
+  ((python-mode swift-mode kotlin-mode) . flycheck-mode))
 
 ;; (use-package haml-mode
 ;;   :disabled t
