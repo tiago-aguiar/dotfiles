@@ -65,7 +65,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'once t)
 
-(setq fixme-modes '(emacs-lisp-mode prog-mode))
+(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -113,7 +113,7 @@ fixme-modes)
   ;; IMPORTANT: It's necessary to download clangd standalone for windows
   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
   (when (member "Liberation Mono" (font-family-list))
-    (set-face-attribute 'default nil :font "Liberation Mono" :height 115)))
+    (set-face-attribute 'default nil :font "Liberation Mono" :height 125)))
 
 (setq auto-mode-alist
       (append
@@ -192,7 +192,7 @@ fixme-modes)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package yasnippet
   :hook
-  ((python-mode swift-mode kotlin-mode) . yas-minor-mode))
+  ((python-mode swift-mode kotlin-mode c++-mode) . yas-minor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; IMPORTANT: required!!!			 			   ;;
@@ -215,6 +215,7 @@ fixme-modes)
   (python-mode . lsp-deferred)
   (kotlin-mode . lsp-deferred)
   (swift-mode  . lsp-deferred)
+  (c++-mode    . lsp-deferred)
 	 ;; (c++-mode . lsp)
          ;; if you want which-key integration
          ;; (lsp-mode . lsp-enable-which-key-integration)
@@ -244,7 +245,7 @@ fixme-modes)
          ("C-k"   . company-select-previous)
 	 ("C-SPC" . company-complete))
   :hook
-  ((python-mode swift-mode kotlin-mode) . company-mode))
+  ((python-mode swift-mode kotlin-mode c++-mode) . company-mode))
 
 (use-package flycheck
   :init
@@ -252,7 +253,7 @@ fixme-modes)
   (setq sentence-end-double-space nil) ; fix "flycheck elisp there should be two spaces after period"
   (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
   :hook
-  ((python-mode swift-mode kotlin-mode) . flycheck-mode))
+  ((python-mode swift-mode kotlin-mode c++-mode) . flycheck-mode))
 
 ;; (use-package haml-mode
 ;;   :disabled t
