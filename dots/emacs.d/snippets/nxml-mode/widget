@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: widget
+# key: widget
+# --
+<$1 android:layout_width="$2"
+    android:layout_height="$3"
+    $4
+/>

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: consendend
+# key: consendend
+# --
+
+app:layout_constraintEnd_toEndOf="$1"

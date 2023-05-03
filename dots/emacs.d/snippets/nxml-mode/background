@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: background
+# key: background
+# --
+android:background="$1"

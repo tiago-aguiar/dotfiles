@@ -134,7 +134,7 @@ alias homewin='cd $HOME/..'
 alias tmk="tmux kill-session -t DEVENV"
 alias tms="tmux attach -t DEVENV || tmux new -s DEVENV"
 alias vim="nvim"
-alias emacs="emacs -daemon && emacsclient --no-wait --create-frame"
+alias ems="emacs -daemon && emacsclient --no-wait --create-frame"
 alias emt="emacsclient -nw"
 alias emk='emacsclient -e "(kill-emacs)"'
 

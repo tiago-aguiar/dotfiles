@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: padding
+# key: padding
+# --
+android:padding="$1"

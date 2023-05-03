@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: id
+# key: id
+# --
+android:id="@+id/$1"

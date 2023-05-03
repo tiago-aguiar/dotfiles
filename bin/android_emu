@@ -1,5 +1,0 @@
-#!/bin/bash
-
-DEVICE=Pixel_2_API_33
-~/Library/Android/sdk/tools/emulator -avd $DEVICE
-    echo "starting android emulator... ${DEVICE}"

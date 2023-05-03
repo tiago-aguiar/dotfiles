@@ -95,6 +95,7 @@ fixme-modes)
 (when is-macosx
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-pylsp "/usr/local/bin/pylsp")
+  (setq taguiar-xml-jar "~/.emacs.d/.cache/lsp/xmlls/org.eclipse.lemminx-uber.jar")
   (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-todo-file "~/today.org")
@@ -192,7 +193,7 @@ fixme-modes)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package yasnippet
   :hook
-  ((python-mode swift-mode kotlin-mode c++-mode) . yas-minor-mode))
+  ((python-mode swift-mode kotlin-mode c++-mode nxml-mode) . yas-minor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; IMPORTANT: required!!!			 			   ;;
@@ -210,11 +211,13 @@ fixme-modes)
   ;; (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
   ;; (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
   (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-xml-jar-file taguiar-xml-jar) ;; IMPORTANT: Compile manually from https://github.com/eclipse/lemminx
   (setq lsp-pyls-server-command taguiar-pylsp)
   :hook 
   (python-mode . lsp-deferred)
   (kotlin-mode . lsp-deferred)
   (swift-mode  . lsp-deferred)
+  (nxml-mode   . lsp-deferred)
   (c++-mode    . lsp-deferred)
 	 ;; (c++-mode . lsp)
          ;; if you want which-key integration
@@ -540,7 +543,6 @@ fixme-modes)
 ;; =========================
 
 ;; comment-box
-
 (provide 'emacs)
 ;;; emacs ends here
 (custom-set-faces
@@ -555,4 +557,4 @@ fixme-modes)
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(company-sourcekit lsp-sourcekit swift-mode yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))
+   '(company-xsd company-sourcekit lsp-sourcekit swift-mode yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))

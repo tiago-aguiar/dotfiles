@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: shimmer
+# key: shimmer
+# --
+
+<com.facebook.shimmer.ShimmerFrameLayout
+     android:id="@+id/${1:shimmer_container}"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content">
+    $0
+</com.facebook.shimmer.ShimmerFrameLayout>
