@@ -1,4 +1,4 @@
-;;; package --- Summary;
+;(face-attribute 'default :font);; package --- Summary;
 
 ;;; Commentary:
 ;; NOTE: How to access desktop files from MacOSX:
@@ -92,17 +92,26 @@ fixme-modes)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Operation System Definitions ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my-configure-font (frame)
+  "Configure font given initial non-daemon FRAME.
+Intended for `after-make-frame-functions'."
+  ;; Do stuff with FRAME...
+  (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 155)
+  (remove-hook 'after-make-frame-functions #'my-configure-font))
+
 (when is-macosx
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-pylsp "/usr/local/bin/pylsp")
-  (setq taguiar-xml-jar "~/.emacs.d/.cache/lsp/xmlls/org.eclipse.lemminx-uber.jar")
+  (setq taguiar-xml-jar "/Users/tiagoaguiar/.emacs.d/.cache/lsp/xmlls/org.eclipse.lemminx-uber.jar")
   (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-todo-file "~/today.org")
   (setq taguiar-clangd-executable "/usr/bin/clangd")
   (setq exec-path (append exec-path '("~/kotlin/kotlin-language-server/server/build/install/server/bin")))
   (setq mac-command-modifier 'meta)
-  (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 150))
+  (add-hook 'after-make-frame-functions #'my-configure-font))
+
+
 
 (when is-win32
   (setq taguiar-launchscript "launch.bat")
@@ -216,7 +225,6 @@ fixme-modes)
   :hook 
   (python-mode . lsp-deferred)
   (kotlin-mode . lsp-deferred)
-  (swift-mode  . lsp-deferred)
   (nxml-mode   . lsp-deferred)
   (c++-mode    . lsp-deferred)
 	 ;; (c++-mode . lsp)
@@ -296,17 +304,17 @@ fixme-modes)
 ;;
 ;;   $ xcodebuild -configuration Debug -showBuildSettings
 ;;
-(use-package lsp-sourcekit
-  :after lsp-mode
-  :config
-  (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
+;; (use-package lsp-sourcekit
+  ;; :after lsp-mode
+  ;; :config
+  ;; (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
 
 (when is-macosx
   (use-package company-sourcekit
     :ensure t
     :config
-    (setq company-sourcekit-verbose nil)
-    (setq sourcekit-verbose nil)
+    (setq company-sourcekit-verbose t)
+    (setq sourcekit-verbose t)
     (setq sourcekit-sourcekittendaemon-executable taguiar-sourcekit)
     (add-to-list 'company-backends 'company-sourcekit)))
 
