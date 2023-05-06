@@ -53,6 +53,7 @@
 (global-hl-line-mode 0)
 (electric-pair-mode 1)
 (blink-cursor-mode t)
+(setq-default truncate-lines t)
 (setq inhibit-startup-message t)
 (setq compilation-scroll-output t)
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -63,9 +64,9 @@
 ;; Themes ;;
 ;;;;;;;;;;;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'once t)
+(load-theme 'taguiar-dark t)
 
-(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode))
+(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode objc-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -96,7 +97,7 @@ fixme-modes)
   "Configure font given initial non-daemon FRAME.
 Intended for `after-make-frame-functions'."
   ;; Do stuff with FRAME...
-  (set-face-attribute 'default nil :font "Liberation Mono for Powerline" :height 155)
+  (set-face-attribute 'default nil :font "SF Mono Powerline" :height 160 :bold nil)
   (remove-hook 'after-make-frame-functions #'my-configure-font))
 
 (when is-macosx
@@ -202,7 +203,7 @@ Intended for `after-make-frame-functions'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package yasnippet
   :hook
-  ((python-mode swift-mode kotlin-mode c++-mode nxml-mode) . yas-minor-mode))
+  ((python-mode swift-mode kotlin-mode c++-mode nxml-mode objc-mode) . yas-minor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; IMPORTANT: required!!!			 			   ;;
@@ -227,6 +228,7 @@ Intended for `after-make-frame-functions'."
   (kotlin-mode . lsp-deferred)
   (nxml-mode   . lsp-deferred)
   (c++-mode    . lsp-deferred)
+  (objc-mode   . lsp-deferred)
 	 ;; (c++-mode . lsp)
          ;; if you want which-key integration
          ;; (lsp-mode . lsp-enable-which-key-integration)
@@ -516,6 +518,7 @@ Intended for `after-make-frame-functions'."
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-s") 'swiper-isearch)
+(global-set-key (kbd "C-c =") 'align-regexp)
 
 (define-key global-map [f9] 'first-error)
 
@@ -559,10 +562,11 @@ Intended for `after-make-frame-functions'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(error ((t (:foreground "firebrick2" :weight bold)))))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(company-xsd company-sourcekit lsp-sourcekit swift-mode yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))
+   '(vterm company-xsd company-sourcekit lsp-sourcekit swift-mode yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))
