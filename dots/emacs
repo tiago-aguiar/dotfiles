@@ -66,6 +66,8 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'taguiar-dark t)
 
+(global-font-lock-mode 1)
+
 (setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode objc-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
@@ -123,8 +125,15 @@ Intended for `after-make-frame-functions'."
   (setq exec-path (append exec-path '("TODO kotlin path server")))
   ;; IMPORTANT: It's necessary to download clangd standalone for windows
   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
-  (when (member "Liberation Mono" (font-family-list))
-    (set-face-attribute 'default nil :font "Liberation Mono" :height 125)))
+
+  ;; NOTE: Jon Themes
+  (when (member "Consolas" (font-family-list))
+    (set-face-attribute 'default nil :font "Consolas" :height 135))
+
+  ;; NOTE: Tiago Themes
+  ;; (when (member "Liberation Mono" (font-family-list))
+    ;; (set-face-attribute 'default nil :font "Liberation Mono" :height 125))
+  )
 
 (setq auto-mode-alist
       (append
@@ -219,7 +228,7 @@ Intended for `after-make-frame-functions'."
   (setq lsp-keymap-prefix "C-c l")
   (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100","D103"])
   ;; (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
-  ;; (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
+  (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq lsp-xml-jar-file taguiar-xml-jar) ;; IMPORTANT: Compile manually from https://github.com/eclipse/lemminx
   (setq lsp-pyls-server-command taguiar-pylsp)
@@ -258,7 +267,7 @@ Intended for `after-make-frame-functions'."
          ("C-k"   . company-select-previous)
 	 ("C-SPC" . company-complete))
   :hook
-  ((python-mode swift-mode kotlin-mode c++-mode) . company-mode))
+  ((python-mode swift-mode kotlin-mode) . company-mode))
 
 (use-package flycheck
   :init
