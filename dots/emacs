@@ -114,8 +114,6 @@ Intended for `after-make-frame-functions'."
   (setq mac-command-modifier 'meta)
   (add-hook 'after-make-frame-functions #'my-configure-font))
 
-
-
 (when is-win32
   (setq taguiar-launchscript "launch.bat")
   (setq visible-bell t)
@@ -123,16 +121,13 @@ Intended for `after-make-frame-functions'."
   (setq taguiar-makescript "build.bat")
   (setq taguiar-pylsp "TODO")
   (setq exec-path (append exec-path '("TODO kotlin path server")))
+  (setq taguiar-xml-jar "TODO")
   ;; IMPORTANT: It's necessary to download clangd standalone for windows
   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
-
-  ;; NOTE: Jon Themes
   (when (member "Consolas" (font-family-list))
-    (set-face-attribute 'default nil :font "Consolas" :height 135))
-
-  ;; NOTE: Tiago Themes
-  ;; (when (member "Liberation Mono" (font-family-list))
-    ;; (set-face-attribute 'default nil :font "Liberation Mono" :height 125))
+    ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
+    ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
+    (set-face-attribute 'default nil :font "Lucida Console-12.5" :bold nil))
   )
 
 (setq auto-mode-alist
@@ -577,5 +572,7 @@ Intended for `after-make-frame-functions'."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("d569651346538df7243d016a4c73a6b16934a173fa48fe1a7864728a97336670" "f9730fb2f4272fb300ae0626eddd27da50b0381a4092631294f619fda85af9c1" "45ba8e98668f69f88efc29ef9222062f8bb720fcba79287a37ae983101c2bf73" "a7acb88d4302d7d7c3d0f3e83d0149a20249251ce62d1639d2b6ab77a17337d9" "39fafedcbe5944be8f78d6de9afd9784d8cee8b9c3d0490157cf2704e9609ae9" "a415200fedf9a4281465e5f26eef398c36545fdb87d3f01262f632c5e93ddd95" "d252e32478ae6c81c9ad91efa5755da4beb5c647ab0b984c1c487c48f5ccd0c2" "8baeacfc55743a3fc80095bb8e40d077754259835e11c3df4c61714d1a50c22e" default))
  '(package-selected-packages
    '(vterm company-xsd company-sourcekit lsp-sourcekit swift-mode yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))
