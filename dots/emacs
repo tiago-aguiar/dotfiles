@@ -114,8 +114,6 @@ Intended for `after-make-frame-functions'."
   (setq mac-command-modifier 'meta)
   (add-hook 'after-make-frame-functions #'my-configure-font))
 
-
-
 (when is-win32
   (setq taguiar-launchscript "launch.bat")
   (setq visible-bell t)
@@ -123,16 +121,13 @@ Intended for `after-make-frame-functions'."
   (setq taguiar-makescript "build.bat")
   (setq taguiar-pylsp "TODO")
   (setq exec-path (append exec-path '("TODO kotlin path server")))
+  (setq taguiar-xml-jar "TODO")
   ;; IMPORTANT: It's necessary to download clangd standalone for windows
   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
-
-  ;; NOTE: Jon Themes
   (when (member "Consolas" (font-family-list))
-    (set-face-attribute 'default nil :font "Consolas" :height 135))
-
-  ;; NOTE: Tiago Themes
-  ;; (when (member "Liberation Mono" (font-family-list))
-    ;; (set-face-attribute 'default nil :font "Liberation Mono" :height 125))
+    ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
+    ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
+    (set-face-attribute 'default nil :font "Lucida Console-12.5" :bold nil))
   )
 
 (setq auto-mode-alist
@@ -583,7 +578,5 @@ Intended for `after-make-frame-functions'."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("e905e6f50d8a192aed513f8204c889689a491a149a29d94fe0a17b1b9589e6be" "e9076a049573057404f25fc9469ddc7351a27ba5af601ac0dae735498dcd37bd" default))
  '(package-selected-packages
    '(org-superstar vterm company-xsd company-sourcekit lsp-sourcekit swift-mode yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))
