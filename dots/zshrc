@@ -29,6 +29,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 
     export ANDROID_SDK_ROOT=~/Library/Android/Sdk
     ANDROID_HOME=~/Library/Android/Sdk
+    export PATH=$PATH:/$HOME/bin/kotlin-native-macos-x86_64-1.8.21/bin
+    export PATH=$PATH:/$HOME/bin/kotlinc/bin
     export PATH=$PATH:/Library/TeX/texbin
 
 elif [[ "$OSTYPE" == "win32" ]]; then
