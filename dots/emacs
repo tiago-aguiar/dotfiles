@@ -51,7 +51,7 @@
 (scroll-bar-mode -1)
 (show-paren-mode t)
 (global-hl-line-mode 0)
-(electric-pair-mode 1)
+(electric-pair-mode -1)
 (blink-cursor-mode t)
 (setq-default truncate-lines t)
 (setq inhibit-startup-message t)
@@ -64,7 +64,7 @@
 ;; Themes ;;
 ;;;;;;;;;;;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'taguiar-dark t)
+(load-theme 'taguiar-light t)
 
 (global-font-lock-mode 1)
 
