@@ -260,8 +260,8 @@ Intended for `after-make-frame-functions'."
 
 (use-package company
   :init
-  (setq company-idle-delay 0.1)
-  (setq company-echo-delay 0)
+  (setq company-idle-delay 0.2)
+  (setq company-echo-delay 0.1)
   (setq company-minimum-prefix-length 1)
   :bind (:map company-active-map
          ("C-j"   . company-select-next)
@@ -317,9 +317,9 @@ Intended for `after-make-frame-functions'."
 ;;   $ xcodebuild -configuration Debug -showBuildSettings
 ;;
 ;; (use-package lsp-sourcekit
-  ;; :after lsp-mode
-  ;; :config
-  ;; (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
+;;   :after lsp-mode
+;;   :config
+;;   (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
 
 (when is-macosx
   (use-package company-sourcekit
