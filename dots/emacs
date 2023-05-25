@@ -21,6 +21,10 @@
 ;; Show yasnippets available: yas-describe-tables
 
 ;;; Code:
+;; (setenv "LIBRARY_PATH" "/usr/local/Cellar/gcc/13.1.0:/usr/local/Cellar/libgccjit/13.1.0/lib/gcc/current:/usr/local/Cellar/gcc/13.1.0/lib/gcc/current/gcc/x86_64-apple-darwin22/13")
+
+;; (warning-minimum-level :error)
+(set (make-local-variable 'warning-minimum-level) 'error)
 
 ;; keep this on top of your .emacs!!!
 (defvar *emacs-load-start* (current-time))
@@ -53,7 +57,7 @@
 (global-hl-line-mode 0)
 (electric-pair-mode -1)
 (blink-cursor-mode t)
-(setq-default truncate-lines t)
+(setq-default truncate-lines -1) ;; wrap
 (setq inhibit-startup-message t)
 (setq compilation-scroll-output t)
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -112,6 +116,10 @@ Intended for `after-make-frame-functions'."
   (setq taguiar-clangd-executable "/usr/bin/clangd")
   (setq exec-path (append exec-path '("~/kotlin/kotlin-language-server/server/build/install/server/bin")))
   (setq mac-command-modifier 'meta)
+  (when (member "SF Mono Powerline" (font-family-list))
+    ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
+    ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
+    (set-face-attribute 'default nil :font "SF Mono Powerline-16" :bold nil))
   (add-hook 'after-make-frame-functions #'my-configure-font))
 
 (when is-win32
@@ -572,13 +580,3 @@ Intended for `after-make-frame-functions'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(error ((t (:foreground "firebrick2" :weight bold)))))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("e905e6f50d8a192aed513f8204c889689a491a149a29d94fe0a17b1b9589e6be" "e9076a049573057404f25fc9469ddc7351a27ba5af601ac0dae735498dcd37bd" default))
- '(package-selected-packages
-   '(org-superstar vterm company-xsd company-sourcekit lsp-sourcekit swift-mode yasnippet-snippets flycheck yasnippet company lsp-ui lsp-mode smart-mode-line evil kotlin-mode groovy-mode markdown-mode counsel use-package)))
