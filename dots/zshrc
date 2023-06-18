@@ -8,7 +8,7 @@
 # ===============                
 
 export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jbr/Contents/Home
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/go/bin:$HOME/bin:/usr/local/bin:$PATH
 export PATH=$JAVA_HOME/bin:$PATH
 export PATH="$PATH:/opt/flutter/bin"
 export PATH="$PATH:/usr/lib/dart/bin"
@@ -48,7 +48,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="sunrise"
+ZSH_THEME="evan"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"

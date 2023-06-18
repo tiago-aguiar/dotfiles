@@ -68,7 +68,7 @@
 ;; Themes ;;
 ;;;;;;;;;;;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'taguiar-light t)
+(load-theme 'taguiar-dark t)
 
 (global-font-lock-mode 1)
 
@@ -119,7 +119,7 @@ Intended for `after-make-frame-functions'."
   (when (member "SF Mono Powerline" (font-family-list))
     ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
     ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
-    (set-face-attribute 'default nil :font "SF Mono Powerline-16" :bold nil))
+    (set-face-attribute 'default nil :font "SF Mono Powerline-24" :bold nil))
   (add-hook 'after-make-frame-functions #'my-configure-font))
 
 (when is-win32
@@ -243,10 +243,10 @@ Intended for `after-make-frame-functions'."
   (setq lsp-pyls-server-command taguiar-pylsp)
   :hook 
   (python-mode . lsp-deferred)
-  (kotlin-mode . lsp-deferred)
   (nxml-mode   . lsp-deferred)
   (c++-mode    . lsp-deferred)
   (objc-mode   . lsp-deferred)
+  (go-mode     . lsp-deferred)
 	 ;; (c++-mode . lsp)
          ;; if you want which-key integration
          ;; (lsp-mode . lsp-enable-which-key-integration)
@@ -285,6 +285,13 @@ Intended for `after-make-frame-functions'."
   (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
   :hook
   ((python-mode swift-mode kotlin-mode c++-mode) . flycheck-mode))
+
+(add-hook 'go-mode-hook
+  (lambda ()
+    (setq-default)
+    (setq tab-width 4)
+    (setq standard-indent 4)
+    (setq indent-tabs-mode nil)))
 
 ;; (use-package haml-mode
 ;;   :disabled t
@@ -346,6 +353,7 @@ Intended for `after-make-frame-functions'."
 (use-package markdown-mode)
 (use-package groovy-mode)
 (use-package kotlin-mode)
+(use-package go-mode)
 ;; M-x package-install RET swift-mode
 
 ;;;;;;;;;;;
@@ -555,6 +563,7 @@ Intended for `after-make-frame-functions'."
 (define-key global-map "\e?" 'comment-dwim)
 (define-key global-map "\e0" 'delete-other-windows)
 (define-key global-map "\em" 'make-without-asking)
+(define-key global-map "\eM" 'recompile)
 (define-key global-map "\en" 'next-error)
 (define-key global-map "\eN" 'previous-error)
 (define-key global-map "\er" 'launch-without-asking)
@@ -580,3 +589,7 @@ Intended for `after-make-frame-functions'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(error ((t (:foreground "firebrick2" :weight bold)))))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
