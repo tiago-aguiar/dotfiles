@@ -103,7 +103,7 @@ fixme-modes)
   "Configure font given initial non-daemon FRAME.
 Intended for `after-make-frame-functions'."
   ;; Do stuff with FRAME...
-  (set-face-attribute 'default nil :font "SF Mono Powerline" :height 160 :bold nil)
+  (set-face-attribute 'default nil :font "SF Mono" :height 160 :bold nil)
   (remove-hook 'after-make-frame-functions #'my-configure-font))
 
 (when is-macosx
@@ -116,10 +116,10 @@ Intended for `after-make-frame-functions'."
   (setq taguiar-clangd-executable "/usr/bin/clangd")
   (setq exec-path (append exec-path '("~/kotlin/kotlin-language-server/server/build/install/server/bin")))
   (setq mac-command-modifier 'meta)
-  (when (member "SF Mono Powerline" (font-family-list))
+  (when (member "SF Mono" (font-family-list))
     ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
     ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
-    (set-face-attribute 'default nil :font "SF Mono Powerline-24" :bold nil))
+    (set-face-attribute 'default nil :font "SF Mono-16" :bold nil))
   (add-hook 'after-make-frame-functions #'my-configure-font))
 
 (when is-win32

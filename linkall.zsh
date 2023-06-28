@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/zsh
 
 # Color constants
 yellow="\e[33;40m"
@@ -43,13 +43,8 @@ echo "Creating symlinks for all configuration files in $SCRIPTPATH"
 echo ""
 
 # setup ohmyzsh
-FILE=/bin/zsh
-if [ ! -f "$FILE" ]; then
-    echo "Downloading zshell."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
-else 
-    echo "$FILE already exists."
-fi
+echo "Downloading zshell."
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
 rm -rf $HOME/.zshrc
 
 # make symlink to folder $SCRIPTPATH
@@ -68,7 +63,7 @@ for dotfile in `find $SCRIPTPATH -mindepth 1 -maxdepth 1`; do
 		fi
 	fi
 
-	echo " $dotfile -> $linkfile... "
+	echo " $dotfile => $linkfile... "
 done
 
 # Build the bin
@@ -105,6 +100,10 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         brew install the_silver_searcher
         brew install neovim
         brew install tmux
+        brew install chruby ruby-install xz
+
+        # Install specific ruby version for jekyll
+        ruby-install ruby 3.1.2
 
     else 
         echo "$FILE already exists."
@@ -128,7 +127,7 @@ else
 fi
 
 ln -s $LNOPTS "`pwd`/init.vim" "$HOME/.config/nvim/init.vim" > /dev/null 2>&1
-ln -s $LNOPTS "`pwd`/alacritty.yml" "$HOME/.config/alacritty.yml" > /dev/null 2>&1
+# ln -s $LNOPTS "`pwd`/alacritty.yml" "$HOME/.config/alacritty.yml" > /dev/null 2>&1
 # TODO: change to forloop
 ln -s $LNOPTS "`pwd`/boilers/cpp.txt" "$HOME/.vim/boilers/cpp.txt" > /dev/null 2>&1
 
@@ -168,6 +167,7 @@ for script in `find $BINPATH -mindepth 1 -maxdepth 1`; do
   fi
   echo " $script -> $linkfile... "
 done
+
 
 # Return to original pwd.
 popd > /dev/null

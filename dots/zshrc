@@ -136,10 +136,9 @@ alias homewin='cd $HOME/..'
 alias tmk="tmux kill-session -t DEVENV"
 alias tms="tmux attach -t DEVENV || tmux new -s DEVENV"
 alias vim="nvim"
-alias emacs="~/Applications/emacs/src/./emacs &"
-alias ems="~/Applications/emacs/src/emacs -daemon && ~/Applications/emacs/lib-src/emacsclient --no-wait --create-frame"
-alias emt="emacsclient -nw"
-alias emk='emacsclient -e "(kill-emacs)"'
+alias ems="/Applications/Emacs.app/Contents/MacOS/Emacs -daemon && /Applications/Emacs.app/Contents/MacOS/bin/emacsclient --no-wait --create-frame"
+alias emt="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -nw"
+alias emk='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -e "(kill-emacs)"'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
