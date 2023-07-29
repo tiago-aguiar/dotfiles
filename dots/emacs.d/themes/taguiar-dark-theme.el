@@ -6,7 +6,7 @@
 
 (custom-theme-set-faces
  'taguiar-dark
-  '(default ((t (:background "black" :foreground "burlywood3"))))
+  '(default ((t (:background "#161616" :foreground "burlywood3"))))
 
   '(font-lock-builtin-face        ((t (:foreground "RosyBrown4"))))
   '(font-lock-constant-face       ((t (:foreground "OliveDrab3"))))
