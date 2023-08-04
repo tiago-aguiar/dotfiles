@@ -21,20 +21,6 @@
 ;; Show yasnippets available: yas-describe-tables
 
 ;;; Code:
-;; (setenv "LIBRARY_PATH" "/usr/local/Cellar/gcc/13.1.0:/usr/local/Cellar/libgccjit/13.1.0/lib/gcc/current:/usr/local/Cellar/gcc/13.1.0/lib/gcc/current/gcc/x86_64-apple-darwin22/13")
-
-;; (warning-minimum-level :error)
-
-;;;;;;;;; ===== comment (set (make-local-variable 'warning-minimum-level) 'error)
-
-;;;;;;;;; ===== comment ;; keep this on top of your .emacs!!!
-;;;;;;;;; ===== comment (defvar *emacs-load-start* (current-time))
-;;;;;;;;; ===== comment (defun taguiar/time-to-ms (time)
-;;;;;;;;; ===== comment   (+ (* (+ (* (car time) (expt 2 16)) (car (cdr time))) 1000000) (car (cdr (cdr time)))))
-;;;;;;;;; ===== comment (defun taguiar/display-timing ()
-;;;;;;;;; ===== comment   "time the loading of the .emacs"
-;;;;;;;;; ===== comment   (message ".emacs loaded in %fms" (/ (- (taguiar/time-to-ms (current-time)) (taguiar/time-to-ms *emacs-load-start*)) 1000000.0)))
-;;;;;;;;; ===== comment (add-hook 'after-init-hook 'taguiar/display-timing t)
 
 ;;;;;;;;;;;;;;;
 ;; Variables ;;
@@ -55,22 +41,20 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (show-paren-mode t)
-;;;;;;;;; ===== comment (global-hl-line-mode 0)
-;;;;;;;;; ===== comment (electric-pair-mode -1)
-(blink-cursor-mode t)
-;;;;;;;;; ===== comment (setq inhibit-startup-message t)
-;;;;;;;;; ===== comment (setq compilation-scroll-output t)
+(global-hl-line-mode 0)
+(electric-pair-mode -1)
+(blink-cursor-mode 1)
+;;(setq inhibit-startup-message t)
+(setq compilation-scroll-output t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment ;;;;;;;;;;;;
-;;;;;;;;; ===== comment ;; Themes ;;
-;;;;;;;;; ===== comment ;;;;;;;;;;;;
+
+;;;;;;;;;;;;
+;; Themes ;;
+;;;;;;;;;;;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'jon t)
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (global-font-lock-mode 1)
-;;;;;;;;; ===== comment 
+(load-theme 'taguiar-dark t)
+
 (setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode objc-mode python-mode kotlin-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
@@ -98,48 +82,35 @@ fixme-modes)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Operation System Definitions ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;; ===== comment (defun my-configure-font (frame)
-;;;;;;;;; ===== comment   "Configure font given initial non-daemon FRAME.
-;;;;;;;;; ===== comment Intended for `after-make-frame-functions'."
-;;;;;;;;; ===== comment   ;; Do stuff with FRAME...
-;;;;;;;;; ===== comment   (set-face-attribute 'default nil :font "SF Mono" :height 160 :bold nil)
-;;;;;;;;; ===== comment   (remove-hook 'after-make-frame-functions #'my-configure-font))
-;;;;;;;;; ===== comment 
 (when is-macosx
   (setq taguiar-launchscript "./launch.sh")
-;;;;;;;;; ===== comment   (setq taguiar-pylsp "/usr/local/bin/pylsp")
-;;;;;;;;; ===== comment   (setq taguiar-xml-jar "/Users/tiagoaguiar/.emacs.d/.cache/lsp/xmlls/org.eclipse.lemminx-uber.jar")
-;;;;;;;;; ===== comment   (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
+;;(setq taguiar-pylsp "/usr/local/bin/pylsp")
+;;(setq taguiar-xml-jar "/Users/tiagoaguiar/.emacs.d/.cache/lsp/xmlls/org.eclipse.lemminx-uber.jar")
+;;(setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-todo-file "~/today.org")
-;;;;;;;;; ===== comment   (setq taguiar-clangd-executable "/usr/bin/clangd")
-;;;;;;;;; ===== comment   (setq exec-path (append exec-path '("~/kotlin/kotlin-language-server/server/build/install/server/bin")))
+;;(setq taguiar-clangd-executable "/usr/bin/clangd")
+;;(setq exec-path (append exec-path '("~/kotlin/kotlin-language-server/server/build/install/server/bin")))
   (setq mac-command-modifier 'meta)
   (when (member "SF Mono" (font-family-list))
     (message "SF Mono font loaded")
-     (set-face-attribute 'default nil :font "SF Mono-13" :bold nil)
-  ;; (when (member "Liberation Mono" (font-family-list))
-     ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
-  ;; (when (member "Consolas" (font-family-list))
-     ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
-     )
+     (set-face-attribute 'default nil :font "SF Mono-13" :bold nil))
   )
-  ;; (add-hook 'after-make-frame-functions #'my-configure-font))
 
 (when is-win32
   (setq taguiar-launchscript "launch.bat")
   (setq visible-bell t)
   (setq taguiar-todo-file "e:\\Tiago\\today.org")
   (setq taguiar-makescript "build.bat")
-;;;;;;;;; ===== comment   (setq taguiar-pylsp "TODO")
-;;;;;;;;; ===== comment   (setq exec-path (append exec-path '("TODO kotlin path server")))
-;;;;;;;;; ===== comment   (setq taguiar-xml-jar "TODO")
-;;;;;;;;; ===== comment   ;; IMPORTANT: It's necessary to download clangd standalone for windows
-;;;;;;;;; ===== comment   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
-;;;;;;;;; ===== comment   (when (member "Consolas" (font-family-list))
-;;;;;;;;; ===== comment     ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
-;;;;;;;;; ===== comment     ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
-;;;;;;;;; ===== comment     (set-face-attribute 'default nil :font "Lucida Console-12.5" :bold nil))
+;;(setq taguiar-pylsp "")
+;;(setq exec-path (append exec-path '("kotlin path server")))
+;;(setq taguiar-xml-jar "")
+;;;; IMPORTANT: It's necessary to download clangd standalone for windows
+;;(setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
+;;(when (member "Consolas" (font-family-list))
+;;  ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
+;;  ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
+;;  (set-face-attribute 'default nil :font "Lucida Console-12.5" :bold nil))
 )
 
 (setq auto-mode-alist
@@ -180,30 +151,17 @@ fixme-modes)
 ;; Packages ;;
 ;;;;;;;;;;;;;;
 (use-package counsel)
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (use-package swiper)
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (use-package org-superstar
-;;;;;;;;; ===== comment   :config
-;;;;;;;;; ===== comment   (setq org-superstar-special-todo-items t)
-;;;;;;;;; ===== comment   (add-hook 'org-mode-hook (lambda ()
-;;;;;;;;; ===== comment 			     (org-superstar-mode 1))))
-;;;;;;;;; ===== comment 
+
+;;(use-package swiper)
+
 (use-package evil
   :init
-  (setq evil-insert-state-cursor '(box "green1"))
-  (setq evil-normal-state-cursor '(box "DeepSkyBlue"))
+  (setq evil-insert-state-cursor '(box "light green"))
+  (setq evil-normal-state-cursor '(box "green1"))
   :config
   (evil-mode 1)
   (evil-set-initial-state 'shell-script-mode 'emacs))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (use-package smart-mode-line ;; like powerline
-;;;;;;;;; ===== comment   :init
-;;;;;;;;; ===== comment   (setq sml/no-confirm-load-theme t)
-;;;;;;;;; ===== comment   (setq sml/theme 'respectful)
-;;;;;;;;; ===== comment   :config
-;;;;;;;;; ===== comment   (sml/setup))
-;;;;;;;;; ===== comment 
+ 
  (use-package ivy
    :init
    (setq ivy-height 40)
@@ -215,134 +173,130 @@ fixme-modes)
    (define-key ivy-switch-buffer-map (kbd "C-j") 'ivy-next-line)
    (define-key ivy-switch-buffer-map (kbd "C-d") 'ivy-switch-buffer-kill) ; Delete current item minibuffer
    (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;; ===== comment ;; IF yasnippet not working, try M-x yas-load-directory    ;;
-;;;;;;;;; ===== comment ;; IMPORTANT: required!!!				   ;;
-;;;;;;;;; ===== comment ;;  M-x package-install RET yasnippet-snippets	           ;;
-;;;;;;;;; ===== comment ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;; ===== comment (use-package yasnippet
-;;;;;;;;; ===== comment   :hook
-;;;;;;;;; ===== comment   ((python-mode swift-mode kotlin-mode c++-mode nxml-mode objc-mode) . yas-minor-mode))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;; ===== comment ;; IMPORTANT: required!!!			 			   ;;
-;;;;;;;;; ===== comment ;; Python: pip3 install 'python-lsp-server[all]'			   ;;
-;;;;;;;;; ===== comment ;; Python: add .flake8 file to root project dir				   ;;
-;;;;;;;;; ===== comment ;; Kotlin:                             					   ;;
-;;;;;;;;; ===== comment ;;   Download -> https://github.com/fwcd/kotlin-language-server		   ;;
-;;;;;;;;; ===== comment ;;   build    -> ./gradlew :server:installDist				   ;;
-;;;;;;;;; ===== comment ;;   add path -> above exe-path						   ;;
-;;;;;;;;; ===== comment ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;; ===== comment (use-package lsp-mode
-;;;;;;;;; ===== comment   :init
-;;;;;;;;; ===== comment   (setq lsp-keymap-prefix "C-c l")
-;;;;;;;;; ===== comment   (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100","D103"])
-;;;;;;;;; ===== comment   ;; (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
-;;;;;;;;; ===== comment   (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
-;;;;;;;;; ===== comment   (setq lsp-headerline-breadcrumb-enable nil)
-;;;;;;;;; ===== comment   (setq lsp-xml-jar-file taguiar-xml-jar) ;; IMPORTANT: Compile manually from https://github.com/eclipse/lemminx
-;;;;;;;;; ===== comment   (setq lsp-pyls-server-command taguiar-pylsp)
-;;;;;;;;; ===== comment   :hook 
-;;;;;;;;; ===== comment   (python-mode . lsp-deferred)
-;;;;;;;;; ===== comment   (nxml-mode   . lsp-deferred)
-;;;;;;;;; ===== comment   (c++-mode    . lsp-deferred)
-;;;;;;;;; ===== comment   (objc-mode   . lsp-deferred)
-;;;;;;;;; ===== comment   (go-mode     . lsp-deferred)
-;;;;;;;;; ===== comment 	 ;; (c++-mode . lsp)
-;;;;;;;;; ===== comment          ;; if you want which-key integration
-;;;;;;;;; ===== comment          ;; (lsp-mode . lsp-enable-which-key-integration)
-;;;;;;;;; ===== comment   :bind 
-;;;;;;;;; ===== comment   ("M-RET" . lsp-execute-code-action)
-;;;;;;;;; ===== comment   :commands (lsp lsp-deferred))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (use-package bind-key
-;;;;;;;;; ===== comment   :bind
-;;;;;;;;; ===== comment   (("C-c l d" . lsp-ui-peek-find-definitions))
-;;;;;;;;; ===== comment   (("C-c l b" . lsp-ui-peek-find-references)))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (use-package lsp-ui
-;;;;;;;;; ===== comment   :after lsp-mode
-;;;;;;;;; ===== comment   :custom
-;;;;;;;;; ===== comment   (lsp-ui-sideline-show-code-actions t)
-;;;;;;;;; ===== comment   (lsp-ui-sideline-show-diagnostics t)
-;;;;;;;;; ===== comment   (lsp-ui-doc-position 'at-point))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (use-package company
-;;;;;;;;; ===== comment   :init
-;;;;;;;;; ===== comment   (setq company-idle-delay 0.2)
-;;;;;;;;; ===== comment   (setq company-echo-delay 0.1)
-;;;;;;;;; ===== comment   (setq company-minimum-prefix-length 1)
-;;;;;;;;; ===== comment   :bind (:map company-active-map
-;;;;;;;;; ===== comment          ("C-j"   . company-select-next)
-;;;;;;;;; ===== comment          ("C-k"   . company-select-previous)
-;;;;;;;;; ===== comment 	 ("C-SPC" . company-complete))
-;;;;;;;;; ===== comment   :hook
-;;;;;;;;; ===== comment   ((python-mode swift-mode kotlin-mode) . company-mode))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (use-package flycheck
-;;;;;;;;; ===== comment   :init
-;;;;;;;;; ===== comment   (setq flycheck-display-errors-delay 0.1)
-;;;;;;;;; ===== comment   (setq sentence-end-double-space nil) ; fix "flycheck elisp there should be two spaces after period"
-;;;;;;;;; ===== comment   (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
-;;;;;;;;; ===== comment   :hook
-;;;;;;;;; ===== comment   ((python-mode swift-mode kotlin-mode c++-mode) . flycheck-mode))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (add-hook 'go-mode-hook
-;;;;;;;;; ===== comment   (lambda ()
-;;;;;;;;; ===== comment     (setq-default)
-;;;;;;;;; ===== comment     (setq tab-width 4)
-;;;;;;;;; ===== comment     (setq standard-indent 4)
-;;;;;;;;; ===== comment     (setq indent-tabs-mode nil)))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment ;; (use-package haml-mode
-;;;;;;;;; ===== comment ;;   :disabled t
-;;;;;;;;; ===== comment ;;   :ensure t)
-;;;;;;;;; ===== comment 
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; IF yasnippet not working, try M-x yas-load-directory    ;;
+;;;; IMPORTANT: required!!!				   ;;
+;;;;  M-x package-install RET yasnippet-snippets	           ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;(use-package yasnippet
+;;  :hook
+;;  ((python-mode swift-mode kotlin-mode c++-mode nxml-mode objc-mode) . yas-minor-mode))
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; IMPORTANT: required!!!			 			   ;;
+;;;; Python: pip3 install 'python-lsp-server[all]'			   ;;
+;;;; Python: add .flake8 file to root project dir				   ;;
+;;;; Kotlin:                             					   ;;
+;;;;   Download -> https://github.com/fwcd/kotlin-language-server		   ;;
+;;;;   build    -> ./gradlew :server:installDist				   ;;
+;;;;   add path -> above exe-path						   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;(use-package lsp-mode
+;;  :init
+;;  (setq lsp-keymap-prefix "C-c l")
+;;  (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100","D103"])
+;;  ;; (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
+;;  (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
+;;  (setq lsp-headerline-breadcrumb-enable nil)
+;;  (setq lsp-xml-jar-file taguiar-xml-jar) ;; IMPORTANT: Compile manually from https://github.com/eclipse/lemminx
+;;  (setq lsp-pyls-server-command taguiar-pylsp)
+;;  :hook 
+;;  (python-mode . lsp-deferred)
+;;  (nxml-mode   . lsp-deferred)
+;;  (c++-mode    . lsp-deferred)
+;;  (objc-mode   . lsp-deferred)
+;;  (go-mode     . lsp-deferred)
+;;	 ;; (c++-mode . lsp)
+;;         ;; if you want which-key integration
+;;         ;; (lsp-mode . lsp-enable-which-key-integration)
+;;  :bind 
+;;  ("M-RET" . lsp-execute-code-action)
+;;  :commands (lsp lsp-deferred))
+;;
+;;(use-package bind-key
+;;  :bind
+;;  (("C-c l d" . lsp-ui-peek-find-definitions))
+;;  (("C-c l b" . lsp-ui-peek-find-references)))
+;;
+;;(use-package lsp-ui
+;;  :after lsp-mode
+;;  :custom
+;;  (lsp-ui-sideline-show-code-actions t)
+;;  (lsp-ui-sideline-show-diagnostics t)
+;;  (lsp-ui-doc-position 'at-point))
+;;
+;;(use-package company
+;;  :init
+;;  (setq company-idle-delay 0.2)
+;;  (setq company-echo-delay 0.1)
+;;  (setq company-minimum-prefix-length 1)
+;;  :bind (:map company-active-map
+;;         ("C-j"   . company-select-next)
+;;         ("C-k"   . company-select-previous)
+;;	 ("C-SPC" . company-complete))
+;;  :hook
+;;  ((python-mode swift-mode kotlin-mode) . company-mode))
+;;
+;;(use-package flycheck
+;;  :init
+;;  (setq flycheck-display-errors-delay 0.1)
+;;  (setq sentence-end-double-space nil) ; fix "flycheck elisp there should be two spaces after period"
+;;  (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
+;;  :hook
+;;  ((python-mode swift-mode kotlin-mode c++-mode) . flycheck-mode))
+;;
+(add-hook 'go-mode-hook
+  (lambda ()
+    (setq-default)
+    (setq tab-width 4)
+    (setq standard-indent 4)
+    (setq indent-tabs-mode nil)))
+
 
 (use-package web-mode
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment ;; (use-package which-key
-;;;;;;;;; ===== comment ;;   :disabled t
-;;;;;;;;; ===== comment ;;   :ensure t)
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment ;; NOTE1: lsp-sourcekit não funciona muito bem em projetos iOS pois não encontra referencia do Sdk
-;;;;;;;;; ===== comment ;; Logo, usamos em conjunto o 'company-sourcekit' com o 'SourceKittenDaemon' compilado direto do Xcode.
-;;;;;;;;; ===== comment ;; Há um bug que precisa ser corrigido para que o autocomplete funcione.
-;;;;;;;;; ===== comment ;; Então, baixe o projeto original do repositório (https://github.com/terhechte/SourceKittenDaemon)
-;;;;;;;;; ===== comment ;; e substitua a variavel 'PLATFORM_PREFERRED_ARCH' do arquivo 'Project.swift' para "ARCHS_STANDARD".
-;;;;;;;;; ===== comment ;; Compile normalmente usando o Xcode.
-;;;;;;;;; ===== comment ;; Encontre o binário em Preferences > Location > DerivedData > Build > Products > Debug > sourcekittend.
-;;;;;;;;; ===== comment ;;
-;;;;;;;;; ===== comment ;; Mova-o para /usr/local/bin.
-;;;;;;;;; ===== comment ;;
-;;;;;;;;; ===== comment ;;    Optional: É possível iniciar pelo terminal o server:
-;;;;;;;;; ===== comment ;;   $ sourcekittend start --port 8081 --project <myproject>.xcodeproj
-;;;;;;;;; ===== comment ;;
-;;;;;;;;; ===== comment ;; NOTE2: Essa alteração é necessário para pegar a arquitetura do projeto usando o recurso de buildSettings onde mostra todas as opções de build definidas no xcodeproj.
-;;;;;;;;; ===== comment ;; NOTE3: para visualizar o buildSettings do projeto:
-;;;;;;;;; ===== comment ;;
-;;;;;;;;; ===== comment ;;   $ xcodebuild -configuration Debug -showBuildSettings
-;;;;;;;;; ===== comment ;;
-;;;;;;;;; ===== comment ;; (use-package lsp-sourcekit
-;;;;;;;;; ===== comment ;;   :after lsp-mode
-;;;;;;;;; ===== comment ;;   :config
-;;;;;;;;; ===== comment ;;   (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (when is-macosx
-;;;;;;;;; ===== comment   (use-package company-sourcekit
-;;;;;;;;; ===== comment     :ensure t
-;;;;;;;;; ===== comment     :config
-;;;;;;;;; ===== comment     (setq company-sourcekit-verbose t)
-;;;;;;;;; ===== comment     (setq sourcekit-verbose t)
-;;;;;;;;; ===== comment     (setq sourcekit-sourcekittendaemon-executable taguiar-sourcekit)
-;;;;;;;;; ===== comment     (add-to-list 'company-backends 'company-sourcekit)))
-;;;;;;;;; ===== comment 
+;;
+;;
+;;;; (use-package which-key
+;;;;   :disabled t
+;;;;   :ensure t)
+;;
+;;
+;;;; NOTE1: lsp-sourcekit não funciona muito bem em projetos iOS pois não encontra referencia do Sdk
+;;;; Logo, usamos em conjunto o 'company-sourcekit' com o 'SourceKittenDaemon' compilado direto do Xcode.
+;;;; Há um bug que precisa ser corrigido para que o autocomplete funcione.
+;;;; Então, baixe o projeto original do repositório (https://github.com/terhechte/SourceKittenDaemon)
+;;;; e substitua a variavel 'PLATFORM_PREFERRED_ARCH' do arquivo 'Project.swift' para "ARCHS_STANDARD".
+;;;; Compile normalmente usando o Xcode.
+;;;; Encontre o binário em Preferences > Location > DerivedData > Build > Products > Debug > sourcekittend.
+;;;;
+;;;; Mova-o para /usr/local/bin.
+;;;;
+;;;;    Optional: É possível iniciar pelo terminal o server:
+;;;;   $ sourcekittend start --port 8081 --project <myproject>.xcodeproj
+;;;;
+;;;; NOTE2: Essa alteração é necessário para pegar a arquitetura do projeto usando o recurso de buildSettings onde mostra todas as opções de build definidas no xcodeproj.
+;;;; NOTE3: para visualizar o buildSettings do projeto:
+;;;;
+;;;;   $ xcodebuild -configuration Debug -showBuildSettings
+;;;;
+;;;; (use-package lsp-sourcekit
+;;;;   :after lsp-mode
+;;;;   :config
+;;;;   (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
+;;
+;;(when is-macosx
+;;  (use-package company-sourcekit
+;;    :ensure t
+;;    :config
+;;    (setq company-sourcekit-verbose t)
+;;    (setq sourcekit-verbose t)
+;;    (setq sourcekit-sourcekittendaemon-executable taguiar-sourcekit)
+;;    (add-to-list 'company-backends 'company-sourcekit)))
+;;
 
 
 ;; programming languages
@@ -354,24 +308,10 @@ fixme-modes)
 (use-package go-mode :ensure t)
 ;; M-x package-install RET swift-mode
 
-;;;;;;;;; ===== comment ;;;;;;;;;;;
-;;;;;;;;; ===== comment ;; Hooks ;;
-;;;;;;;;; ===== comment ;;;;;;;;;;;
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment ;; (defun taguiar/enter-insert-state-hook()
-;;;;;;;;; ===== comment ;;     (interactive)
-;;;;;;;;; ===== comment ;;     (set-face-background 'hl-line "grey15"))
-;;;;;;;;; ===== comment ;; 
-;;;;;;;;; ===== comment ;;   (defun taguiar/exit-insert-state-hook()
-;;;;;;;;; ===== comment ;;     (interactive)
-;;;;;;;;; ===== comment ;;     (set-face-background 'hl-line "DarkSlateGrey"))
-;;;;;;;;; ===== comment ;;     
-;;;;;;;;; ===== comment ;; 
-;;;;;;;;; ===== comment ;; (add-hook 'evil-insert-state-entry-hook 'taguiar/enter-insert-state-hook)
-;;;;;;;;; ===== comment ;; (add-hook 'evil-insert-state-exit-hook  'taguiar/exit-insert-state-hook)
-;;;;;;;;; ===== comment ;; (add-hook 'evil-replace-state-entry-hook 'taguiar/enter-insert-state-hook)
-;;;;;;;;; ===== comment ;; (add-hook 'evil-replace-state-exit-hook  'taguiar/exit-insert-state-hook)
-;;;;;;;;; ===== comment 
+;;;;;;;;;;;
+;; Hooks ;;
+;;;;;;;;;;;
+
 (defun cpp-highlight-if-0/1 ()
   "Modify the face of text in between #if 0 ... #endif."
   (interactive)
@@ -432,19 +372,16 @@ fixme-modes)
          ((string-match "[.]h" buffer-file-name) (taguiar-header-format))
          ((string-match "[.]cpp" buffer-file-name) (taguiar-source-format)))
 
-;;;;;;;;; ===== comment   (setq dabbrev-case-replace t)
-;;;;;;;;; ===== comment   (setq dabbrev-case-fold-search t)
-;;;;;;;;; ===== comment   (setq dabbrev-upcase-means-case-search t))
+;;(setq dabbrev-case-replace t)
+;;(setq dabbrev-case-fold-search t)
+;;(setq dabbrev-upcase-means-case-search t))
 
   )
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
 
 
- (setq compilation-context-lines 0)
-  ;;(setq compilation-error-regexp-alist
-  ;;    (cons '("^\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) : \\(?:fatal error\\|warnin\\(g\\)\\) C[0-9]+:" 2 3 nil (4))
-  ;;     compilation-error-regexp-alist))
- 
+(setq compilation-context-lines 0)
+
  (defun find-corresponding-file ()
    "Find the file that corresponds to this one."
    (interactive)
@@ -495,21 +432,8 @@ fixme-modes)
   "Loading a todo file."
   (interactive)
   (find-file taguiar-todo-file))
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment (defun kill-compilation-buffer ()
-;;;;;;;;; ===== comment   "Kill the *compilation* buffer."
-;;;;;;;;; ===== comment   (interactive)
-;;;;;;;;; ===== comment   (let ((buffer (get-buffer "*compilation*")))
-;;;;;;;;; ===== comment     (when buffer
-;;;;;;;;; ===== comment       (kill-buffer buffer))))
- 
-
 
 (abbrev-mode 1)
-;;;;;;;;; ===== comment (define-key global-map "\C-y" 'indent-for-tab-command)
-;;;;;;;;; ===== comment (define-key global-map [C-tab] 'indent-region)
-;;;;;;;;; ===== comment 
-;;;;;;;;; ===== comment 
 (defun conditionally-disable-abbrev ()
   "Disable abbrev when enter at minibuffer."
   (if (string-match "find-file" (format "%s" this-command))
@@ -529,17 +453,17 @@ fixme-modes)
   (interactive)
   (ivy-mode -1) ;; disable ivy (temporary)
   (call-interactively 'find-file)
-  (ivy-mode 1)) ;; enable ivy
+  (ivy-mode 1))
 
 (defun taguiar-project-find-file()
   (interactive)
-  (ivy-mode 1) ;; enable ivy
+  (ivy-mode 1)
   (call-interactively 'project-find-file)
   (ivy-mode -1)) ;; disable ivy (temporary)
 
 (defun taguiar-switch-to-buffer()
   (interactive)
-  (ivy-mode 1) ;; enable ivy
+  (ivy-mode 1)
   (call-interactively 'switch-to-buffer)
   (ivy-mode -1)) ;; disable ivy (temporary)
 
@@ -556,32 +480,55 @@ fixme-modes)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (define-key global-map [S-tab] 'indent-for-tab-command)
 (global-set-key (kbd "C-SPC") 'dabbrev-completion)
-;;;;;;;;; ===== comment (global-set-key (kbd "C-s") 'swiper-isearch)
+(global-set-key (kbd "C-s") 'swiper-isearch)
 (define-key global-map "\et" 'load-todo)
 (define-key global-map "\e=" 'align-regexp)
 (define-key global-map "\ej" 'imenu)
-;;;;;;;;; ===== comment (define-key global-map "\ex" 'counsel-M-x)
 (define-key global-map "\es" 'save-buffer)
 (define-key global-map "\eo" 'taguiar-project-find-file)
 (define-key global-map "\ef" 'taguiar-find-file)
 (define-key global-map "\eF" 'counsel-ag)
-;;;;;;;;; ===== comment (define-key global-map "\ep" 'grep-find)
 (define-key global-map "\ed" 'dired)
 (define-key global-map "\eb" 'taguiar-switch-to-buffer)
 (define-key global-map "\ek" 'kill-current-buffer)
-;;;;;;;;; ===== comment (define-key global-map "\eK" 'kill-compilation-buffer)
 (define-key global-map "\e/" 'comment-line)
 (define-key global-map "\e0" 'delete-other-windows)
 (define-key global-map "\ew" 'evil-window-next)
 (define-key global-map "\em" 'make-without-asking)
 (define-key global-map "\eM" 'recompile)
 (define-key global-map "\er" 'launch-without-asking)
-;;;;;;;;; ===== comment (define-key global-map "\el" 'evil-window-right)
 (define-key global-map "\eh" 'evil-delete-backward-word)
 (define-key global-map "\eL" 'evil-window-move-far-right)
 (define-key global-map "\eH" 'evil-window-move-far-left)
-;;;;;;;;; ===== comment (define-key global-map "\eu" 'lsp-ui-peek-find-definitions)
-;;;;;;;;; ===== comment (define-key global-map "\ei" 'lsp-ui-peek-find-references)
+;;(define-key global-map "\eu" 'lsp-ui-peek-find-definitions)
+;;(define-key global-map "\ei" 'lsp-ui-peek-find-references)
+
+
+;; Defina a lista de temas disponíveis
+(defvar available-themes
+  '(jon
+    casey
+    taguiar-dark
+    taguiar-retro
+    taguiar-light
+    taguiar
+    taylor
+    ))
+
+;; Função para alternar entre os temas
+(defun toggle-theme ()
+  (interactive)
+  (let ((current-theme (car custom-enabled-themes)))
+    (disable-theme current-theme)
+    (setq available-themes (append available-themes (list current-theme)))
+    (setq theme (completing-read "Switch theme to: " available-themes))
+    (setq available-themes (delq (intern theme) available-themes))
+    (load-theme (intern theme) t)))
+
+(global-set-key (kbd "M-p") 'toggle-theme)
+
+;; Defina a tecla de atalho para alternar o tema (por exemplo, M-m)
+;; (global-set-key (kbd "M-m") 'toggle-theme)
 
 (provide 'emacs)
 ;;; emacs ends here
