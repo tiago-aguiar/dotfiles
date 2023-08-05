@@ -84,4 +84,6 @@ company-statistics-cache.el
 # anaconda-mode
 anaconda-mode/
 
+*.exe
+
 # End of https://www.gitignore.io/api/emacs

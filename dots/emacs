@@ -102,15 +102,23 @@ fixme-modes)
   (setq visible-bell t)
   (setq taguiar-todo-file "e:\\Tiago\\today.org")
   (setq taguiar-makescript "build.bat")
-;;(setq taguiar-pylsp "")
-;;(setq exec-path (append exec-path '("kotlin path server")))
-;;(setq taguiar-xml-jar "")
-;;;; IMPORTANT: It's necessary to download clangd standalone for windows
-;;(setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
-;;(when (member "Consolas" (font-family-list))
-;;  ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
-;;  ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
-;;  (set-face-attribute 'default nil :font "Lucida Console-12.5" :bold nil))
+  (when (member "Consolas" (font-family-list))
+    (message "Consolas font loaded")
+    (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
+
+  ;; (when (member "Liberation Mono" (font-family-list))
+    ;; (message "Liberation Mono font loaded")
+    ;; (set-face-attribute 'default nil :font "Liberation Mono-11" :bold nil))
+
+  ;; (when (member "Lucida Console" (font-family-list))
+    ;; (message "Lucida Console font loaded")
+    ;; (set-face-attribute 'default nil :font "Lucida Console-12.5" :bold nil))
+
+;;;;;;;;; ===== comment   (setq taguiar-pylsp "TODO")
+;;;;;;;;; ===== comment   (setq exec-path (append exec-path '("TODO kotlin path server")))
+;;;;;;;;; ===== comment   (setq taguiar-xml-jar "TODO")
+;;;;;;;;; ===== comment   ;; IMPORTANT: It's necessary to download clangd standalone for windows
+;;;;;;;;; ===== comment   (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
 )
 
 (setq auto-mode-alist
@@ -532,3 +540,16 @@ fixme-modes)
 
 (provide 'emacs)
 ;;; emacs ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(gradle-mode sass-mode web-mode yasnippet-snippets vterm use-package smart-mode-line org-superstar lsp-ui lsp-sourcekit kotlin-mode groovy-mode go-mode flycheck evil counsel company)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
