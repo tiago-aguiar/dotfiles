@@ -83,69 +83,10 @@ if [ ! -d "$HOME/.config/nvim" ]; then
 	mkdir "$HOME/.config/nvim"
 fi
 
-
 # Return to original pwd.
 popd > /dev/null
 
-# setup applications
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-	sudo apt-get install silversearcher-ag -y
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-
-    FILE=/usr/local/bin/brew
-    if [ ! -f "$FILE" ]; then
-        echo "Download Homebrew."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" 
-
-        brew install the_silver_searcher
-        brew install neovim
-        brew install tmux
-        brew install chruby ruby-install xz
-
-        # Install specific ruby version for jekyll
-        ruby-install ruby 3.1.2
-
-    else 
-        echo "$FILE already exists."
-    fi
-fi
-
-# install vim-plug
-if [ ! -d "$HOME/.vim/autoload" ]; then
-    echo "download... vim-plug."
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-else 
-    echo "Vim-Plug already exists."
-fi
-
-if [ ! -d "$HOME/.tmux/plugins" ]; then
-	echo "download... tmux plugin manager."
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-else 
-    echo "Tmux plugin manager already exists."
-fi
-
-ln -s $LNOPTS "`pwd`/init.vim" "$HOME/.config/nvim/init.vim" > /dev/null 2>&1
-# ln -s $LNOPTS "`pwd`/alacritty.yml" "$HOME/.config/alacritty.yml" > /dev/null 2>&1
-# TODO: change to forloop
 ln -s $LNOPTS "`pwd`/boilers/cpp.txt" "$HOME/.vim/boilers/cpp.txt" > /dev/null 2>&1
-
-
-FILE=/usr/local/bin/nvim
-if [ ! -f "$FILE" ]; then
-    # force install pynvim
-    pip3 install pynvim
-    pip3 install --user neovim
-
-    # install vim plugin
-    nvim -c "PlugInstall"
-else
-    echo "$Nvim already exists"
-fi  
-
-
-# Move into bin dir.
 pushd "$HOME/bin" > /dev/null
 
 echo ""
@@ -167,7 +108,6 @@ for script in `find $BINPATH -mindepth 1 -maxdepth 1`; do
   fi
   echo " $script -> $linkfile... "
 done
-
 
 # Return to original pwd.
 popd > /dev/null

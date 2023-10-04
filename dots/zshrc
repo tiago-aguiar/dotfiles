@@ -48,7 +48,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="evan"
+ZSH_THEME="af-magic"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -168,8 +168,9 @@ if [ -f '/Users/tiagoaguiar/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '
 if [ -d '/usr/local/go/bin' ]; then 
     export PATH=$PATH:/usr/local/go/bin;
 fi
+
 export PATH="/Users/tiagoaguiar/.deta/bin:$PATH"
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/opt/chruby/share/chruby/auto.sh
-chruby ruby-3.1.2
+#source /usr/local/opt/chruby/share/chruby/chruby.sh
+#source /usr/local/opt/chruby/share/chruby/auto.sh
+#chruby ruby-3.1.2

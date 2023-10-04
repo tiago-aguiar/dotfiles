@@ -1,0 +1,12 @@
+vim.keymap.set("n", "<F5>", vim.cmd.source)
+vim.keymap.set("n", "<F10>", function ()
+    vim.cmd("e ~/.config/nvim")
+end)
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("n", "<leader>0", vim.cmd.only)
+
+vim.keymap.set("n", "<F2>", function()
+end)
