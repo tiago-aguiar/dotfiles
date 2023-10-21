@@ -61,6 +61,17 @@ require('mason-lspconfig').setup({
   },
 })
 
+lspconfig.pylsp.setup({
+    settings = {
+        pylsp = {
+            plugins = {
+                pycodestyle = {
+                    ignore = [["E501"]]
+                }
+            }
+        }
+    }
+})
 lspconfig.eslint.setup({})
 lspconfig.lua_ls.setup({
 	-- fix warning "Undefined global 'vim'"
