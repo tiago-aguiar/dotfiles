@@ -1,2 +1,2 @@
-require("taguiar.remap")
 require("taguiar.set")
+require("taguiar.remap")

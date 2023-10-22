@@ -36,13 +36,13 @@ return require('packer').startup(function(use)
         requires = { {'nvim-lua/plenary.nvim'} }
     }
 
-    use {
-        'srcery-colors/srcery-vim', 
-        as = 'srcery',
-        config = function()
-            vim.cmd('colorscheme srcery')
-        end
-    }
+    -- use {
+    --     'srcery-colors/srcery-vim', 
+    --     as = 'srcery',
+    --     config = function()
+    --         vim.cmd('colorscheme srcery')
+    --     end
+    -- }
 
 
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate'})

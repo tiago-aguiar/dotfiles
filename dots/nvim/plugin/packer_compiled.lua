@@ -114,6 +114,12 @@ _G.packer_plugins = {
     path = "/Users/tiagoaguiar/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
+  orgmode = {
+    config = { "\27LJ\2\n^\0\0\3\0\4\0\f6\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\1\0B\0\2\0029\0\3\0004\2\0\0B\0\2\1K\0\1\0\nsetup\21setup_ts_grammar\forgmode\frequire\0" },
+    loaded = true,
+    path = "/Users/tiagoaguiar/.local/share/nvim/site/pack/packer/start/orgmode",
+    url = "https://github.com/nvim-orgmode/orgmode"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/Users/tiagoaguiar/.local/share/nvim/site/pack/packer/start/packer.nvim",
@@ -123,12 +129,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/tiagoaguiar/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
-  },
-  srcery = {
-    config = { "\27LJ\2\n6\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\23colorscheme srcery\bcmd\bvim\0" },
-    loaded = true,
-    path = "/Users/tiagoaguiar/.local/share/nvim/site/pack/packer/start/srcery",
-    url = "https://github.com/srcery-colors/srcery-vim"
   },
   ["telescope.nvim"] = {
     config = { "\27LJ\2\nN\0\0\5\1\4\0\b6\0\0\0006\2\1\0009\2\2\2-\4\0\0009\4\3\4B\2\2\0A\0\0\1K\0\1\0\4¿\23get_selected_entry\finspect\bvim\nprintê\2\1\2\f\0\18\0\0266\2\0\0'\4\1\0B\2\2\0026\3\0\0'\5\2\0B\3\2\0026\4\0\0'\6\3\0B\4\2\0029\5\4\0035\a\16\0005\b\14\0005\t\f\0005\n\6\0009\v\5\2=\v\a\n9\v\b\2=\v\t\n3\v\n\0=\v\v\n=\n\r\t=\t\15\b=\b\17\aB\5\2\0012\0\0ÄK\0\1\0\rdefaults\1\0\0\rmappings\1\0\0\6i\1\0\0\n<c-a>\0\n<C-k>\28move_selection_previous\n<C-j>\1\0\0\24move_selection_next\nsetup\28telescope.actions.state\14telescope\22telescope.actions\frequire\0" },
@@ -154,10 +154,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: srcery
-time([[Config for srcery]], true)
-try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\23colorscheme srcery\bcmd\bvim\0", "config", "srcery")
-time([[Config for srcery]], false)
+-- Config for: orgmode
+time([[Config for orgmode]], true)
+try_loadstring("\27LJ\2\n^\0\0\3\0\4\0\f6\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\0016\0\0\0'\2\1\0B\0\2\0029\0\3\0004\2\0\0B\0\2\1K\0\1\0\nsetup\21setup_ts_grammar\forgmode\frequire\0", "config", "orgmode")
+time([[Config for orgmode]], false)
 -- Config for: telescope.nvim
 time([[Config for telescope.nvim]], true)
 try_loadstring("\27LJ\2\nN\0\0\5\1\4\0\b6\0\0\0006\2\1\0009\2\2\2-\4\0\0009\4\3\4B\2\2\0A\0\0\1K\0\1\0\4¿\23get_selected_entry\finspect\bvim\nprintê\2\1\2\f\0\18\0\0266\2\0\0'\4\1\0B\2\2\0026\3\0\0'\5\2\0B\3\2\0026\4\0\0'\6\3\0B\4\2\0029\5\4\0035\a\16\0005\b\14\0005\t\f\0005\n\6\0009\v\5\2=\v\a\n9\v\b\2=\v\t\n3\v\n\0=\v\v\n=\n\r\t=\t\15\b=\b\17\aB\5\2\0012\0\0ÄK\0\1\0\rdefaults\1\0\0\rmappings\1\0\0\6i\1\0\0\n<c-a>\0\n<C-k>\28move_selection_previous\n<C-j>\1\0\0\24move_selection_next\nsetup\28telescope.actions.state\14telescope\22telescope.actions\frequire\0", "config", "telescope.nvim")

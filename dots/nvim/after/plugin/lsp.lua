@@ -35,7 +35,7 @@ cmp.setup({
 	},
 	mapping = {
 		['<Tab>'] = cmp_action.tab_complete(),
-    		['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
+    	['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
 		['<CR>'] = cmp.mapping.confirm({select = true}),
 		['<C-j>'] = cmp_action.tab_complete(),
 		['<C-k>'] = cmp_action.select_prev_or_fallback(),
@@ -47,7 +47,14 @@ lsp.setup({})
 lsp.on_attach(function(client, bufnr)
   local opts = { buffer = bufnr, remap = false }
 
-  vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+  vim.keymap.set("n", "<leader>i", function() vim.lsp.buf.definition() end, opts)
+  vim.keymap.set("n", "<leader><CR>", function()
+    vim.lsp.buf.code_action({
+        filter = function(a) return a.isPreferred end,
+        apply = true
+    })
+  end, opts)
+
   -- see :help lsp-zero-keybindings
   -- to learn the available actions
   -- lsp.default_keymaps({buffer = bufnr})
