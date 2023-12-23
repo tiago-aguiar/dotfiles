@@ -22,9 +22,12 @@
     (set-face-attribute 'default nil :font "Fragment Mono-13" :bold nil))
 
 (when is-win32
+  (setq taguiar-launchscript "launch.bat")
+  (setq taguiar-makescript "build.bat")
+
   (when (member "Consolas" (font-family-list))
     (message "Consolas")
-    (set-face-attribute 'default nil :font "Consolas-10" :bold nil))
+    (set-face-attribute 'default nil :font "Consolas-11" :bold nil))
   )
 
 ;; (when (member "SF Mono" (font-family-list))
@@ -71,8 +74,8 @@
 
 ;; Compare the current hour with the threshold hour
 (if (>= current-hour threshold-hour)
-    (load-theme 'zweilight t) ;; night load
-  (load-theme 'leuven t)) ;; day load
+    (load-theme 'jon t) ;; night load
+  (load-theme 'jon t)) ;; day load
 
 ;; Se for zweilight, force green comments
 (if (string= (car custom-enabled-themes) "zweilight")
@@ -400,7 +403,7 @@ fixme-modes)
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("e905e6f50d8a192aed513f8204c889689a491a149a29d94fe0a17b1b9589e6be" "b62e6fde6217bbbff61c5f504a5205c6adfbb69ffa40153a0ff47f6a047f1008" default))
+   '("39fafedcbe5944be8f78d6de9afd9784d8cee8b9c3d0490157cf2704e9609ae9" "e905e6f50d8a192aed513f8204c889689a491a149a29d94fe0a17b1b9589e6be" "b62e6fde6217bbbff61c5f504a5205c6adfbb69ffa40153a0ff47f6a047f1008" default))
  '(package-selected-packages
    '(company auto-virtualenv ivy swift-mode kotlin-mode ag try yasnippet evil)))
 (custom-set-faces
