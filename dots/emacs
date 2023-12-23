@@ -25,10 +25,13 @@
   (setq taguiar-launchscript "launch.bat")
   (setq taguiar-makescript "build.bat")
 
-  (when (member "Consolas" (font-family-list))
-    (message "Consolas")
-    (set-face-attribute 'default nil :font "Consolas-11" :bold nil))
-  )
+  ;; (when (member "Consolas" (font-family-list))
+    ;; (message "Consolas")
+  ;; (set-face-attribute 'default nil :font "Consolas-11" :bold nil))
+
+  (when (member "Fragment Mono" (font-family-list))
+    (message "Loaded Fragment Mono Font")
+    (set-face-attribute 'default nil :font "Fragment Mono-11" :bold nil)))
 
 ;; (when (member "SF Mono" (font-family-list))
   ;; (message "Loaded SF Mono")
