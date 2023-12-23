@@ -1,78 +1,85 @@
-;(face-attribute 'default :font);; package --- Summary;
-
-;;; Commentary:
-;; NOTE: How to access desktop files from MacOSX:
-;; Emacsapp actually launches using a ruby script. As a result, MacOS uses the permissions set for
-;; ruby, not the permissions for Emacsapp. So,
-;; select "Full Disk Access" in the left pane, then click + and add /usr/bin/ruby to resolve the issue.
-;;
-;; NOTE: How to use find (grep) on Windows:
-;; Install the gnuwin32 and add the bin folder to $PATH for Emacs see "find" executable.
-;;
-;; NOTE: For Windows you need set environment variable HOME
-;;
-;; NOTE: Shortcuts
-;; C-c l  LSP mode
-;; C-c l d   => go to definition
-;; C-c l b   => go to buffer usage
-;; C-c l r r => rename symbol
-;;
-;; NOTE: Commands
-;; Show yasnippets available: yas-describe-tables
-
-;;; Code:
-;; (setenv "LIBRARY_PATH" "/usr/local/Cellar/gcc/13.1.0:/usr/local/Cellar/libgccjit/13.1.0/lib/gcc/current:/usr/local/Cellar/gcc/13.1.0/lib/gcc/current/gcc/x86_64-apple-darwin22/13")
-
-;; (warning-minimum-level :error)
-(set (make-local-variable 'warning-minimum-level) 'error)
-
-;; keep this on top of your .emacs!!!
-(defvar *emacs-load-start* (current-time))
-(defun taguiar/time-to-ms (time)
-  (+ (* (+ (* (car time) (expt 2 16)) (car (cdr time))) 1000000) (car (cdr (cdr time)))))
-(defun taguiar/display-timing ()
-  "time the loading of the .emacs"
-  (message ".emacs loaded in %fms" (/ (- (taguiar/time-to-ms (current-time)) (taguiar/time-to-ms *emacs-load-start*)) 1000000.0)))
-(add-hook 'after-init-hook 'taguiar/display-timing t)
-
-;;;;;;;;;;;;;;;
-;; Variables ;;
-;;;;;;;;;;;;;;;
 (setq is-macosx (eq system-type 'darwin))
 (setq is-linux (featurep 'x))
 (setq is-win32 (not (or is-macosx is-linux)))
-(setq emacs-file "~/.emacs")
 (setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
-(setq create-lockfiles nil) ; avoid creating pound .# files
+(setq create-lock-files nil)
 (setq auto-save-default nil)
-(setq gc-cons-threshold most-positive-fixnum) ; Minimize garbage collection during startup
+(setq gc-cons-threshold most-positive-fixnum)
 
-;;;;;;;;;;;;;;
-;; Emacs UI ;;
-;;;;;;;;;;;;;;
+(when is-macosx
+  (setq taguiar-todo-file "~/Google Drive/My Drive/AT Digital/today.org")
+  (setq taguiar-launchscript "./launch.sh")
+  (setq taguiar-makescript "./build.sh")
+  (setq exec-path (append exec-path '("~/kotlin/server/bin")))
+  (setq mac-command-modifier 'meta))
+
+(when (member "Fragment Mono" (font-family-list))
+  (message "Loaded Fragment Mono Font")
+    (set-face-attribute 'default nil :font "Fragment Mono-13" :bold nil))
+
+;; (when (member "SF Mono" (font-family-list))
+  ;; (message "Loaded SF Mono")
+    ;; (set-face-attribute 'default nil :font "SF Mono-16" :bold nil))
+
+;; (when (member "Consolas" (font-family-list))
+  ;; (message "Consolas")
+    ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
+
+(setq ring-bell-function 'ignore)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
-(show-paren-mode t)
-(global-hl-line-mode 0)
 (electric-pair-mode -1)
+(scroll-bar-mode -1)
 (blink-cursor-mode t)
-(setq-default truncate-lines -1) ;; wrap
-(setq inhibit-startup-message t)
-(setq compilation-scroll-output t)
-(defalias 'yes-or-no-p 'y-or-n-p)
-(when is-win32
-  (add-hook 'emacs-startup-hook 'toggle-frame-maximized))
-
-;;;;;;;;;;;;
-;; Themes ;;
-;;;;;;;;;;;;
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'taguiar-dark t)
-
 (global-font-lock-mode 1)
+(defalias 'yes-or-no-p 'y-or-n-p)
+(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+(setq inhibit-startup-message t)
 
-(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode objc-mode))
+;;
+;; auto mode
+;;
+(setq auto-mode-alist
+      (append
+       '(("\\.cpp$"    . c++-mode)
+         ("\\.h$"      . c++-mode)
+         ("\\.c$"      . c++-mode)
+         ("\\.cc$"     . c++-mode)
+         ("\\.txt$"    . indented-text-mode)
+         ("\\.emacs$"  . emacs-lisp-mode)
+         ("\\emacs$"   . emacs-lisp-mode)
+         ("\\.m$"      . objc-mode)
+         ("\\.mm$"     . objc-mode)
+         ) auto-mode-alist))
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+
+
+;; Get the current time
+(setq current-time (current-time))
+(setq current-hour (nth 2 (decode-time current-time)))
+
+;; Set the threshold hour (6 PM in 24-hour format)
+(setq threshold-hour 18)
+
+;; Compare the current hour with the threshold hour
+(if (>= current-hour threshold-hour)
+    (load-theme 'zweilight t) ;; night load
+  (load-theme 'zweilight t)) ;; day load
+
+;; Se for zweilight, force green comments
+(if (string= (car custom-enabled-themes) "zweilight")
+    (progn
+      (custom-set-faces
+
+       '(font-lock-doc-face     ((t (:foreground "Green"))))
+       '(font-lock-comment-face ((t (:foreground "Green")))))))
+
+
+;;
+;; todo highlight
+;;
+(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -89,295 +96,202 @@
     ("\\<\\(DOING\\)" 1 'font-lock-doing-face t)
     ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
 fixme-modes)
-(modify-face 'font-lock-fixme-face "Red" nil nil t nil t nil nil)
-(modify-face 'font-lock-study-face "Blue" nil nil t nil t nil nil)
-(modify-face 'font-lock-test-face "Red" nil nil t nil t nil nil)
-(modify-face 'font-lock-important-face "Yellow" nil nil t nil t nil nil)
-(modify-face 'font-lock-note-face "Dark Green" nil nil t nil t nil nil)
-(modify-face 'font-lock-doing-face "Orange" nil nil t nil t nil nil)
+(modify-face 'font-lock-fixme-face     "Red"        nil nil t nil t nil nil)
+(modify-face 'font-lock-study-face     "Blue"       nil nil t nil t nil nil)
+(modify-face 'font-lock-test-face      "Red"        nil nil t nil t nil nil)
+(modify-face 'font-lock-important-face "Yellow"     nil nil t nil t nil nil)
+(modify-face 'font-lock-note-face      "Dark Green" nil nil t nil t nil nil)
+(modify-face 'font-lock-doing-face     "Orange"     nil nil t nil t nil nil)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Operation System Definitions ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun my-configure-font (frame)
-  "Configure font given initial non-daemon FRAME.
-Intended for `after-make-frame-functions'."
-  ;; Do stuff with FRAME...
-  (set-face-attribute 'default nil :font "SF Mono" :height 160 :bold nil)
-  (remove-hook 'after-make-frame-functions #'my-configure-font))
-
-(when is-macosx
-  (setq taguiar-launchscript "./launch.sh")
-  (setq taguiar-pylsp "/usr/local/bin/pylsp")
-  (setq taguiar-xml-jar "/Users/tiagoaguiar/.emacs.d/.cache/lsp/xmlls/org.eclipse.lemminx-uber.jar")
-  (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
-  (setq taguiar-makescript "./build.sh")
-  (setq taguiar-todo-file "~/today.org")
-  (setq taguiar-clangd-executable "/usr/bin/clangd")
-  (setq exec-path (append exec-path '("~/kotlin/kotlin-language-server/server/build/install/server/bin")))
-  (setq mac-command-modifier 'meta)
-  (when (member "SF Mono" (font-family-list))
-    ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
-    ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
-    (set-face-attribute 'default nil :font "SF Mono-16" :bold nil))
-  (add-hook 'after-make-frame-functions #'my-configure-font))
-
-(when is-win32
-  (setq taguiar-launchscript "launch.bat")
-  (setq visible-bell t)
-  (setq taguiar-todo-file "e:\\Tiago\\today.org")
-  (setq taguiar-makescript "build.bat")
-  (setq taguiar-pylsp "TODO")
-  (setq exec-path (append exec-path '("TODO kotlin path server")))
-  (setq taguiar-xml-jar "TODO")
-  ;; IMPORTANT: It's necessary to download clangd standalone for windows
-  (setq taguiar-clangd-executable "c:\\Clangd\\bin\\clangd.exe")
-  (when (member "Consolas" (font-family-list))
-    ;; (set-face-attribute 'default nil :font "Liberation Mono-12" :bold nil))
-    ;; (set-face-attribute 'default nil :font "Consolas-13.5" :bold nil))
-    (set-face-attribute 'default nil :font "Lucida Console-12.5" :bold nil))
-  )
-
-(setq auto-mode-alist
-      (append
-       '(("\\.cpp$"    . c++-mode)
-         ("\\.hin$"    . c++-mode)
-         ("\\.cin$"    . c++-mode)
-         ("\\.inl$"    . c++-mode)
-         ("\\.rdc$"    . c++-mode)
-         ("\\.h$"      . c++-mode)
-         ("\\.c$"      . c++-mode)
-         ("\\.cc$"     . c++-mode)
-         ("\\.c8$"     . c++-mode)
-         ("\\.txt$"    . indented-text-mode)
-         ("\\.emacs$"  . emacs-lisp-mode)
-         ("\\emacs$"   . emacs-lisp-mode)
-         ("\\.gen$"    . gen-mode)
-         ("\\.ms$"     . fundamental-mode)
-         ("\\.m$"      . objc-mode)
-         ("\\.mm$"     . objc-mode)
-         ) auto-mode-alist))
-
-;;;;;;;;;;;;;;;;;;
-;; Repositories ;;
-;;;;;;;;;;;;;;;;;;
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
-   (package-refresh-contents)
-   (package-install 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-(eval-and-compile
-  (setq use-package-always-ensure t
-        use-package-expand-minimally t))
-
-;;;;;;;;;;;;;;
-;; Packages ;;
-;;;;;;;;;;;;;;
-(use-package counsel)
-
-(use-package swiper)
-
-(use-package org-superstar
-  :config
-  (setq org-superstar-special-todo-items t)
-  (add-hook 'org-mode-hook (lambda ()
-			     (org-superstar-mode 1))))
+(eval-when-compile (require 'use-package))
+(setq use-package-always-ensure t)
+(setq use-package-expand-minimally t)
 
 (use-package evil
   :init
-  (setq evil-insert-state-cursor '(box "green1"))
-  (setq evil-normal-state-cursor '(box "DeepSkyBlue"))
+  (setq evil-insert-state-cursor '(box "Green"))
+  (setq evil-normal-state-cursor '(box "Cyan"))
   :config
-  (evil-mode 1)
-  (evil-set-initial-state 'shell-script-mode 'emacs))
+  (evil-mode 1))
 
-(use-package smart-mode-line ;; like powerline
-  :init
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/theme 'respectful)
+(define-key evil-insert-state-map (kbd "C-o") 'yas-expand)
+
+(defun taguiar-enter-insert-state-hook()
+    (interactive)
+    )
+
+(defun taguiar-enter-normal-state-hook()
+    (interactive)
+    )
+
+(add-hook 'evil-insert-state-entry-hook 'taguiar-enter-insert-state-hook)
+(add-hook 'evil-normal-state-entry-hook 'taguiar-enter-normal-state-hook)
+
+
+;; selection color
+(set-face-background 'region "transparent")
+(set-face-foreground 'region "gray60")
+
+;; IF yasnippet not working, try M-x yas-load-directory
+;; IMPORTANT: required!!!
+;;  M-x package-install RET yasnippet-snippets
+(use-package yasnippet
   :config
-  (sml/setup))
+  (yas-global-mode 1))
+
+(use-package try)
+(use-package ag)
+(use-package kotlin-mode)
+(use-package swift-mode)
+
+(use-package lsp-mode
+  :disabled t
+  :hook (kotlin-mode . lsp-deferred)
+  :commands (lsp lsp-deferred))
 
 (use-package ivy
-  :init
-  (setq ivy-height 20)
   :config
   (ivy-mode 1)
   (define-key ivy-minibuffer-map    (kbd "C-j") 'ivy-next-line)
   (define-key ivy-minibuffer-map    (kbd "C-k") 'ivy-previous-line)
-  (define-key ivy-minibuffer-map    (kbd "C-l") 'ivy-alt-done)
   (define-key ivy-switch-buffer-map (kbd "C-j") 'ivy-next-line)
+  (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line)
   (define-key ivy-switch-buffer-map (kbd "C-d") 'ivy-switch-buffer-kill) ; Delete current item minibuffer
-  (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line))
+  )
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; IF yasnippet not working, try M-x yas-load-directory    ;;
-;; IMPORTANT: required!!!				   ;;
-;;  M-x package-install RET yasnippet-snippets	           ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package yasnippet
-  :hook
-  ((python-mode swift-mode kotlin-mode c++-mode nxml-mode objc-mode) . yas-minor-mode))
+(use-package eglot
+  :config
+  (setq eldoc-echo-area-use-multiline-p nil)
+  (setq eglot-events-buffer-size 0)
+  (setq eglot-ignored-server-capabilities '(:hoverProvider :documentHighlightProvider :textDocument/definition))
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+  (add-hook 'python-mode-hook 'eglot-ensure)
+  (add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1))))  ;; disable param hint
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; IMPORTANT: required!!!			 			   ;;
-;; Python: pip3 install 'python-lsp-server[all]'			   ;;
-;; Python: add .flake8 file to root project dir				   ;;
-;; Kotlin:                             					   ;;
-;;   Download -> https://github.com/fwcd/kotlin-language-server		   ;;
-;;   build    -> ./gradlew :server:installDist				   ;;
-;;   add path -> above exe-path						   ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package lsp-mode
+(use-package auto-virtualenv
+  :ensure t
   :init
-  (setq lsp-keymap-prefix "C-c l")
-  (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100","D103"])
-  ;; (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100,D101,D102,D103,D105,D106"])
-  (setq lsp-clients-clangd-executable taguiar-clangd-executable) ;; download clangd standalone for windows
-  (setq lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-xml-jar-file taguiar-xml-jar) ;; IMPORTANT: Compile manually from https://github.com/eclipse/lemminx
-  (setq lsp-pyls-server-command taguiar-pylsp)
-  :hook 
-  (python-mode . lsp-deferred)
-  (nxml-mode   . lsp-deferred)
-  (c++-mode    . lsp-deferred)
-  (objc-mode   . lsp-deferred)
-  (go-mode     . lsp-deferred)
-	 ;; (c++-mode . lsp)
-         ;; if you want which-key integration
-         ;; (lsp-mode . lsp-enable-which-key-integration)
-  :bind 
-  ("M-RET" . lsp-execute-code-action)
-  :commands (lsp lsp-deferred))
-
-(use-package bind-key
-  :bind
-  (("C-c l d" . lsp-ui-peek-find-definitions))
-  (("C-c l b" . lsp-ui-peek-find-references)))
-
-(use-package lsp-ui
-  :after lsp-mode
-  :custom
-  (lsp-ui-sideline-show-code-actions t)
-  (lsp-ui-sideline-show-diagnostics t)
-  (lsp-ui-doc-position 'at-point))
+  (use-package pyvenv
+    :ensure t)
+  :config
+  (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv))
 
 (use-package company
-  :init
-  (setq company-idle-delay 0.2)
-  (setq company-echo-delay 0.1)
-  (setq company-minimum-prefix-length 1)
-  :bind (:map company-active-map
-         ("C-j"   . company-select-next)
-         ("C-k"   . company-select-previous)
-	 ("C-SPC" . company-complete))
-  :hook
-  ((python-mode swift-mode kotlin-mode) . company-mode))
+  :config
+  (add-hook 'c++-mode-hook 'global-company-mode)
+  (setq company-minimum-prefix-length 3)
+  (setq company-idle-delay 0.0))
 
-(use-package flycheck
-  :init
-  (setq flycheck-display-errors-delay 0.1)
-  (setq sentence-end-double-space nil) ; fix "flycheck elisp there should be two spaces after period"
-  (setq-default flycheck-emacs-lisp-load-path 'inherit) ; fix "flycheck for require load-path"
-  :hook
-  ((python-mode swift-mode kotlin-mode c++-mode) . flycheck-mode))
-
-(add-hook 'go-mode-hook
-  (lambda ()
-    (setq-default)
-    (setq tab-width 4)
-    (setq standard-indent 4)
-    (setq indent-tabs-mode nil)))
-
-;; (use-package haml-mode
-;;   :disabled t
-;;   :ensure t)
-
-;; (use-package sass-mode
-;;   :disabled t
-;;   :ensure t)
-
-;; (use-package web-mode
-;;   :ensure t
-;;   :disabled t
-;;   :config
-;;   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
+(defun taguiar-on-company-completion (arg1)
+  "Função a ser chamada após completar no popup do Company."
+  (progn
+    (unless arg1
+      (evil-append 1))))
+(add-hook 'company-after-completion-hook 'taguiar-on-company-completion)
 
 
-;; (use-package which-key
-;;   :disabled t
-;;   :ensure t)
+(set-face-attribute 'flymake-error nil
+                    :foreground "red"
+                    :weight 'bold)
 
+(set-face-attribute 'flymake-warning nil
+                    :foreground "orange"
+                    :weight 'bold)
 
-;; NOTE1: lsp-sourcekit não funciona muito bem em projetos iOS pois não encontra referencia do Sdk
-;; Logo, usamos em conjunto o 'company-sourcekit' com o 'SourceKittenDaemon' compilado direto do Xcode.
-;; Há um bug que precisa ser corrigido para que o autocomplete funcione.
-;; Então, baixe o projeto original do repositório (https://github.com/terhechte/SourceKittenDaemon)
-;; e substitua a variavel 'PLATFORM_PREFERRED_ARCH' do arquivo 'Project.swift' para "ARCHS_STANDARD".
-;; Compile normalmente usando o Xcode.
-;; Encontre o binário em Preferences > Location > DerivedData > Build > Products > Debug > sourcekittend.
 ;;
-;; Mova-o para /usr/local/bin.
+;; Suggestion on find-file
 ;;
-;;    Optional: É possível iniciar pelo terminal o server:
-;;   $ sourcekittend start --port 8081 --project <myproject>.xcodeproj
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "C-c =")    'align-regexp)
+(global-set-key (kbd "C-s")      'ag-project)
+
+(define-key global-map "\el" 'evil-window-right)
+(define-key global-map "\eh" 'evil-window-left)
+(define-key global-map "\eL" 'evil-window-move-far-right)
+(define-key global-map "\eH" 'evil-window-move-far-left)
+(define-key global-map "\e0" 'delete-other-windows)
+(define-key global-map "\eb" 'switch-to-buffer)
+(define-key global-map "\ek" 'kill-current-buffer)
+(define-key global-map "\ed" 'dired)
+(define-key global-map "\eF" 'project-find-file)
+(define-key global-map "\ef" 'find-file)
+(define-key global-map "\es" 'save-buffer)
+(define-key global-map "\ev" 'yank)
+(define-key global-map "\ei" 'xref-find-definitions)
+(define-key global-map "\eB" 'xref-find-references)
+(define-key global-map "\em" 'make-without-asking)
+(define-key global-map "\eM" 'recompile)
+(define-key global-map "\er" 'launch-without-asking)
+(define-key global-map "\e/" 'comment-line)
+(define-key global-map "\ej" 'imenu)
+(define-key global-map "\et" 'shell)
+(define-key global-map "\ev" 'split-window-horizontally)
+
+(define-key global-map [f1]  'load-todo)
+(define-key global-map [f2]  'next-error)
+(define-key global-map [f5]  'revert-buffer)
+(define-key global-map [f12] 'eval-buffer)
+
+(define-key eglot-mode-map (kbd "M-<f6>") 'eglot-rename)
+  
+(define-key company-active-map (kbd "C-j") 'company-select-next)
+(define-key company-active-map (kbd "C-k") 'company-select-previous)
+(define-key company-active-map (kbd "TAB") 'company-complete-selection)
+;;(define-key company-active-map (kbd "SPC") 'company-complete-selection)
+
+;; Função para desativar o Evil mode no shell
+(defun disable-evil-mode-in-shell ()
+  (when (string-match-p "\\*shell\\*" (buffer-name))
+    (turn-off-evil-mode)
+    (local-set-key (kbd "<up>") 'comint-previous-input)
+    (local-set-key (kbd "<down>") 'comint-next-input)
+    ))
+
+;; Adiciona a função ao hook do modo shell
+(add-hook 'shell-mode-hook 'disable-evil-mode-in-shell)
+
 ;;
-;; NOTE2: Essa alteração é necessário para pegar a arquitetura do projeto usando o recurso de buildSettings onde mostra todas as opções de build definidas no xcodeproj.
-;; NOTE3: para visualizar o buildSettings do projeto:
+;; Buffer text completion
 ;;
-;;   $ xcodebuild -configuration Debug -showBuildSettings
-;;
-;; (use-package lsp-sourcekit
-;;   :after lsp-mode
-;;   :config
-;;   (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
+;;(abbrev-mode 0)
+;; (global-set-key (kbd "C-SPC") 'dabbrev-completion)
+(global-set-key (kbd "C-SPC") 'completion-at-point)
+;;(define-key global-map [S-tab] 'indent-for-tab-command)
+;;(define-key global-map [tab] 'dabbrev-expand)
+(define-key global-map [tab] 'indent-for-tab-command)
 
-(when is-macosx
-  (use-package company-sourcekit
-    :ensure t
-    :config
-    (setq company-sourcekit-verbose t)
-    (setq sourcekit-verbose t)
-    (setq sourcekit-sourcekittendaemon-executable taguiar-sourcekit)
-    (add-to-list 'company-backends 'company-sourcekit)))
+(defun conditionally-disable-abbrev ()
+  "Disable abbrev when enter at minibuffer."
+    (define-key global-map [tab] 'nil)
+    (abbrev-mode -1))
 
-;; (use-package gradle-mode
-;;     :disabled t
-;;   :ensure t)
+;; Disable temporarily abbrev-mode with TAB when searching from 'counsel-find-file
+(add-hook 'minibuffer-setup-hook 'conditionally-disable-abbrev)
+;;(add-hook 'minibuffer-exit-hook (lambda ()
+				  ;; (abbrev-mode 1)
+				  ;; (define-key global-map [tab] 'dabbrev-expand)))
 
-;; programming languages
-(use-package markdown-mode)
-(use-package groovy-mode)
-(use-package kotlin-mode)
-(use-package go-mode)
-;; M-x package-install RET swift-mode
 
-;;;;;;;;;;;
-;; Hooks ;;
-;;;;;;;;;;;
 
-;; (defun taguiar/enter-insert-state-hook()
-;;     (interactive)
-;;     (set-face-background 'hl-line "grey15"))
-;; 
-;;   (defun taguiar/exit-insert-state-hook()
-;;     (interactive)
-;;     (set-face-background 'hl-line "DarkSlateGrey"))
-;;     
-;; 
-;; (add-hook 'evil-insert-state-entry-hook 'taguiar/enter-insert-state-hook)
-;; (add-hook 'evil-insert-state-exit-hook  'taguiar/exit-insert-state-hook)
-;; (add-hook 'evil-replace-state-entry-hook 'taguiar/enter-insert-state-hook)
-;; (add-hook 'evil-replace-state-exit-hook  'taguiar/exit-insert-state-hook)
 
 (defun cpp-highlight-if-0/1 ()
   "Modify the face of text in between #if 0 ... #endif."
   (interactive)
-  (setq cpp-known-face '(background-color . "gray20"))
+  (setq cpp-known-face '(foreground-color . "gray40"))
   (setq cpp-unknown-face 'default)
   (setq cpp-face-type 'dark)
   (setq cpp-known-writable 't)
@@ -386,7 +300,7 @@ Intended for `after-make-frame-functions'."
         '(
           (#("0" 0 1
              (fontified nil))
-           (background-color . "gray20")
+           (foreground-color . "gray40")
            nil
            both nil)))
   (cpp-highlight-buffer t))
@@ -397,9 +311,6 @@ Intended for `after-make-frame-functions'."
   (c-set-offset 'case-label '+) ; ident switch/case
   (setq c-indent-level 4)
   (setq tab-width 4)
-  (setq indent-tabs-mode nil)
-
-  (define-key c++-mode-map "\ec" 'find-corresponding-file)
 
   (cpp-highlight-if-0/1)
   (add-hook 'after-save-hook 'cpp-highlight-if-0/1 'append 'local)
@@ -430,70 +341,45 @@ Intended for `after-make-frame-functions'."
   )
 
   (cond ((file-exists-p buffer-file-name) t)
-        ((string-match "[.]hin" buffer-file-name) (taguiar-source-format))
-        ((string-match "[.]cin" buffer-file-name) (taguiar-source-format))
-        ((string-match "[.]h" buffer-file-name) (taguiar-header-format))
-        ((string-match "[.]cpp" buffer-file-name) (taguiar-source-format)))
-
-  (setq dabbrev-case-replace t)
-  (setq dabbrev-case-fold-search t)
-  (setq dabbrev-upcase-means-case-search t))
+        ((string-match "[.]h" buffer-file-name)   (taguiar-header-format))
+        ((string-match "[.]cpp" buffer-file-name) (taguiar-source-format))))
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
 
+(setq compilation-error-regexp-alist
+    (cons '("^\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) : \\(?:fatal error\\|warnin\\(g\\)\\) C[0-9]+:" 2 3 nil (4))
+     compilation-error-regexp-alist))
 (setq compilation-directory-locked nil)
-
 (setq compilation-context-lines 0)
-;; (setq compilation-error-regexp-alist
-;;     (cons '("^\\([0-9]+>\\)?\\(\\(?:[a-zA-Z]:\\)?[^:(\t\n]+\\)(\\([0-9]+\\)) : \\(?:fatal error\\|warnin\\(g\\)\\) C[0-9]+:" 2 3 nil (4))
-;;      compilation-error-regexp-alist))
 
-(defun find-corresponding-file ()
-  "Find the file that corresponds to this one."
-  (interactive)
-  (setq CorrespondingFileName nil)
-  (setq BaseFileName (file-name-sans-extension buffer-file-name))
-  (if (string-match "\\.c" buffer-file-name)
-      (setq CorrespondingFileName (concat BaseFileName ".h")))
-  (if (string-match "\\.h" buffer-file-name)
-      (if (file-exists-p (concat BaseFileName ".c")) (setq CorrespondingFileName (concat BaseFileName ".c"))
-	(setq CorrespondingFileName (concat BaseFileName ".cpp"))))
-  (if (string-match "\\.hin" buffer-file-name)
-      (setq CorrespondingFileName (concat BaseFileName ".cin")))
-  (if (string-match "\\.cin" buffer-file-name)
-      (setq CorrespondingFileName (concat BaseFileName ".hin")))
-  (if (string-match "\\.cpp" buffer-file-name)
-      (setq CorrespondingFileName (concat BaseFileName ".h")))
-  (if CorrespondingFileName (find-file-other-window CorrespondingFileName)
-    (error "Unable to find a corresponding file")))
-
-(defun find-project-directory-recursive ()
+(defun find-project-directory-recursive (filepath)
   "Recursively search for a makefile."
   (interactive)
-  (if (file-exists-p taguiar-makescript) t
+  (message "try find: %s" filepath)
+  (if (file-exists-p filepath) t
       (cd "../")
-      (find-project-directory-recursive)))
+      (find-project-directory-recursive filepath)))
 
-(defun find-project-directory ()
+(defun find-project-directory (filepath)
   "Find the project directory."
   (interactive)
   (setq find-project-from-directory default-directory)
   (switch-to-buffer-other-window "*compilation*")
   (if compilation-directory-locked (cd last-compilation-directory)
   (cd find-project-from-directory)
-  (find-project-directory-recursive)
+  (find-project-directory-recursive filepath)
   (setq last-compilation-directory default-directory)))
 
 (defun make-without-asking ()
   "Make the current build."
   (interactive)
-  (if (find-project-directory) (compile taguiar-makescript))
+  (if (find-project-directory taguiar-makescript) (compile taguiar-makescript))
   (other-window 1))
 
 (defun launch-without-asking ()
   "Make the current build."
   (interactive)
-  (if (find-project-directory) (compile taguiar-launchscript))
+  (if (find-project-directory taguiar-launchscript) (compile taguiar-launchscript))
   (other-window 1))
 
 (defun load-todo ()
@@ -501,95 +387,18 @@ Intended for `after-make-frame-functions'."
   (interactive)
   (find-file taguiar-todo-file))
 
-(defun kill-compilation-buffer ()
-  "Kill the *compilation* buffer."
-  (interactive)
-  (let ((buffer (get-buffer "*compilation*")))
-    (when buffer
-      (kill-buffer buffer))))
-
-;;;;;;;;;;;;
-;; Abbrev ;;
-;;;;;;;;;;;;
-(abbrev-mode 1)
-(global-set-key (kbd "S-SPC") 'dabbrev-completion)
-(define-key global-map [S-tab] 'indent-for-tab-command)
-(define-key global-map "\C-y" 'indent-for-tab-command)
-(define-key global-map [C-tab] 'indent-region)
-(define-key global-map "\ej" 'imenu)
-
-
-(defun conditionally-disable-abbrev ()
-  "Disable abbrev when enter at minibuffer."
-  (if (string-match "find-file" (format "%s" this-command))
-    (define-key global-map [tab] 'nil)
-    (abbrev-mode -1)))
-
-;; Disable temporarily abbrev-mode with TAB when searching from 'counsel-find-file
-(add-hook 'minibuffer-setup-hook 'conditionally-disable-abbrev)
-(add-hook 'minibuffer-exit-hook (lambda ()
-				  (abbrev-mode 1)
-				  (define-key global-map [tab] 'dabbrev-expand)))
-
-
-;;;;;;;;;;;;;;;;;;;
-;; Global keymap ;;
-;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "<f10>") (lambda () (interactive)
-				(find-file emacs-file)
-				(message "Opened: %s" (buffer-name))))
-
-(global-set-key (kbd "<f12>") 'eval-buffer)
-(global-set-key (kbd "<f5>") 'revert-buffer)
-
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(global-set-key (kbd "C-s") 'swiper-isearch)
-(global-set-key (kbd "C-c =") 'align-regexp)
-
-(define-key global-map [f9] 'first-error)
-
-(define-key global-map "\et" 'load-todo)
-(define-key global-map "\ex" 'counsel-M-x)
-(define-key global-map "\es" 'save-buffer)
-(define-key global-map "\ep" 'project-find-file)
-(define-key global-map "\ef" 'find-file)
-(define-key global-map "\eF" 'counsel-git-grep)
-(define-key global-map "\eo" 'grep-find)
-(define-key global-map "\ed" 'dired)
-(define-key global-map "\eb" 'switch-to-buffer)
-(define-key global-map "\ek" 'kill-current-buffer)
-(define-key global-map "\eK" 'kill-compilation-buffer)
-(define-key global-map "\e/" 'comment-line)
-(define-key global-map "\e?" 'comment-dwim)
-(define-key global-map "\e0" 'delete-other-windows)
-(define-key global-map "\em" 'make-without-asking)
-(define-key global-map "\eM" 'recompile)
-(define-key global-map "\en" 'next-error)
-(define-key global-map "\eN" 'previous-error)
-(define-key global-map "\er" 'launch-without-asking)
-
-(define-key global-map "\el" 'evil-window-right)
-(define-key global-map "\eh" 'evil-window-left)
-(define-key global-map "\eL" 'evil-window-move-far-right)
-(define-key global-map "\eH" 'evil-window-move-far-left)
-(define-key global-map "\eu" 'lsp-ui-peek-find-definitions)
-(define-key global-map "\ei" 'lsp-ui-peek-find-references)
-
-
-;; =========================
-;; commands utils
-;; =========================
-
-;; comment-box
-(provide 'emacs)
-;;; emacs ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("e905e6f50d8a192aed513f8204c889689a491a149a29d94fe0a17b1b9589e6be" "b62e6fde6217bbbff61c5f504a5205c6adfbb69ffa40153a0ff47f6a047f1008" default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(error ((t (:foreground "firebrick2" :weight bold)))))
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+ '(font-lock-comment-delimiter-face ((t (:foreground "Green"))))
+ '(font-lock-comment-face ((t (:foreground "SeaGreen3"))))
+ '(font-lock-doc-face ((t (:foreground "Green")))))
