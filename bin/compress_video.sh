@@ -1,7 +1,10 @@
 #!/bin/sh
 
+# compress_video.sh <current_folder_with_files> <dest_folder_inside_current_folder_with_files>
+# compress_video.sh compose compress
 pushd $1
 for file in ./*; do
-    ffmpeg -i "$(basename "$file")" -vcodec libx265 -crf 28 "$2/$(basename "$file").mp4"
+    echo "$(basename "$file")" -vcodec libx265 -crf 28 "$2/$(basename "$file")"
+    ffmpeg -i "$(basename "$file")" -vcodec libx265 -crf 28 "$2/$(basename "$file")"
 done
 popd
