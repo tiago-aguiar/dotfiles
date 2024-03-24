@@ -6,7 +6,7 @@
 
 (custom-theme-set-faces
  'taguiar-light
-  '(default ((t (:background "wheat1" :foreground "black"))))
+  '(default ((t (:background "white" :foreground "black"))))
 
   '(font-lock-builtin-face        ((t (:foreground "RosyBrown4"))))
   '(font-lock-constant-face       ((t (:foreground "DarkGoldenrod4"))))

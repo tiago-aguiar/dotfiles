@@ -6,8 +6,13 @@
 
 (custom-theme-set-faces
  'taguiar-dark
-  '(default ((t (:background "black" :foreground "burlywood3"))))
+  '(default ((t (:background "black" :foreground "burlywood2"))))
 
+  '(mode-line ((t (:background "wheat" :foreground "black"))))
+  '(mode-line-buffer-id ((t (:background "wheat" :foreground "black"))))
+  '(mode-line-mousable ((t (:background "wheat" :foreground "black"))))
+  '(mode-line-mousable-minor-mode ((t (:background "wheat" :foreground "black"))))
+ 
   '(font-lock-builtin-face        ((t (:foreground "RosyBrown4"))))
   '(font-lock-constant-face       ((t (:foreground "OliveDrab3"))))
   '(font-lock-function-name-face  ((t (:foreground "DarkOliveGreen3"))))
@@ -21,7 +26,7 @@
   '(flycheck-error ((t (:background "dark red" :foreground "gray80"))))
   '(ivy-current-match ((t (:background "green" :foreground "black"))))
   '(ivy-subdir         ((t (:foreground "dark cyan"))))
-  '(button ((t (:underline nil :background nil :foreground "dark khaki")))) ; #include string
+  '(button ((t (:underline nil :background unspecified :foreground "dark khaki")))) ; #include string
   '(show-paren-match              ((t (:bold t :foreground "spring green"))))
 )
 

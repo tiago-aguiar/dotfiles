@@ -5,34 +5,41 @@
 (setq is-macosx (eq system-type 'darwin))
 (setq is-linux (featurep 'x))
 (setq is-win32 (not (or is-macosx is-linux)))
+
 (setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
-(setq make-backup-files nil)
 (setq create-lock-files nil)
 (setq auto-save-default nil)
 (setq gc-cons-threshold most-positive-fixnum)
 
 (when is-macosx
+  (message "is-macosx")
   (setq taguiar-todo-file "~/today.org")
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-makescript "./build.sh")
   (setq exec-path (append exec-path '("~/kotlin/server/bin")))
   (setq mac-command-modifier 'meta)
-
   (when (member "SF Mono" (font-family-list))
     (message "Loaded SF Mono Font")
     (set-face-attribute 'default nil :font "SF Mono-14" :bold nil)))
 
 (when is-win32
+  (message "is-win32")
   (setq taguiar-launchscript "launch.bat")
   (setq taguiar-makescript "build.bat")
 
+  ;; (when (member "Lucida Console" (font-family-list))
+    ;; (message "Loaded Lucida Console Font")
+    ;; (set-face-attribute 'default nil :font "Lucida Console-11" :bold nil)))
+
   ;; (when (member "Consolas" (font-family-list))
     ;; (message "Consolas")
-  ;; (set-face-attribute 'default nil :font "Consolas-11" :bold nil))
+    ;; (set-face-attribute 'default nil :font "Consolas-12" :bold nil)))
 
   (when (member "Fragment Mono" (font-family-list))
     (message "Loaded Fragment Mono Font")
     (set-face-attribute 'default nil :font "Fragment Mono-11" :bold nil)))
+
+
 
 (setq ring-bell-function 'ignore)
 (menu-bar-mode -1)
@@ -59,8 +66,6 @@
          ("\\emacs$"   . emacs-lisp-mode)
          ("\\.m$"      . objc-mode)
          ("\\.mm$"     . objc-mode)
-         ("\\.tmpl$"   . html-mode)
-         ("\\.env.debug$". dotenv-mode)
          ) auto-mode-alist))
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
@@ -75,15 +80,14 @@
 
 ;; Compare the current hour with the threshold hour
 (if (>= current-hour threshold-hour)
-    (load-theme 'zweilight t) ;; night load
-  (load-theme 'zweilight t)) ;; day load
+    (load-theme 'taguiar-dark t) ;; night load
+  (load-theme 'leuven t)) ;; day load
 
-;; Se for zweilight, force green comments
+;; if zweilight, force green comments
 (if (string= (car custom-enabled-themes) "zweilight")
     (progn
-      (message "loading zweilight")
       (custom-set-faces
-       '(font-lock-variable-name-face ((t (:foreground "gray90"))))
+
        '(font-lock-doc-face     ((t (:foreground "Green"))))
        '(font-lock-comment-face ((t (:foreground "Green")))))))
 
@@ -91,7 +95,7 @@
 ;;
 ;; todo highlight
 ;;
-(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode go-mode))
+(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -110,7 +114,7 @@
 fixme-modes)
 (modify-face 'font-lock-fixme-face     "Red"        nil nil t nil t nil nil)
 (modify-face 'font-lock-study-face     "Blue"       nil nil t nil t nil nil)
-(modify-face 'font-lock-test-face      "Pink"       nil nil t nil t nil nil)
+(modify-face 'font-lock-test-face      "Red"        nil nil t nil t nil nil)
 (modify-face 'font-lock-important-face "Yellow"     nil nil t nil t nil nil)
 (modify-face 'font-lock-note-face      "Dark Green" nil nil t nil t nil nil)
 (modify-face 'font-lock-doing-face     "Orange"     nil nil t nil t nil nil)
@@ -133,28 +137,13 @@ fixme-modes)
   (setq evil-insert-state-cursor '(box "Green"))
   (setq evil-normal-state-cursor '(box "Cyan"))
   :config
-  (evil-mode 1)
-  (defalias 'forward-evil-word 'forward-evil-symbol)) ;; movement with snake_case
+  (evil-mode 1))
 
 (define-key evil-insert-state-map (kbd "C-o") 'yas-expand)
-
-;; (defun taguiar-enter-insert-state-hook()
-;;     (interactive)
-;;     )
-;; 
-;; (defun taguiar-enter-normal-state-hook()
-;;     (interactive)
-;;     )
-;; 
-;; (add-hook 'evil-insert-state-entry-hook 'taguiar-enter-insert-state-hook)
-;; (add-hook 'evil-normal-state-entry-hook 'taguiar-enter-normal-state-hook)
-
 
 ;; selection color
 (set-face-background 'region "transparent")
 (set-face-foreground 'region "gray60")
-
-
 
 ;; IF yasnippet not working, try M-x yas-load-directory
 ;; IMPORTANT: required!!!
@@ -163,8 +152,6 @@ fixme-modes)
   :config
   (yas-global-mode 1))
 
-
-;; languages
 (use-package kotlin-mode)
 (use-package swift-mode)
 (use-package dotenv-mode)
@@ -186,7 +173,8 @@ fixme-modes)
   (define-key ivy-minibuffer-map    (kbd "C-k") 'ivy-previous-line)
   (define-key ivy-switch-buffer-map (kbd "C-j") 'ivy-next-line)
   (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line)
-  (define-key ivy-switch-buffer-map (kbd "C-d") 'ivy-switch-buffer-kill)) ; Delete current item minibuffer
+  ;; Delete current item minibuffer
+  (define-key ivy-switch-buffer-map (kbd "C-d") 'ivy-switch-buffer-kill)) 
 
 (use-package eglot
   :config
@@ -195,7 +183,6 @@ fixme-modes)
   (setq eglot-ignored-server-capabilities '(:hoverProvider :documentHighlightProvider :textDocument/definition))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
-  (add-hook 'go-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
   (add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1))))  ;; disable param hint
 
@@ -210,9 +197,9 @@ fixme-modes)
 (use-package company
   :config
   (add-hook 'c++-mode-hook 'global-company-mode)
-  (add-hook 'go-mode-hook 'global-company-mode)
   (setq company-minimum-prefix-length 3)
   (setq company-idle-delay 0.0))
+
 
 ;; flymake color - required to be here!
 (set-face-attribute 'flymake-error nil   :foreground "red"    :weight 'bold)
@@ -251,7 +238,7 @@ fixme-modes)
 (define-key global-map "\e/" 'comment-line)
 (define-key global-map "\ej" 'imenu)
 (define-key global-map "\et" 'shell)
-(define-key global-map "\ev" 'evil-window-vsplit)
+(define-key global-map "\ev" 'split-window-horizontally)
 
 (define-key global-map [f1]  'load-todo)
 (define-key global-map [f2]  'next-error)
@@ -263,9 +250,9 @@ fixme-modes)
 (define-key company-active-map (kbd "C-j") 'company-select-next)
 (define-key company-active-map (kbd "C-k") 'company-select-previous)
 (define-key company-active-map (kbd "TAB") 'company-complete-selection)
-;; (define-key company-active-map (kbd "SPC") 'company-complete-selection)
+;;(define-key company-active-map (kbd "SPC") 'company-complete-selection)
 
-;; Função para desativar o Evil mode no shell
+;; Function para desativar o Evil mode no shell
 (defun disable-evil-mode-in-shell ()
   (when (string-match-p "\\*shell\\*" (buffer-name))
     (turn-off-evil-mode)
@@ -273,7 +260,6 @@ fixme-modes)
     (local-set-key (kbd "<down>") 'comint-next-input)
     ))
 
-;; Adiciona a função ao hook do modo shell
 (add-hook 'shell-mode-hook 'disable-evil-mode-in-shell)
 
 ;;
@@ -291,14 +277,11 @@ fixme-modes)
     (define-key global-map [tab] 'nil)
     (abbrev-mode -1))
 
-;; Disable temporarily abbrev-mode with TAB when searching from 'find-file
+;; Disable temporarily abbrev-mode with TAB when searching from 'counsel-find-file
 (add-hook 'minibuffer-setup-hook 'conditionally-disable-abbrev)
 (add-hook 'minibuffer-exit-hook (lambda ()
 				  (abbrev-mode 1)
 				  (define-key global-map [tab] 'dabbrev-expand)))
-
-
-
 
 (defun cpp-highlight-if-0/1 ()
   "Modify the face of text in between #if 0 ... #endif."
@@ -316,11 +299,6 @@ fixme-modes)
            nil
            both nil)))
   (cpp-highlight-buffer t))
-
-(defun taguiar/go-hook ()
-  (message "Go Hook loaded")
-  (c-set-offset 'case-label '+) ; ident switch/case
-  (setq tab-width 4))
 
 (defun taguiar/c-hook ()
   "Styling cpp."
@@ -362,14 +340,12 @@ fixme-modes)
      (insert BaseFileName)
      (upcase-region (mark) (point))
      (pop-mark)
-     (insert "_H\n")
-  )
+     (insert "_H\n"))
 
   (defun taguiar-source-format ()
      "Format the given file as a source file."
      (interactive)
-     (setq BaseFileName (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
-  )
+     (setq BaseFileName (file-name-sans-extension (file-name-nondirectory buffer-file-name))))
 
   (cond ((file-exists-p buffer-file-name) t)
         ((string-match "[.]h" buffer-file-name)   (taguiar-header-format))
@@ -424,12 +400,12 @@ fixme-modes)
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("e905e6f50d8a192aed513f8204c889689a491a149a29d94fe0a17b1b9589e6be" default)))
+   '("d569651346538df7243d016a4c73a6b16934a173fa48fe1a7864728a97336670" "f9730fb2f4272fb300ae0626eddd27da50b0381a4092631294f619fda85af9c1" "e9c610c950c4da5470819d330d32e8acdf3460c695f56f51e20d3eab7563cc4a" "45ba8e98668f69f88efc29ef9222062f8bb720fcba79287a37ae983101c2bf73" "dd73f5b975c227ee9365ecd0212bf4d60322f2a0b82499e21041c9a257d3427a" "a4561fc39b266e2a63d2eb1ec1dbc4549e6a70fdd85b0701c39826b22543832d" "8baeacfc55743a3fc80095bb8e40d077754259835e11c3df4c61714d1a50c22e" "b2693f70b255b9a7e07c4170ab1baefef2cbb43c6c0dbb90effd0703e2d26bca" "634954e7945f42291f1d616d6bdbd42d206bb9bcc6ce636c2e241a37c3c7fe87" "a7acb88d4302d7d7c3d0f3e83d0149a20249251ce62d1639d2b6ab77a17337d9" "39fafedcbe5944be8f78d6de9afd9784d8cee8b9c3d0490157cf2704e9609ae9" "a4ec68a63c74e2744919a982c393c0e7890ce88acfb1ff23043b8b6826d36a0a" "d252e32478ae6c81c9ad91efa5755da4beb5c647ab0b984c1c487c48f5ccd0c2" default))
+ '(package-selected-packages
+   '(yaml-mode yasnippet try swift-mode kotlin-mode ivy go-mode evil dotenv-mode company auto-virtualenv ag)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-comment-face ((t (:foreground "Green"))))
- '(font-lock-doc-face ((t (:foreground "Green"))))
- '(font-lock-variable-name-face ((t (:foreground "gray90")))))
+ )

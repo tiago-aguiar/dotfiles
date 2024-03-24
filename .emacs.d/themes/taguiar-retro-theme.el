@@ -8,7 +8,7 @@
   '(font-lock-string-face ((t (:foreground "Gray"))))
   '(font-lock-builtin-face ((t (:foreground "white"))))
   '(font-lock-keyword-face ((t (:foreground "GhostWhite"))))
-  '(font-lock-function-name-face ((t (:bold t :foreground "white"))))
+  '(font-lock-function-name-face ((t (:bold nil :foreground "white"))))
   '(font-lock-variable-name-face ((t (:foreground "LightYellow"))))
   '(font-lock-type-face ((t (:foreground "DarkSeaGreen2"))))
   '(font-lock-doc-face ((t (:foreground "Grey40"))))
