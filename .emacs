@@ -153,6 +153,7 @@ fixme-modes)
   (yas-global-mode 1))
 
 (use-package kotlin-mode)
+(use-package markdown-mode)
 (use-package swift-mode)
 (use-package dotenv-mode)
 (use-package go-mode)
@@ -401,7 +402,7 @@ fixme-modes)
  '(custom-safe-themes
    '("50ff3ce1938e896010eaabd5b621847c96488adcb6164924bc9407254d512895" "98205b55df0cd7fcc7540fa45c8c1b5683a56e6f764b9af6b0802b748858e746" "d569651346538df7243d016a4c73a6b16934a173fa48fe1a7864728a97336670" "f9730fb2f4272fb300ae0626eddd27da50b0381a4092631294f619fda85af9c1" "e9c610c950c4da5470819d330d32e8acdf3460c695f56f51e20d3eab7563cc4a" "45ba8e98668f69f88efc29ef9222062f8bb720fcba79287a37ae983101c2bf73" "dd73f5b975c227ee9365ecd0212bf4d60322f2a0b82499e21041c9a257d3427a" "a4561fc39b266e2a63d2eb1ec1dbc4549e6a70fdd85b0701c39826b22543832d" "8baeacfc55743a3fc80095bb8e40d077754259835e11c3df4c61714d1a50c22e" "b2693f70b255b9a7e07c4170ab1baefef2cbb43c6c0dbb90effd0703e2d26bca" "634954e7945f42291f1d616d6bdbd42d206bb9bcc6ce636c2e241a37c3c7fe87" "a7acb88d4302d7d7c3d0f3e83d0149a20249251ce62d1639d2b6ab77a17337d9" "39fafedcbe5944be8f78d6de9afd9784d8cee8b9c3d0490157cf2704e9609ae9" "a4ec68a63c74e2744919a982c393c0e7890ce88acfb1ff23043b8b6826d36a0a" "d252e32478ae6c81c9ad91efa5755da4beb5c647ab0b984c1c487c48f5ccd0c2" default))
  '(package-selected-packages
-   '(yaml-mode yasnippet try swift-mode kotlin-mode ivy go-mode evil dotenv-mode company auto-virtualenv ag)))
+   '(markdown-mode yaml-mode yasnippet try swift-mode kotlin-mode ivy go-mode evil dotenv-mode company auto-virtualenv ag)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
