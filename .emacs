@@ -66,6 +66,8 @@
          ("\\emacs$"   . emacs-lisp-mode)
          ("\\.m$"      . objc-mode)
          ("\\.mm$"     . objc-mode)
+         ("\\.env$"    . dotenv-mode)
+         ("\\.env.debug$" . dotenv-mode)
          ) auto-mode-alist))
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
@@ -81,7 +83,7 @@
 ;; Compare the current hour with the threshold hour
 (if (>= current-hour threshold-hour)
     (load-theme 'taguiar-dark t) ;; night load
-  (load-theme 'casey t)) ;; day load
+  (load-theme 'taguiar-dark t)) ;; day load
 
 ;; if zweilight, force green comments
 (if (string= (car custom-enabled-themes) "zweilight")
@@ -95,7 +97,7 @@
 ;;
 ;; todo highlight
 ;;
-(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode))
+(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode go-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -184,6 +186,7 @@ fixme-modes)
   (setq eglot-ignored-server-capabilities '(:hoverProvider :documentHighlightProvider :textDocument/definition))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
+  (add-hook 'go-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
   (add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1))))  ;; disable param hint
 
@@ -198,6 +201,7 @@ fixme-modes)
 (use-package company
   :config
   (add-hook 'c++-mode-hook 'global-company-mode)
+  (add-hook 'go-mode-hook 'global-company-mode)
   (setq company-minimum-prefix-length 3)
   (setq company-idle-delay 0.0))
 
@@ -282,6 +286,13 @@ fixme-modes)
 (add-hook 'minibuffer-exit-hook (lambda ()
 				  (abbrev-mode 1)
 				  (define-key global-map [tab] 'dabbrev-expand)))
+
+
+(defun taguiar/go-hook ()
+  (message "Go Hook loaded")
+  (c-set-offset 'case-label '+) ; ident switch/case
+  (setq tab-width 4))
+
 
 (defun cpp-highlight-if-0/1 ()
   "Modify the face of text in between #if 0 ... #endif."
@@ -394,3 +405,4 @@ fixme-modes)
   "Loading a todo file."
   (interactive)
   (find-file taguiar-todo-file))
+
