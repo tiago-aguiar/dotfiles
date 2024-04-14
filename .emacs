@@ -188,7 +188,8 @@ fixme-modes)
   (add-hook 'c++-mode-hook 'eglot-ensure)
   (add-hook 'go-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
-  (add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1))))  ;; disable param hint
+  (add-hook 'eglot-managed-mode-hook (lambda ()
+				       (eglot-inlay-hints-mode -1))))  ;; disable param hint
 
 (use-package auto-virtualenv
   :ensure t
@@ -250,6 +251,7 @@ fixme-modes)
 (define-key global-map [f12] 'eval-buffer)
 
 (define-key eglot-mode-map (kbd "M-<f6>") 'eglot-rename)
+(define-key eglot-mode-map (kbd "M-RET") 'eglot-code-action-quickfix)
   
 (define-key company-active-map (kbd "C-j") 'company-select-next)
 (define-key company-active-map (kbd "C-k") 'company-select-previous)
@@ -406,3 +408,16 @@ fixme-modes)
   (interactive)
   (find-file taguiar-todo-file))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(eglot yasnippet yaml-mode try swift-mode markdown-mode kotlin-mode ivy go-mode evil dotenv-mode company auto-virtualenv ag)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
