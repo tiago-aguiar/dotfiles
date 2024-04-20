@@ -20,7 +20,7 @@
   (setq mac-command-modifier 'meta)
   (when (member "SF Mono" (font-family-list))
     (message "Loaded SF Mono Font")
-    (set-face-attribute 'default nil :font "SF Mono-14" :bold nil)))
+    (set-face-attribute 'default nil :font "SF Mono-13" :bold nil)))
 
 (when is-win32
   (message "is-win32")
@@ -71,7 +71,6 @@
          ) auto-mode-alist))
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-
 
 ;; Get the current time
 (setq current-time (current-time))
@@ -190,6 +189,7 @@ fixme-modes)
   (add-hook 'python-mode-hook 'eglot-ensure)
   (add-hook 'eglot-managed-mode-hook (lambda ()
 				       (eglot-inlay-hints-mode -1))))  ;; disable param hint
+(setq eglot-stay-out-of '(idle-change))
 
 (use-package auto-virtualenv
   :ensure t
@@ -407,14 +407,13 @@ fixme-modes)
   "Loading a todo file."
   (interactive)
   (find-file taguiar-todo-file))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(eglot yasnippet yaml-mode try swift-mode markdown-mode kotlin-mode ivy go-mode evil dotenv-mode company auto-virtualenv ag)))
+   '(company auto-virtualenv ivy ag try yaml-mode go-mode dotenv-mode swift-mode markdown-mode kotlin-mode yasnippet evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: cpp
+# key: cpp
+# --
+\`\`\`c++
+$0
+\`\`\`

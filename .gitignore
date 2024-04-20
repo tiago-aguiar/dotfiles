@@ -18,6 +18,7 @@ emacs.d/eshell/history
 **/emacs.d/eshell
 **/emacs.d/eln-cache
 **/emacs.d/projects
+**/emacs.d/games
 **/emacs.d/request
 **/emacs.d/packages
 emacs.d/eshell/lastdir
