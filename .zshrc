@@ -12,6 +12,7 @@ export PATH=$HOME/go/bin:$HOME/bin:/usr/local/bin:$PATH
 export PATH=$JAVA_HOME/bin:$PATH
 export PATH="$PATH:/opt/flutter/bin"
 export PATH="$PATH:/usr/lib/dart/bin"
+export LC_ALL=en_US.UTF-8
 
 
 ANDROID_HOME=""

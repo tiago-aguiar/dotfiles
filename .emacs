@@ -2,18 +2,43 @@
 ;; 1. Copy the .emacs and .emacs.d into c:\
 ;; 2. Set 'user variable environment': HOME=c:\
 
+;;
+;; variables
+;;
 (setq is-macosx (eq system-type 'darwin))
 (setq is-linux (featurep 'x))
 (setq is-win32 (not (or is-macosx is-linux)))
 
+(defvar taguiar/themes '(taguiar-light taguiar-dark casey jon))
+
 (setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
 (setq create-lock-files nil)
 (setq auto-save-default nil)
-(setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-threshold (* 1024 1024 100))
 
+(setq ring-bell-function 'ignore)
+(setq inhibit-startup-message t)
+
+;;
+;; UI
+;;
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(column-number-mode t)
+(electric-pair-mode -1)
+(scroll-bar-mode -1)
+(blink-cursor-mode t)
+(global-font-lock-mode 1)
+(defalias 'yes-or-no-p 'y-or-n-p)
+(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+
+;;
+;; custom OS
+;;
 (when is-macosx
   (message "is-macosx")
   (setq taguiar-todo-file "~/today.org")
+  (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-makescript "./build.sh")
   (setq exec-path (append exec-path '("~/kotlin/server/bin")))
@@ -39,19 +64,6 @@
     (message "Loaded Fragment Mono Font")
     (set-face-attribute 'default nil :font "Fragment Mono-11" :bold nil)))
 
-
-
-(setq ring-bell-function 'ignore)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(electric-pair-mode -1)
-(scroll-bar-mode -1)
-(blink-cursor-mode t)
-(global-font-lock-mode 1)
-(defalias 'yes-or-no-p 'y-or-n-p)
-(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
-(setq inhibit-startup-message t)
-
 ;;
 ;; auto mode
 ;;
@@ -70,7 +82,19 @@
          ("\\.env.debug$" . dotenv-mode)
          ) auto-mode-alist))
 
+;;
+;; Theme
+;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(defvar taguiar/current-theme-index 0)
+(defun taguiar/cycle-theme ()
+  (interactive)
+  ;; Descarregar o tema atual
+  (mapc #'disable-theme custom-enabled-themes)
+  ;; Calcular o próximo índice de tema
+  (setq taguiar/current-theme-index (mod (1+ taguiar/current-theme-index) (length taguiar/themes)))
+  ;; Carregar o novo tema
+  (load-theme (nth taguiar/current-theme-index taguiar/themes) t))
 
 ;; Get the current time
 (setq current-time (current-time))
@@ -81,20 +105,19 @@
 
 ;; Compare the current hour with the threshold hour
 (if (>= current-hour threshold-hour)
-    (load-theme 'taguiar-dark t) ;; night load
-  (load-theme 'taguiar-dark t)) ;; day load
+    (load-theme 'taguiar-dark t) ;; night
+  (load-theme (nth taguiar/current-theme-index taguiar/themes) t)) ;; day
 
 ;; if zweilight, force green comments
-(if (string= (car custom-enabled-themes) "zweilight")
-    (progn
-      (custom-set-faces
+;; (if (string= (car custom-enabled-themes) "zweilight")
+    ;; (progn
+      ;; (custom-set-faces
 
-       '(font-lock-doc-face     ((t (:foreground "Green"))))
-       '(font-lock-comment-face ((t (:foreground "Green")))))))
-
+       ;; '(font-lock-doc-face     ((t (:foreground "Green"))))
+       ;; '(font-lock-comment-face ((t (:foreground "Green")))))))
 
 ;;
-;; todo highlight
+;; Todo Highlight
 ;;
 (setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode go-mode))
 (make-face 'font-lock-fixme-face)
@@ -120,6 +143,9 @@ fixme-modes)
 (modify-face 'font-lock-note-face      "Dark Green" nil nil t nil t nil nil)
 (modify-face 'font-lock-doing-face     "Orange"     nil nil t nil t nil nil)
 
+;;
+;; Packages
+;;
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
@@ -140,7 +166,6 @@ fixme-modes)
   :config
   (evil-mode 1))
 
-(define-key evil-insert-state-map (kbd "C-o") 'yas-expand)
 
 ;; selection color
 (set-face-background 'region "transparent")
@@ -153,6 +178,7 @@ fixme-modes)
   :config
   (yas-global-mode 1))
 
+;; language packages
 (use-package kotlin-mode)
 (use-package markdown-mode)
 (use-package swift-mode)
@@ -163,10 +189,10 @@ fixme-modes)
 (use-package try)
 (use-package ag)
 
-(use-package lsp-mode
-  :disabled t
-  :hook (kotlin-mode . lsp-deferred)
-  :commands (lsp lsp-deferred))
+;; (use-package lsp-mode
+  ;; :disabled t
+  ;; :hook (kotlin-mode . lsp-deferred)
+  ;; :commands (lsp lsp-deferred))
 
 (use-package ivy
   :config
@@ -175,8 +201,32 @@ fixme-modes)
   (define-key ivy-minibuffer-map    (kbd "C-k") 'ivy-previous-line)
   (define-key ivy-switch-buffer-map (kbd "C-j") 'ivy-next-line)
   (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line)
-  ;; Delete current item minibuffer
   (define-key ivy-switch-buffer-map (kbd "C-d") 'ivy-switch-buffer-kill)) 
+
+(use-package org-roam
+  :bind (("C-c n f" . org-roam-node-find)
+	 ("C-c n i" . org-roam-node-insert)
+	 ("C-c n l" . org-roam-buffer-toggle)
+	 ("C-c n c" . org-roam-capture)
+	 ("C-c n r" . org-roam-db-sync)
+	 ("C-c n s" . org-roam-ui-mode)
+	 ("C-c n t" . org-roam-tag-add)
+	 ("C-c n d" . org-roam-dailies-capture-date)
+	 :map org-mode-map
+	 ("C-SPC" . completion-at-point))
+  :config
+  (setq org-roam-directory (file-truename "~/brain"))
+  (org-roam-db-autosync-mode))
+
+(setq org-roam-capture-templates
+      '(("z" "zettel" plain
+         "%?"
+         :target (file+head "${slug}-%<%Y%m%d%H%M%S>.org"
+                            "#+title: ${title}\n#+created: %U\n#+filetags: :undefined:\n#+status: #zettel/fleeting\n* References:\n")
+         :unnarrowed t)
+        ))
+
+(use-package org-roam-ui)
 
 (use-package eglot
   :config
@@ -190,6 +240,22 @@ fixme-modes)
   (add-hook 'eglot-managed-mode-hook (lambda ()
 				       (eglot-inlay-hints-mode -1))))  ;; disable param hint
 (setq eglot-stay-out-of '(idle-change))
+
+(defun conditionally-disable-abbrev ()
+  "Disable abbrev when enter at minibuffer."
+    (define-key global-map [tab] 'nil)
+    (abbrev-mode -1))
+
+
+(setq org-hide-emphasis-markers t)
+(setq org-startup-with-inline-images t)
+
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda ()
+                             (org-bullets-mode 1)
+			     (setq org-log-done 'time))))
 
 (use-package auto-virtualenv
   :ensure t
@@ -219,9 +285,14 @@ fixme-modes)
 (setq ido-everywhere t)
 (ido-mode 1)
 
+;;
+;; Key Mapping
+;;
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-c =")    'align-regexp)
 (global-set-key (kbd "C-s")      'ag-project)
+
+(define-key evil-insert-state-map (kbd "C-o") 'yas-expand)
 
 (define-key global-map "\el" 'evil-window-right)
 (define-key global-map "\eh" 'evil-window-left)
@@ -248,6 +319,7 @@ fixme-modes)
 (define-key global-map [f1]  'load-todo)
 (define-key global-map [f2]  'next-error)
 (define-key global-map [f5]  'revert-buffer)
+(define-key global-map [f8]  'taguiar/cycle-theme)
 (define-key global-map [f12] 'eval-buffer)
 
 (define-key eglot-mode-map (kbd "M-<f6>") 'eglot-rename)
@@ -256,6 +328,7 @@ fixme-modes)
 (define-key company-active-map (kbd "C-j") 'company-select-next)
 (define-key company-active-map (kbd "C-k") 'company-select-previous)
 (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+
 ;;(define-key company-active-map (kbd "SPC") 'company-complete-selection)
 
 ;; Function para desativar o Evil mode no shell
@@ -274,14 +347,12 @@ fixme-modes)
 ;;(abbrev-mode 0)
 ;; (global-set-key (kbd "C-SPC") 'dabbrev-completion)
 ;; (global-set-key (kbd "C-SPC") 'completion-at-point)
-(define-key global-map [S-tab] 'indent-for-tab-command)
-(define-key global-map [tab] 'dabbrev-expand)
-;; (define-key global-map [tab] 'indent-for-tab-command)
 
-(defun conditionally-disable-abbrev ()
-  "Disable abbrev when enter at minibuffer."
-    (define-key global-map [tab] 'nil)
-    (abbrev-mode -1))
+;; (define-key global-map [S-tab] 'indent-for-tab-command)
+(define-key org-mode-map [S-tab] 'org-cycle)
+;;(define-key global-map [tab] 'dabbrev-expand)
+
+;; (define-key global-map [tab] 'indent-for-tab-command)
 
 ;; Disable temporarily abbrev-mode with TAB when searching from 'counsel-find-file
 (add-hook 'minibuffer-setup-hook 'conditionally-disable-abbrev)
@@ -407,16 +478,3 @@ fixme-modes)
   "Loading a todo file."
   (interactive)
   (find-file taguiar-todo-file))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(company auto-virtualenv ivy ag try yaml-mode go-mode dotenv-mode swift-mode markdown-mode kotlin-mode yasnippet evil)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

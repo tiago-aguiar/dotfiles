@@ -23,6 +23,15 @@
   '(ivy-subdir         ((t (:foreground "DarkOrchid4"))))
   '(button ((t (:underline nil :background nil :foreground "LemonChiffon4")))) ; #include string
   '(show-paren-match              ((t (:bold t :foreground "dark cyan"))))
+
+  ;; org-mode
+  '(org-done ((t (:foreground "lawn green" :weight bold))))
+  '(org-level-1 ((t (:foreground "Purple4" :weight bold))))
+  '(org-level-2 ((t (:foreground "green4"  :weight bold))))
+  '(org-level-3 ((t (:foreground "Blue1"   :weight bold))))
+  '(org-level-4 ((t (:foreground "SpringGreen4" :weight bold))))
+  '(org-todo ((t (:foreground "red" :weight bold))))
+  '(org-headline-done ((t (:foreground "lawn green"))))
 )
 
 (when load-file-name
