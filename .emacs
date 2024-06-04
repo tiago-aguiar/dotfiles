@@ -29,6 +29,7 @@
 (scroll-bar-mode -1)
 (blink-cursor-mode t)
 (global-font-lock-mode 1)
+(global-visual-line-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
 
@@ -478,3 +479,16 @@ fixme-modes)
   "Loading a todo file."
   (interactive)
   (find-file taguiar-todo-file))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(org-bullets org-roam-ui yasnippet yaml-mode websocket try swift-mode simple-httpd org-roam markdown-mode kotlin-mode ivy go-mode evil dotenv-mode company auto-virtualenv ag)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
