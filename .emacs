@@ -328,7 +328,7 @@ fixme-modes)
   
 (define-key company-active-map (kbd "C-j") 'company-select-next)
 (define-key company-active-map (kbd "C-k") 'company-select-previous)
-(define-key company-active-map (kbd "TAB") 'company-complete-selection)
+(define-key company-active-map [tab] 'company-complete-selection)
 
 ;;(define-key company-active-map (kbd "SPC") 'company-complete-selection)
 
@@ -351,7 +351,7 @@ fixme-modes)
 
 (define-key global-map [S-tab] 'indent-for-tab-command)
 (define-key org-mode-map [S-tab] 'org-cycle)
-;;(define-key global-map [tab] 'dabbrev-expand)
+;(define-key global-map [tab] 'dabbrev-expand)
 
 ;; (define-key global-map [tab] 'indent-for-tab-command)
 
