@@ -349,7 +349,7 @@ fixme-modes)
 ;; (global-set-key (kbd "C-SPC") 'dabbrev-completion)
 ;; (global-set-key (kbd "C-SPC") 'completion-at-point)
 
-;; (define-key global-map [S-tab] 'indent-for-tab-command)
+(define-key global-map [S-tab] 'indent-for-tab-command)
 (define-key org-mode-map [S-tab] 'org-cycle)
 ;;(define-key global-map [tab] 'dabbrev-expand)
 
@@ -479,16 +479,3 @@ fixme-modes)
   "Loading a todo file."
   (interactive)
   (find-file taguiar-todo-file))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(org-bullets org-roam-ui yasnippet yaml-mode websocket try swift-mode simple-httpd org-roam markdown-mode kotlin-mode ivy go-mode evil dotenv-mode company auto-virtualenv ag)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
