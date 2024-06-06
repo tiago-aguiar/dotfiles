@@ -87,6 +87,8 @@
 ;; Theme
 ;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(add-to-list 'load-path "~/.emacs.d/scripts")
+
 (defvar taguiar/current-theme-index 0)
 (defun taguiar/cycle-theme ()
   (interactive)
@@ -209,6 +211,7 @@ fixme-modes)
 	 ("C-c n i" . org-roam-node-insert)
 	 ("C-c n l" . org-roam-buffer-toggle)
 	 ("C-c n c" . org-roam-capture)
+	 ("C-c n p" . org-publish-all)
 	 ("C-c n r" . org-roam-db-sync)
 	 ("C-c n s" . org-roam-ui-mode)
 	 ("C-c n t" . org-roam-tag-add)
@@ -222,10 +225,15 @@ fixme-modes)
 (setq org-roam-capture-templates
       '(("z" "zettel" plain
          "%?"
-         :target (file+head "${slug}-%<%Y%m%d%H%M%S>.org"
+         :if-new (file+head "${slug}-%<%Y%m%d%H%M%S>.org"
                             "#+title: ${title}\n#+created: %U\n#+filetags: :undefined:\n#+status: #zettel/fleeting\n* References:\n")
          :unnarrowed t)
-        ))
+
+	("p" "public post" plain
+	 (file "~/brain/templates/public_post.org")
+	 :if-new (file+head "%<%Y-%m-%d>-${slug}.org"
+			    "")
+	 :unnarrowed t)))
 
 (use-package org-roam-ui)
 
@@ -479,3 +487,5 @@ fixme-modes)
   "Loading a todo file."
   (interactive)
   (find-file taguiar-todo-file))
+
+(require 'org-export)
