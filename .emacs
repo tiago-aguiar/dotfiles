@@ -266,6 +266,10 @@ fixme-modes)
                              (org-bullets-mode 1)
 			     (setq org-log-done 'time))))
 
+;; Github Flavored Markdown exporter for Org Mode
+(use-package ox-gfm
+  :ensure t)
+
 (use-package auto-virtualenv
   :ensure t
   :init

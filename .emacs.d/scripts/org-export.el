@@ -11,9 +11,11 @@
           :publishing-directory "~/brain/web/_posts/"
           :recursive t
           :publishing-function org-html-publish-to-html
+          ;;:publishing-function org-gfm-export-to-markdown
           :headline-levels 4
           :html-extension "html"
-          :body-only t) ;; Only export section between <body> </body>
+          :body-only t ;; Only export section between <body> </body>
+	  ) 
 
 	("org-static"
 	 :base-directory "~/brain/4-assets"
