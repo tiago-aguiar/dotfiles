@@ -226,7 +226,7 @@ fixme-modes)
       '(("z" "zettel" plain
          "%?"
          :if-new (file+head "${slug}-%<%Y%m%d%H%M%S>.org"
-                            "#+title: ${title}\n#+created: %U\n#+filetags: :undefined:\n#+status: #zettel/fleeting\n* References:\n")
+                            "#+title: ${title}\n#+created: %U\n#+filetags: :undefined:\n#+status: #zettel/fleeting\n#+STARTUP: showall indent\n#+OPTIONS: toc:nil num:nil\n* References:\n")
          :unnarrowed t)
 
 	("p" "public post" plain
@@ -258,6 +258,7 @@ fixme-modes)
 
 (setq org-hide-emphasis-markers t)
 (setq org-startup-with-inline-images t)
+(setq org-image-actual-width nil)
 
 (use-package org-bullets
   :ensure t

@@ -18,7 +18,7 @@
 	  ) 
 
 	("org-static"
-	 :base-directory "~/brain/4-assets"
+	 :base-directory "~/brain/4-assets/public/"
 	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
 	 :publishing-directory "~/brain/web/assets"
 	 :recursive t

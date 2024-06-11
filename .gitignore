@@ -4,6 +4,7 @@
 **/.python-environments/
 **/ido.last
 .emacs.d/projects
+.emacs.d/bookmarks
 
 # Created by https://www.gitignore.io/api/emacs
 
