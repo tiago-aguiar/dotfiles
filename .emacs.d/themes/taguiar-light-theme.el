@@ -25,13 +25,14 @@
   '(show-paren-match              ((t (:bold t :foreground "dark cyan"))))
 
   ;; org-mode
-  '(org-done ((t (:foreground "lawn green" :weight bold))))
+  '(org-done ((t (:foreground "dark green" :weight bold))))
   '(org-level-1 ((t (:foreground "Purple4" :weight bold))))
   '(org-level-2 ((t (:foreground "green4"  :weight bold))))
   '(org-level-3 ((t (:foreground "Blue1"   :weight bold))))
   '(org-level-4 ((t (:foreground "SpringGreen4" :weight bold))))
   '(org-todo ((t (:foreground "red" :weight bold))))
-  '(org-headline-done ((t (:foreground "lawn green"))))
+  '(org-headline-todo ((t (:foreground "red"))))
+  '(org-headline-done ((t (:foreground "dark green"))))
 )
 
 (when load-file-name

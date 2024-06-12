@@ -292,6 +292,12 @@ fixme-modes)
 (set-face-attribute 'flymake-warning nil :foreground "orange" :weight 'bold)
 
 
+;; org block color
+(set-face-attribute 'org-block nil :background
+                    (color-darken-name
+                     (face-attribute 'default :background) 3))
+
+
 ;;
 ;; Suggestion on find-file
 ;;
