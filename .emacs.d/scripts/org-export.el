@@ -17,6 +17,21 @@
           :body-only t ;; Only export section between <body> </body>
 	  ) 
 
+	("org-wiki"
+          ;; Path to your org files.
+          :base-directory "~/wiki/_orgs/"
+          :base-extension "org"
+
+          ;; Path to your Jekyll project.
+          :publishing-directory "~/wiki/_posts/"
+          :recursive t
+          :publishing-function org-html-publish-to-html
+          ;;:publishing-function org-gfm-export-to-markdown
+          :headline-levels 4
+          :html-extension "html"
+          :body-only t ;; Only export section between <body> </body>
+	  )
+
 	("org-static"
 	 :base-directory "~/brain/4-assets/public/"
 	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"

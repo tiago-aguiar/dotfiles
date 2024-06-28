@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: org-wiki
+# key: _wiki
+# --
+
+#+TITLE: $1
+#+CREATED: [`(format-time-string "%Y-%m-%d %H:%M:%S")`]
+#+STARTUP: showall indent
+#+OPTIONS: toc:nil num:nil
+
+#+BEGIN_EXPORT html
+---
+layout: default
+title:  "$1"
+date: "`(format-time-string "%Y-%m-%d %H:%M:%S")`"
+categories: 
+---
+#+END_EXPORT
+#+TOC: headlines 2
+
+
+#+BEGIN_EXPORT html
+<h1>$1</h1>
+#+END_EXPORT
