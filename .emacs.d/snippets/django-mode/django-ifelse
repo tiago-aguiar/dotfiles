@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: django-ifelse
+# key: ifelse
+# --
+{% if $0 %}
+{% else %}
+{% endif %}

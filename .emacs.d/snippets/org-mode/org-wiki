@@ -10,15 +10,11 @@
 
 #+BEGIN_EXPORT html
 ---
-layout: default
+layout: post
 title:  "$1"
 date: "`(format-time-string "%Y-%m-%d %H:%M:%S")`"
 categories: 
+  - post
 ---
 #+END_EXPORT
 #+TOC: headlines 2
-
-
-#+BEGIN_EXPORT html
-<h1>$1</h1>
-#+END_EXPORT

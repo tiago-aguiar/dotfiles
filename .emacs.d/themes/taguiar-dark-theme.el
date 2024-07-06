@@ -38,7 +38,7 @@
   '(org-level-4 ((t (:foreground "SpringGreen4" :weight bold))))
   '(org-todo ((t (:foreground "red" :weight bold))))
 
-
+  '(org-block ((t (:background "gray10" :weight bold))))
 )
 
 (when load-file-name

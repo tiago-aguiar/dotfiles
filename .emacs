@@ -293,9 +293,9 @@ fixme-modes)
 
 
 ;; org block color
-(set-face-attribute 'org-block nil :background
-                    (color-darken-name
-                     (face-attribute 'default :background) 3))
+;; (set-face-attribute 'org-block nil :background
+                    ;; (color-darken-name
+                     ;; (face-attribute 'default :background) 3))
 
 
 ;;
@@ -310,6 +310,7 @@ fixme-modes)
 ;;
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-c =")    'align-regexp)
+(global-set-key (kbd "C-c w")    'taguiar/build-wiki)
 (global-set-key (kbd "C-s")      'ag-project)
 
 (define-key evil-insert-state-map (kbd "C-o") 'yas-expand)
@@ -385,6 +386,11 @@ fixme-modes)
   (message "Go Hook loaded")
   (c-set-offset 'case-label '+) ; ident switch/case
   (setq tab-width 4))
+
+(defun taguiar/build-wiki ()
+  (interactive)
+  (org-publish "org-wiki"))
+
 
 
 (defun cpp-highlight-if-0/1 ()
