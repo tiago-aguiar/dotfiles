@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: django-block
+# key: block
+# --
+{% block $0 %}
+{% endblock %}

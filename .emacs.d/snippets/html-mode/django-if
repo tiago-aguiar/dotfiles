@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: django-if
+# key: if
+# --
+{% if $0 %}
+{% endif %}

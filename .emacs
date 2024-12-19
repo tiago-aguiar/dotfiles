@@ -80,7 +80,9 @@
          ("\\.m$"      . objc-mode)
          ("\\.mm$"     . objc-mode)
          ("\\.env$"    . dotenv-mode)
+         ("\\.templ$"  . go-mode)
          ("\\.env.debug$" . dotenv-mode)
+         ("\\.env.test$"  . dotenv-mode)
          ) auto-mode-alist))
 
 ;;
@@ -89,7 +91,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/scripts")
 
-(defvar taguiar/current-theme-index 0)
+(defvar taguiar/current-theme-index 1)
 (defun taguiar/cycle-theme ()
   (interactive)
   ;; Descarregar o tema atual
@@ -108,7 +110,7 @@
 
 ;; Compare the current hour with the threshold hour
 (if (>= current-hour threshold-hour)
-    (load-theme 'taguiar-dark t) ;; night
+    (load-theme 'casey t) ;; night
   (load-theme (nth taguiar/current-theme-index taguiar/themes) t)) ;; day
 
 ;; if zweilight, force green comments
@@ -225,7 +227,7 @@ fixme-modes)
 (setq org-roam-capture-templates
       '(("z" "zettel" plain
          "%?"
-         :if-new (file+head "${slug}-%<%Y%m%d%H%M%S>.org"
+         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                             "#+title: ${title}\n#+created: %U\n#+filetags: :undefined:\n#+status: #zettel/fleeting\n#+STARTUP: showall indent\n#+OPTIONS: toc:nil num:nil\n* References:\n")
          :unnarrowed t)
 
@@ -245,6 +247,7 @@ fixme-modes)
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
   (add-hook 'go-mode-hook 'eglot-ensure)
+  (add-hook 'objc-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
   (add-hook 'eglot-managed-mode-hook (lambda ()
 				       (eglot-inlay-hints-mode -1))))  ;; disable param hint
@@ -283,6 +286,7 @@ fixme-modes)
   :config
   (add-hook 'c++-mode-hook 'global-company-mode)
   (add-hook 'go-mode-hook 'global-company-mode)
+  (add-hook 'objc-mode-hook 'global-company-mode)
   (setq company-minimum-prefix-length 3)
   (setq company-idle-delay 0.0))
 
@@ -340,6 +344,7 @@ fixme-modes)
 (define-key global-map [f1]  'load-todo)
 (define-key global-map [f2]  'next-error)
 (define-key global-map [f5]  'revert-buffer)
+(define-key global-map [f6]  'org-publish-all)
 (define-key global-map [f8]  'taguiar/cycle-theme)
 (define-key global-map [f12] 'eval-buffer)
 
@@ -506,3 +511,16 @@ fixme-modes)
   (find-file taguiar-todo-file))
 
 (require 'org-export)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("bbb3452e71b83fa7c7e1f6da00b086bdd948e86a8ce1125b11c54137aff258f8" "e9f6d29c701a8d786a1cfdd6dd2b4467148030383b1ff08e96e2d285ef496e12" "604197dec66a629e62849ace2dbad825098d9df51a027757d02c8efa50f4e8a9" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

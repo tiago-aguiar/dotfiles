@@ -1,6 +1,9 @@
 (require 'ox)
 (require 'ox-html)
 (require 'ox-publish)
+
+(setq org-html-checkbox-type 'html)
+
 (setq org-publish-project-alist
       '(("org-notes"
           ;; Path to your org files.
@@ -33,8 +36,8 @@
 	  )
 
 	("org-static"
-	 :base-directory "~/brain/4-assets/public/"
-	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
+	 :base-directory "~/brain/3-assets/public/"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|jpeg\\|pdf\\|mp3\\|ogg\\|swf\\|php"
 	 :publishing-directory "~/brain/web/assets"
 	 :recursive t
 	 :publishing-function org-publish-attachment)

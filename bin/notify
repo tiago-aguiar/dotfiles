@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# required: brew install terminal-notifier
+
+if [ $? -eq 0 ]; then
+    terminal-notifier -message "Task done" -title "Success" -contentImage /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/AlertNoteIcon.icns -sound default
+    say -v Luciana "Tarefa concluída!"
+else
+    terminal-notifier -message "Task failed" -title "Failed" -contentImage /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/AlertStopIcon.icns -sound default
+    say -v Luciana "Erro ao executar tarefa"
+fi
