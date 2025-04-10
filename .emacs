@@ -2,6 +2,10 @@
 ;; 1. Copy the .emacs and .emacs.d into c:\
 ;; 2. Set 'user variable environment': HOME=c:\
 
+(setq custom-file "~/.emacs-custom.el")
+(load custom-file)
+
+
 ;;
 ;; variables
 ;;
@@ -31,7 +35,9 @@
 (global-font-lock-mode 1)
 (global-visual-line-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
-(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+;(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+
+(set-face-attribute 'default nil :font "Liberation Mono-14" :bold nil)
 
 ;;
 ;; custom OS
@@ -42,11 +48,12 @@
   (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-makescript "./build.sh")
-  (setq exec-path (append exec-path '("~/kotlin/server/bin")))
+  ; (setq exec-path (append exec-path '("~/kotlin/server/bin")))
   (setq mac-command-modifier 'meta)
-  (when (member "SF Mono" (font-family-list))
-    (message "Loaded SF Mono Font")
-    (set-face-attribute 'default nil :font "SF Mono-13" :bold nil)))
+  ; (when (member "SF Mono" (font-family-list))
+    ; (message "Loaded SF Mono Font")
+    ; (set-face-attribute 'default nil :font "SF Mono-13" :bold nil))
+  )
 
 (when is-win32
   (message "is-win32")
@@ -70,13 +77,12 @@
 ;;
 (setq auto-mode-alist
       (append
-       '(("\\.cpp$"    . c++-mode)
-         ("\\.h$"      . c++-mode)
-         ("\\.c$"      . c++-mode)
-         ("\\.cc$"     . c++-mode)
+       '(;("\\.cpp$"    . c++-mode)
+         ;("\\.h$"      . c++-mode)
+         ;("\\.c$"      . c++-mode)
+         ;("\\.cc$"     . c++-mode)
          ("\\.txt$"    . indented-text-mode)
          ("\\.emacs$"  . emacs-lisp-mode)
-         ("\\emacs$"   . emacs-lisp-mode)
          ("\\.m$"      . objc-mode)
          ("\\.mm$"     . objc-mode)
          ("\\.env$"    . dotenv-mode)
@@ -92,6 +98,23 @@
 (add-to-list 'load-path "~/.emacs.d/scripts")
 
 (defvar taguiar/current-theme-index 1)
+
+
+(defun taguiar/toggle-breakpoint ()
+  (interactive)
+  (gud-break 1)
+  (message "call toggle breakpoint"))
+
+
+;; (with-current-buffer "*gud-5005*"
+  ;; (gud-call "redefine arara")
+  ;; (gud-send-input))
+
+(defun taguiar/next ()
+  (interactive)
+  (gud-next 1)
+  (message "call next"))
+
 (defun taguiar/cycle-theme ()
   (interactive)
   ;; Descarregar o tema atual
@@ -244,8 +267,8 @@ fixme-modes)
   (setq eldoc-echo-area-use-multiline-p nil)
   (setq eglot-events-buffer-size 0)
   (setq eglot-ignored-server-capabilities '(:hoverProvider :documentHighlightProvider :textDocument/definition))
-  (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure)
+  ;(add-hook 'c-mode-hook 'eglot-ensure)
+  ;(add-hook 'c++-mode-hook 'eglot-ensure)
   (add-hook 'go-mode-hook 'eglot-ensure)
   (add-hook 'objc-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
@@ -284,7 +307,7 @@ fixme-modes)
 
 (use-package company
   :config
-  (add-hook 'c++-mode-hook 'global-company-mode)
+  ;(add-hook 'c++-mode-hook 'global-company-mode)
   (add-hook 'go-mode-hook 'global-company-mode)
   (add-hook 'objc-mode-hook 'global-company-mode)
   (setq company-minimum-prefix-length 3)
@@ -344,8 +367,9 @@ fixme-modes)
 (define-key global-map [f1]  'load-todo)
 (define-key global-map [f2]  'next-error)
 (define-key global-map [f5]  'revert-buffer)
-(define-key global-map [f6]  'org-publish-all)
+(define-key global-map [f6]  'taguiar/next)
 (define-key global-map [f8]  'taguiar/cycle-theme)
+(define-key global-map [f9]  'taguiar/toggle-breakpoint)
 (define-key global-map [f12] 'eval-buffer)
 
 (define-key eglot-mode-map (kbd "M-<f6>") 'eglot-rename)
@@ -397,7 +421,6 @@ fixme-modes)
   (org-publish "org-wiki"))
 
 
-
 (defun cpp-highlight-if-0/1 ()
   "Modify the face of text in between #if 0 ... #endif."
   (interactive)
@@ -414,6 +437,13 @@ fixme-modes)
            nil
            both nil)))
   (cpp-highlight-buffer t))
+
+
+(defun taguiar/java-hook ()
+  (setq c-basic-offset 4)
+  (setq c-indent-level 4)
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4))
 
 (defun taguiar/c-hook ()
   "Styling cpp."
@@ -467,6 +497,7 @@ fixme-modes)
         ((string-match "[.]cpp" buffer-file-name) (taguiar-source-format))))
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
+(add-hook 'java-mode-hook 'taguiar/java-hook)
 (add-hook 'go-mode-hook 'taguiar/go-hook)
 
 (setq compilation-error-regexp-alist
@@ -511,16 +542,4 @@ fixme-modes)
   (find-file taguiar-todo-file))
 
 (require 'org-export)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("bbb3452e71b83fa7c7e1f6da00b086bdd948e86a8ce1125b11c54137aff258f8" "e9f6d29c701a8d786a1cfdd6dd2b4467148030383b1ff08e96e2d285ef496e12" "604197dec66a629e62849ace2dbad825098d9df51a027757d02c8efa50f4e8a9" default)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
