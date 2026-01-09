@@ -36,7 +36,7 @@
 
 ;; (set-face-attribute 'default nil :font "Lucida Console-14" :bold nil)
 ;; (set-face-attribute 'default nil :font "Consolas-13" :bold nil)
-(set-face-attribute 'default nil :font "Liberation Mono-16" :bold nil)
+(set-face-attribute 'default nil :font "Liberation Mono-15" :bold nil)
 (setq-default line-spacing 0.1)
 
 ;;
