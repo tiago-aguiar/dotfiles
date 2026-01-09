@@ -5,15 +5,12 @@
 (setq custom-file "~/.emacs-custom.el")
 (load custom-file)
 
-
 ;;
 ;; variables
 ;;
 (setq is-macosx (eq system-type 'darwin))
 (setq is-linux (featurep 'x))
 (setq is-win32 (not (or is-macosx is-linux)))
-
-(defvar taguiar/themes '(taguiar-light taguiar-dark casey jon))
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/.saves")))
 (setq create-lock-files nil)
@@ -31,13 +28,16 @@
 (column-number-mode t)
 (electric-pair-mode -1)
 (scroll-bar-mode -1)
-(blink-cursor-mode t)
+(blink-cursor-mode -1)
 (global-font-lock-mode 1)
 (global-visual-line-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
-;(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
 
-(set-face-attribute 'default nil :font "Liberation Mono-14" :bold nil)
+;; (set-face-attribute 'default nil :font "Lucida Console-14" :bold nil)
+;; (set-face-attribute 'default nil :font "Consolas-13" :bold nil)
+(set-face-attribute 'default nil :font "Liberation Mono-16" :bold nil)
+(setq-default line-spacing 0.1)
 
 ;;
 ;; custom OS
@@ -45,42 +45,27 @@
 (when is-macosx
   (message "is-macosx")
   (setq taguiar-todo-file "~/today.org")
+  (setq taguiar-emacs-file "~/dotfiles/.emacs")
   (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-makescript "./build.sh")
-  ; (setq exec-path (append exec-path '("~/kotlin/server/bin")))
-  (setq mac-command-modifier 'meta)
-  ; (when (member "SF Mono" (font-family-list))
-    ; (message "Loaded SF Mono Font")
-    ; (set-face-attribute 'default nil :font "SF Mono-13" :bold nil))
-  )
+  (setq taguiar-kotlin-ls "/Users/tiagoaguiar/kotlin/kotlin-ls/server/build/install/server/bin")
+  (setq mac-command-modifier 'meta))
 
 (when is-win32
   (message "is-win32")
   (setq taguiar-launchscript "launch.bat")
-  (setq taguiar-makescript "build.bat")
-
-  ;; (when (member "Lucida Console" (font-family-list))
-    ;; (message "Loaded Lucida Console Font")
-    ;; (set-face-attribute 'default nil :font "Lucida Console-11" :bold nil)))
-
-  ;; (when (member "Consolas" (font-family-list))
-    ;; (message "Consolas")
-    ;; (set-face-attribute 'default nil :font "Consolas-12" :bold nil)))
-
-  (when (member "Fragment Mono" (font-family-list))
-    (message "Loaded Fragment Mono Font")
-    (set-face-attribute 'default nil :font "Fragment Mono-11" :bold nil)))
+  (setq taguiar-makescript "build.bat"))
 
 ;;
 ;; auto mode
 ;;
 (setq auto-mode-alist
       (append
-       '(;("\\.cpp$"    . c++-mode)
-         ;("\\.h$"      . c++-mode)
-         ;("\\.c$"      . c++-mode)
-         ;("\\.cc$"     . c++-mode)
+       '(("\\.cpp$"    . c++-mode)
+         ("\\.h$"      . c++-mode)
+         ("\\.c$"      . c-mode)
+         ("\\.cc$"     . c++-mode)
          ("\\.txt$"    . indented-text-mode)
          ("\\.emacs$"  . emacs-lisp-mode)
          ("\\.m$"      . objc-mode)
@@ -97,6 +82,16 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/scripts")
 
+(defvar taguiar/themes
+  '(taguiar-light
+    taguiar-dark
+    taguiar-retro
+    casey
+    jon
+    modus-vivendi
+    wheatgrass
+))
+;; (defvar taguiar/themes (custom-available-themes))
 (defvar taguiar/current-theme-index 1)
 
 
@@ -117,24 +112,20 @@
 
 (defun taguiar/cycle-theme ()
   (interactive)
-  ;; Descarregar o tema atual
   (mapc #'disable-theme custom-enabled-themes)
-  ;; Calcular o próximo índice de tema
   (setq taguiar/current-theme-index (mod (1+ taguiar/current-theme-index) (length taguiar/themes)))
-  ;; Carregar o novo tema
+  (let ((next-theme (nth taguiar/current-theme-index taguiar/themes)))
+    (message "Apply theme: %s" next-theme))
   (load-theme (nth taguiar/current-theme-index taguiar/themes) t))
 
 ;; Get the current time
 (setq current-time (current-time))
 (setq current-hour (nth 2 (decode-time current-time)))
+(setq threshold-hour 18) ;; 6 PM
 
-;; Set the threshold hour (6 PM in 24-hour format)
-(setq threshold-hour 18)
-
-;; Compare the current hour with the threshold hour
 (if (>= current-hour threshold-hour)
-    (load-theme 'casey t) ;; night
-  (load-theme (nth taguiar/current-theme-index taguiar/themes) t)) ;; day
+    (load-theme 'taguiar-dark t) ;; night-theme
+  (load-theme (nth taguiar/current-theme-index taguiar/themes) t)) ;; day-theme
 
 ;; if zweilight, force green comments
 ;; (if (string= (car custom-enabled-themes) "zweilight")
@@ -147,7 +138,7 @@
 ;;
 ;; Todo Highlight
 ;;
-(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode go-mode))
+(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode go-mode swift-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -189,8 +180,8 @@ fixme-modes)
 
 (use-package evil
   :init
-  (setq evil-insert-state-cursor '(box "Green"))
-  (setq evil-normal-state-cursor '(box "Cyan"))
+  (setq evil-insert-state-cursor '(box "Red"))
+  (setq evil-normal-state-cursor '(box "Green"))
   :config
   (evil-mode 1))
 
@@ -213,14 +204,11 @@ fixme-modes)
 (use-package dotenv-mode)
 (use-package go-mode)
 (use-package yaml-mode)
+(use-package nim-mode)
 
 (use-package try)
 (use-package ag)
 
-;; (use-package lsp-mode
-  ;; :disabled t
-  ;; :hook (kotlin-mode . lsp-deferred)
-  ;; :commands (lsp lsp-deferred))
 
 (use-package ivy
   :config
@@ -293,17 +281,17 @@ fixme-modes)
                              (org-bullets-mode 1)
 			     (setq org-log-done 'time))))
 
+
+(font-lock-add-keywords 'org-mode
+  '(("\\<DOING\\>" . 'my-org-doing-face)))
+
+(defface my-org-doing-face
+  '((t (:foreground "yellow" :weight bold :background "gray20")))
+  "Face for highlighting DOING in org-mode.")
+
 ;; Github Flavored Markdown exporter for Org Mode
 (use-package ox-gfm
   :ensure t)
-
-(use-package auto-virtualenv
-  :ensure t
-  :init
-  (use-package pyvenv
-    :ensure t)
-  :config
-  (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv))
 
 (use-package company
   :config
@@ -318,11 +306,22 @@ fixme-modes)
 (set-face-attribute 'flymake-error nil   :foreground "red"    :weight 'bold)
 (set-face-attribute 'flymake-warning nil :foreground "orange" :weight 'bold)
 
+;; LSP
+(use-package lsp-mode
+  ;; :disabled t
+  :hook (kotlin-mode . lsp-deferred)
+  :commands (lsp lsp-deferred))
 
-;; org block color
-;; (set-face-attribute 'org-block nil :background
-                    ;; (color-darken-name
-                     ;; (face-attribute 'default :background) 3))
+(add-to-list 'exec-path taguiar-kotlin-ls)
+(setenv "PATH" (concat taguiar-kotlin-ls ":" (getenv "PATH")))
+
+(defun my/lsp-local-keys ()
+  (local-set-key (kbd "M-RET") #'lsp-execute-code-action)
+  (add-hook 'after-save-hook
+            (lambda ()
+              (revert-buffer :ignore-auto :noconfirm))
+            nil t))
+(add-hook 'lsp-mode-hook #'my/lsp-local-keys)
 
 
 ;;
@@ -337,7 +336,6 @@ fixme-modes)
 ;;
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-c =")    'align-regexp)
-(global-set-key (kbd "C-c w")    'taguiar/build-wiki)
 (global-set-key (kbd "C-s")      'ag-project)
 
 (define-key evil-insert-state-map (kbd "C-o") 'yas-expand)
@@ -366,15 +364,18 @@ fixme-modes)
 
 (define-key global-map [f1]  'load-todo)
 (define-key global-map [f2]  'next-error)
+(define-key global-map [f3]  'org-publish-all)
 (define-key global-map [f5]  'revert-buffer)
 (define-key global-map [f6]  'taguiar/next)
 (define-key global-map [f8]  'taguiar/cycle-theme)
 (define-key global-map [f9]  'taguiar/toggle-breakpoint)
+(define-key global-map [f10] 'load-dot-emacs)
 (define-key global-map [f12] 'eval-buffer)
 
 (define-key eglot-mode-map (kbd "M-<f6>") 'eglot-rename)
 (define-key eglot-mode-map (kbd "M-RET") 'eglot-code-action-quickfix)
-  
+
+ 
 (define-key company-active-map (kbd "C-j") 'company-select-next)
 (define-key company-active-map (kbd "C-k") 'company-select-previous)
 (define-key company-active-map [tab] 'company-complete-selection)
@@ -415,10 +416,6 @@ fixme-modes)
   (message "Go Hook loaded")
   (c-set-offset 'case-label '+) ; ident switch/case
   (setq tab-width 4))
-
-(defun taguiar/build-wiki ()
-  (interactive)
-  (org-publish "org-wiki"))
 
 
 (defun cpp-highlight-if-0/1 ()
@@ -541,5 +538,18 @@ fixme-modes)
   (interactive)
   (find-file taguiar-todo-file))
 
+(defun load-dot-emacs ()
+  "Loading a dot emacs file."
+  (interactive)
+  (find-file taguiar-emacs-file))
+
 (require 'org-export)
 
+
+(require 'ansi-color)
+
+(defun my/colorize-compilation-buffer ()
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region compilation-filter-start (point))))
+
+(add-hook 'compilation-filter-hook 'my/colorize-compilation-buffer)

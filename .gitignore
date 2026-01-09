@@ -24,6 +24,8 @@ emacs.d/eshell/history
 **/emacs.d/packages
 emacs.d/eshell/lastdir
 **/emacs.d/.lsp-session-v1
+.emacs.d/.lsp-session-v1
+.emacs.d/org-persist
 *.elc
 *.data
 *.cache

@@ -149,7 +149,7 @@ let g:ale_linters = {
 
 
 " Autoformat
-au BufWrite *.mm :Autoformat
+" au BufWrite *.mm :Autoformat
 
 let g:go_fmt_autosave = 0
 " let g:autoformat_verbosemode = 0 " debug autoformat
