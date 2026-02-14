@@ -35,9 +35,9 @@
 (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
 
 ;; (set-face-attribute 'default nil :font "Lucida Console-14" :bold nil)
-;; (set-face-attribute 'default nil :font "Consolas-13" :bold nil)
-(set-face-attribute 'default nil :font "Liberation Mono-15" :bold nil)
-(setq-default line-spacing 0.1)
+(set-face-attribute 'default nil :font "Consolas-16" :bold nil)
+;; (set-face-attribute 'default nil :font "Liberation Mono-15" :bold nil)
+(setq-default line-spacing 0.0)
 
 ;;
 ;; custom OS
@@ -49,7 +49,7 @@
   (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-makescript "./build.sh")
-  (setq taguiar-kotlin-ls "/Users/tiagoaguiar/kotlin/kotlin-ls/server/build/install/server/bin")
+  (setq taguiar-kotlin-ls "/Users/tiagoaguiar/kotlin/kotlin-lsp/kotlin-lsp.sh")
   (setq mac-command-modifier 'meta))
 
 (when is-win32
@@ -138,7 +138,7 @@
 ;;
 ;; Todo Highlight
 ;;
-(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode go-mode swift-mode))
+(setq fixme-modes '(emacs-lisp-mode prog-mode c++-mode c-mode objc-mode go-mode swift-mode org-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-study-face)
 (make-face 'font-lock-test-face)
@@ -159,8 +159,8 @@ fixme-modes)
 (modify-face 'font-lock-study-face     "Blue"       nil nil t nil t nil nil)
 (modify-face 'font-lock-test-face      "Red"        nil nil t nil t nil nil)
 (modify-face 'font-lock-important-face "Yellow"     nil nil t nil t nil nil)
-(modify-face 'font-lock-note-face      "Dark Green" nil nil t nil t nil nil)
-(modify-face 'font-lock-doing-face     "Orange"     nil nil t nil t nil nil)
+(modify-face 'font-lock-note-face      "chartreuse3" nil nil t nil t nil nil)
+(modify-face 'font-lock-doing-face     "yellow3"    nil nil t nil t nil nil)
 
 ;;
 ;; Packages
@@ -189,6 +189,7 @@ fixme-modes)
 ;; selection color
 (set-face-background 'region "transparent")
 (set-face-foreground 'region "gray60")
+
 
 ;; IF yasnippet not working, try M-x yas-load-directory
 ;; IMPORTANT: required!!!
@@ -254,14 +255,18 @@ fixme-modes)
   :config
   (setq eldoc-echo-area-use-multiline-p nil)
   (setq eglot-events-buffer-size 0)
-  (setq eglot-ignored-server-capabilities '(:hoverProvider :documentHighlightProvider :textDocument/definition))
+  ; (setq eglot-ignored-server-capabilities '(:hoverProvider :documentHighlightProvider :textDocument/definition))
+
   ;(add-hook 'c-mode-hook 'eglot-ensure)
   ;(add-hook 'c++-mode-hook 'eglot-ensure)
+  (add-hook 'kotlin-mode-hook 'eglot-ensure)
   (add-hook 'go-mode-hook 'eglot-ensure)
   (add-hook 'objc-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
-  (add-hook 'eglot-managed-mode-hook (lambda ()
-				       (eglot-inlay-hints-mode -1))))  ;; disable param hint
+  (add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1)))  ;; disable param hint
+  :config
+  (add-to-list 'eglot-server-programs
+	       '((kotlin-ts-mode kotlin-mode) . ("bash" "/Users/tiagoaguiar/kotlin/kotlin-lsp/kotlin-lsp.sh" "--stdio"))))
 (setq eglot-stay-out-of '(idle-change))
 
 (defun conditionally-disable-abbrev ()
@@ -282,12 +287,33 @@ fixme-modes)
 			     (setq org-log-done 'time))))
 
 
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "M-h") nil))
+
 (font-lock-add-keywords 'org-mode
   '(("\\<DOING\\>" . 'my-org-doing-face)))
 
 (defface my-org-doing-face
   '((t (:foreground "yellow" :weight bold :background "gray20")))
   "Face for highlighting DOING in org-mode.")
+
+
+(set-face-attribute 'org-level-1 nil
+                    :foreground "gray70"
+		    :background nil
+                    :height 1.0
+                    :weight 'normal)
+
+(set-face-attribute 'org-level-2 nil
+                    :foreground "burlywood2"
+                    :height 1.0
+                    :weight 'normal)
+
+(set-face-attribute 'org-level-3 nil
+                    :foreground "wheat4"
+                    :height 1.0
+                    :weight 'normal)
+
 
 ;; Github Flavored Markdown exporter for Org Mode
 (use-package ox-gfm
@@ -296,6 +322,7 @@ fixme-modes)
 (use-package company
   :config
   ;(add-hook 'c++-mode-hook 'global-company-mode)
+  (add-hook 'kotlin-mode-hook 'global-company-mode)
   (add-hook 'go-mode-hook 'global-company-mode)
   (add-hook 'objc-mode-hook 'global-company-mode)
   (setq company-minimum-prefix-length 3)
@@ -308,7 +335,7 @@ fixme-modes)
 
 ;; LSP
 (use-package lsp-mode
-  ;; :disabled t
+  :disabled t
   :hook (kotlin-mode . lsp-deferred)
   :commands (lsp lsp-deferred))
 
@@ -374,6 +401,7 @@ fixme-modes)
 
 (define-key eglot-mode-map (kbd "M-<f6>") 'eglot-rename)
 (define-key eglot-mode-map (kbd "M-RET") 'eglot-code-action-quickfix)
+(define-key eglot-mode-map (kbd "C-SPC") 'company-capf)
 
  
 (define-key company-active-map (kbd "C-j") 'company-select-next)
@@ -553,3 +581,146 @@ fixme-modes)
     (ansi-color-apply-on-region compilation-filter-start (point))))
 
 (add-hook 'compilation-filter-hook 'my/colorize-compilation-buffer)
+
+
+
+
+
+
+
+
+(defun my/eglot-completion-annotate (candidate)
+  "Mostra labelDetails do Kotlin LSP na anotação."
+  (when-let* ((props (text-properties-at 0 candidate))
+              (item (plist-get props 'eglot--lsp-item))
+              (label-details (plist-get item :labelDetails))
+              (detail (plist-get label-details :detail)))
+
+    (concat " " (propertize detail 'face 'font-lock-comment-face))))
+
+
+;; (with-eval-after-load 'eglot
+;;   (setq completion-category-overrides
+;;         '((eglot (styles basic partial-completion))))
+  
+;;   ;; Adicionar anotação customizada
+;;   (advice-add 'eglot-completion-at-point
+;;               :filter-return
+;;               (lambda (result)
+;;                 (when result
+;;                   (plist-put (nthcdr 3 result)
+;;                              :annotation-function
+;;                              #'my/eglot-completion-annotate))
+;;                 result)))
+
+
+;; (defun my/kotlin-apply-completion (candidate)
+;;   "Executa comando LSP após completar."
+;;   (message "Runnninsssssssss %s" candidate)
+;;   (when-let* ((item (get-text-property 0 'eglot--lsp-item candidate))
+;;               (command (plist-get item :command)))
+;;     
+;;     ;; Executar comando que aplica imports
+;;     (eglot-execute-command
+;;      (eglot--current-server-or-lose)
+;;      (plist-get command :command)
+;;      (plist-get command :arguments))))
+;; 
+;; (add-hook 'company-completion-finished-hook #'my/kotlin-apply-completion)
+
+
+(defun my/company-execute-lsp-command (candidate)
+  "Executa o comando LSP associado ao candidate."
+  (when-let* ((props (text-properties-at 0 candidate))
+              (item (plist-get props 'eglot--lsp-item))
+              (command (plist-get item :command)))
+    
+    (message "Executa2 comando LSP: %S\n\n" command)
+
+    ;; Executar comando via eglot
+    (eglot-execute-command
+     (eglot--current-server-or-lose)
+     (plist-get command :command)
+     (plist-get command :arguments))))
+
+;; (add-hook 'company-completion-finished-hook #'my/company-execute-lsp-command)
+
+
+(defun my/eglot-block-apply-edit (server edit)
+  "Bloqueia applyEdit e mostra o que seria aplicado."
+  
+  (message "\n=== LSP QUER APLICAR ===")
+  (message "server: %s" server)
+
+  (message "\n=== EDIT RECEBIDO ===")
+  (message "Edit completo: %S" edit)
+  (message "Tipo do edit: %s" (type-of edit))
+  
+  (let ((changes (plist-get server :changes))
+        (cursor-pos (point))
+        (current-buf (current-buffer)))  ; Salvar buffer atual
+    
+    (when changes
+      (while changes
+        (let* ((uri (pop changes))
+               (edits-list (pop changes))
+               (file-path (eglot--uri-to-path uri)))
+          
+          (message "URI: %s" uri)
+          (message "Arquivo: %s" file-path)
+          
+          ;; IMPORTANTE: Abrir/mudar para o buffer do arquivo
+          (with-current-buffer (find-file-noselect file-path)
+            
+            (seq-doseq (edit-item edits-list)
+              (let* ((range (plist-get edit-item :range))
+                     (start (plist-get range :start))
+                     (end (plist-get range :end))
+                     (start-line (plist-get start :line))
+                     (start-character (plist-get start :character))
+                     (end-line (plist-get end :line))
+                     (end-character (plist-get end :character))
+                     (new-text (plist-get edit-item :newText)))
+                
+                (message "  Linha %d:%d - %d:%d '%s'" 
+                         start-line start-character 
+                         end-line end-character 
+                         new-text)
+  
+  		
+                (when (string-match-p "^import " new-text)
+                  (message "    >>> É IMPORT! Aplicando...")
+                  
+                  (save-excursion
+                    (goto-char (point-min))
+                    (forward-line start-line)
+                    (forward-char start-character)
+                    
+                    (message "    >>> Posição atual: %d" (point))
+                    (insert "arara")
+                    (message "    >>> Inserido!")))))))))
+    
+    ;; Voltar para buffer original
+    (when (buffer-live-p current-buf)
+      (set-buffer current-buf)
+      (goto-char cursor-pos)))
+  
+  nil)
+
+
+;; (with-eval-after-load 'eglot
+  ;; (advice-add 'eglot--apply-workspace-edit
+              ;; :override 
+              ;; #'my/eglot-block-apply-edit))
+
+
+
+;; C-h f - describe function
+;; C-j   - evaluate expression at next line
+;; list-packages
+
+(defun hello-world ()
+    (when (= 1 1)
+      (message "hello world 2")))
+
+;; (hello-world)
