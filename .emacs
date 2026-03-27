@@ -38,6 +38,7 @@
 (set-face-attribute 'default nil :font "Consolas-16" :bold nil)
 ;; (set-face-attribute 'default nil :font "Liberation Mono-15" :bold nil)
 (setq-default line-spacing 0.0)
+(setq-default indent-tabs-mode nil)
 
 ;;
 ;; custom OS
@@ -72,6 +73,8 @@
          ("\\.mm$"     . objc-mode)
          ("\\.env$"    . dotenv-mode)
          ("\\.templ$"  . go-mode)
+         ("\\.tsx$"    . tsx-ts-mode)
+         ("\\.ts$"     . typescript-ts-mode)
          ("\\.env.debug$" . dotenv-mode)
          ("\\.env.test$"  . dotenv-mode)
          ) auto-mode-alist))
@@ -81,6 +84,7 @@
 ;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/scripts")
+
 
 (defvar taguiar/themes
   '(taguiar-light
@@ -350,7 +354,6 @@ fixme-modes)
             nil t))
 (add-hook 'lsp-mode-hook #'my/lsp-local-keys)
 
-
 ;;
 ;; Suggestion on find-file
 ;;
@@ -382,6 +385,7 @@ fixme-modes)
 (define-key global-map "\ei" 'xref-find-definitions)
 (define-key global-map "\eu" 'xref-find-references)
 (define-key global-map "\em" 'make-without-asking)
+(define-key global-map "\en" 'compile)
 (define-key global-map "\eM" 'recompile)
 (define-key global-map "\er" 'launch-without-asking)
 (define-key global-map "\e/" 'comment-line)
