@@ -1,2 +1,4 @@
 @echo off
-call "C:\Program Files\Emacs\emacs-29.2\bin\runemacs.exe" 
+REM @echo off remove the output of command echo
+
+call "C:\Program Files\Emacs\emacs-30.1\bin\runemacs.exe" 

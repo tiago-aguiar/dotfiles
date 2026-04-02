@@ -5,6 +5,9 @@
 (setq custom-file "~/.emacs-custom.el")
 (load custom-file)
 
+(unless (file-directory-p "~/brain")
+  (make-directory "~/brain"))
+
 ;;
 ;; variables
 ;;
@@ -55,7 +58,11 @@
 
 (when is-win32
   (message "is-win32")
+  (setq taguiar-todo-file "~/today.org")
+  (setq taguiar-emacs-file "~/.emacs")
+  (setq taguiar-sourcekit "")
   (setq taguiar-launchscript "launch.bat")
+  (setq taguiar-kotlin-ls "")
   (setq taguiar-makescript "build.bat"))
 
 ;;
@@ -237,7 +244,7 @@ fixme-modes)
 	 :map org-mode-map
 	 ("C-SPC" . completion-at-point))
   :config
-  (setq org-roam-directory (file-truename "~/brain"))
+  (setq org-roam-directory "~/brain")
   (org-roam-db-autosync-mode))
 
 (setq org-roam-capture-templates
