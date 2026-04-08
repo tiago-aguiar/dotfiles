@@ -42,6 +42,7 @@
 ;; (set-face-attribute 'default nil :font "Liberation Mono-15" :bold nil)
 (setq-default line-spacing 0.0)
 (setq-default indent-tabs-mode nil)
+(setq pulse-flag nil) ;; required for xref-find-definitions insert history correctly!
 
 ;;
 ;; custom OS
@@ -49,11 +50,12 @@
 (when is-macosx
   (message "is-macosx")
   (setq taguiar-todo-file "~/today.org")
-  (setq taguiar-emacs-file "~/dotfiles/.emacs")
+  (setq taguiar-emacs-file "~/.emacs")
   (setq taguiar-sourcekit "/usr/local/bin/sourcekittend")
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-kotlin-ls "/Users/tiagoaguiar/kotlin/kotlin-lsp/kotlin-lsp.sh")
+  (setq taguiar-jdtls-script "~/.start-jdtls.sh")
   (setq mac-command-modifier 'meta))
 
 (when is-win32
@@ -201,7 +203,6 @@ fixme-modes)
 (set-face-background 'region "transparent")
 (set-face-foreground 'region "gray60")
 
-
 ;; IF yasnippet not working, try M-x yas-load-directory
 ;; IMPORTANT: required!!!
 ;;  M-x package-install RET yasnippet-snippets
@@ -277,6 +278,8 @@ fixme-modes)
   (add-hook 'eglot-managed-mode-hook (lambda () (eglot-inlay-hints-mode -1)))  ;; disable param hint
   :config
   (add-to-list 'eglot-server-programs
+             `(java-mode . ,#'my-jdtls-command))
+  (add-to-list 'eglot-server-programs
 	       '((kotlin-ts-mode kotlin-mode) . ("bash" "/Users/tiagoaguiar/kotlin/kotlin-lsp/kotlin-lsp.sh" "--stdio"))))
 (setq eglot-stay-out-of '(idle-change))
 
@@ -334,6 +337,7 @@ fixme-modes)
   :config
   ;(add-hook 'c++-mode-hook 'global-company-mode)
   (add-hook 'kotlin-mode-hook 'global-company-mode)
+  (add-hook 'java-mode-hook 'global-company-mode)
   (add-hook 'go-mode-hook 'global-company-mode)
   (add-hook 'objc-mode-hook 'global-company-mode)
   (setq company-minimum-prefix-length 3)
@@ -391,6 +395,7 @@ fixme-modes)
 (define-key global-map "\es" 'save-buffer)
 (define-key global-map "\ei" 'xref-find-definitions)
 (define-key global-map "\eu" 'xref-find-references)
+(define-key global-map "\e," 'xref-go-back)
 (define-key global-map "\em" 'make-without-asking)
 (define-key global-map "\en" 'compile)
 (define-key global-map "\eM" 'recompile)
@@ -584,7 +589,6 @@ fixme-modes)
 
 (require 'org-export)
 
-
 (require 'ansi-color)
 
 (defun my/colorize-compilation-buffer ()
@@ -593,137 +597,49 @@ fixme-modes)
 
 (add-hook 'compilation-filter-hook 'my/colorize-compilation-buffer)
 
+;;
+;; Java IDE setup
+;;
+(defun my-java-project-root ()
+  (or
+   (locate-dominating-file default-directory ".project")
+   (locate-dominating-file default-directory ".classpath")
+   (locate-dominating-file default-directory "pom.xml")
+   (locate-dominating-file default-directory "build.gradle")
+   default-directory))
 
 
+(defun my-jdtls-command (&rest _)
+  (let* ((root (my-java-project-root))
+         (project-name (file-name-nondirectory
+                        (directory-file-name root)))
+         (workspace (expand-file-name
+                     (concat "~/.jdtls-workspace/" project-name))))
 
+    (message "------------------------------")
+    (message "[JDTLS] Root: %s" root)
+    (message "[JDTLS] Project: %s" project-name)
+    (message "[JDTLS] Workspace: %s" workspace)
+    (message "[JDTLS] Default dir (before): %s" default-directory)
 
+    (make-directory workspace t)
 
+    (message "[JDTLS] Starting server...")
 
+    (list (expand-file-name taguiar-jdtls-script) workspace)))
 
-(defun my/eglot-completion-annotate (candidate)
-  "Mostra labelDetails do Kotlin LSP na anotação."
-  (when-let* ((props (text-properties-at 0 candidate))
-              (item (plist-get props 'eglot--lsp-item))
-              (label-details (plist-get item :labelDetails))
-              (detail (plist-get label-details :detail)))
+(defun my-eglot-java-init ()
+  (let ((project-root (my-java-project-root)))
+    (when project-root
+      (setq default-directory project-root))
+    (eglot-ensure)))
 
-    (concat " " (propertize detail 'face 'font-lock-comment-face))))
+(add-hook 'java-mode-hook #'my-eglot-java-init)
 
-
-;; (with-eval-after-load 'eglot
-;;   (setq completion-category-overrides
-;;         '((eglot (styles basic partial-completion))))
-  
-;;   ;; Adicionar anotação customizada
-;;   (advice-add 'eglot-completion-at-point
-;;               :filter-return
-;;               (lambda (result)
-;;                 (when result
-;;                   (plist-put (nthcdr 3 result)
-;;                              :annotation-function
-;;                              #'my/eglot-completion-annotate))
-;;                 result)))
-
-
-;; (defun my/kotlin-apply-completion (candidate)
-;;   "Executa comando LSP após completar."
-;;   (message "Runnninsssssssss %s" candidate)
-;;   (when-let* ((item (get-text-property 0 'eglot--lsp-item candidate))
-;;               (command (plist-get item :command)))
-;;     
-;;     ;; Executar comando que aplica imports
-;;     (eglot-execute-command
-;;      (eglot--current-server-or-lose)
-;;      (plist-get command :command)
-;;      (plist-get command :arguments))))
-;; 
-;; (add-hook 'company-completion-finished-hook #'my/kotlin-apply-completion)
-
-
-(defun my/company-execute-lsp-command (candidate)
-  "Executa o comando LSP associado ao candidate."
-  (when-let* ((props (text-properties-at 0 candidate))
-              (item (plist-get props 'eglot--lsp-item))
-              (command (plist-get item :command)))
-    
-    (message "Executa2 comando LSP: %S\n\n" command)
-
-    ;; Executar comando via eglot
-    (eglot-execute-command
-     (eglot--current-server-or-lose)
-     (plist-get command :command)
-     (plist-get command :arguments))))
-
-;; (add-hook 'company-completion-finished-hook #'my/company-execute-lsp-command)
-
-
-(defun my/eglot-block-apply-edit (server edit)
-  "Bloqueia applyEdit e mostra o que seria aplicado."
-  
-  (message "\n=== LSP QUER APLICAR ===")
-  (message "server: %s" server)
-
-  (message "\n=== EDIT RECEBIDO ===")
-  (message "Edit completo: %S" edit)
-  (message "Tipo do edit: %s" (type-of edit))
-  
-  (let ((changes (plist-get server :changes))
-        (cursor-pos (point))
-        (current-buf (current-buffer)))  ; Salvar buffer atual
-    
-    (when changes
-      (while changes
-        (let* ((uri (pop changes))
-               (edits-list (pop changes))
-               (file-path (eglot--uri-to-path uri)))
-          
-          (message "URI: %s" uri)
-          (message "Arquivo: %s" file-path)
-          
-          ;; IMPORTANTE: Abrir/mudar para o buffer do arquivo
-          (with-current-buffer (find-file-noselect file-path)
-            
-            (seq-doseq (edit-item edits-list)
-              (let* ((range (plist-get edit-item :range))
-                     (start (plist-get range :start))
-                     (end (plist-get range :end))
-                     (start-line (plist-get start :line))
-                     (start-character (plist-get start :character))
-                     (end-line (plist-get end :line))
-                     (end-character (plist-get end :character))
-                     (new-text (plist-get edit-item :newText)))
-                
-                (message "  Linha %d:%d - %d:%d '%s'" 
-                         start-line start-character 
-                         end-line end-character 
-                         new-text)
-  
-  		
-                (when (string-match-p "^import " new-text)
-                  (message "    >>> É IMPORT! Aplicando...")
-                  
-                  (save-excursion
-                    (goto-char (point-min))
-                    (forward-line start-line)
-                    (forward-char start-character)
-                    
-                    (message "    >>> Posição atual: %d" (point))
-                    (insert "arara")
-                    (message "    >>> Inserido!")))))))))
-    
-    ;; Voltar para buffer original
-    (when (buffer-live-p current-buf)
-      (set-buffer current-buf)
-      (goto-char cursor-pos)))
-  
-  nil)
-
-
-;; (with-eval-after-load 'eglot
-  ;; (advice-add 'eglot--apply-workspace-edit
-              ;; :override 
-              ;; #'my/eglot-block-apply-edit))
-
+;; format Java code after save
+(add-hook 'java-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook #'eglot-format-buffer nil t)))
 
 
 ;; C-h f - describe function
@@ -734,4 +650,4 @@ fixme-modes)
     (when (= 1 1)
       (message "hello world 2")))
 
-;; (hello-world)
+
