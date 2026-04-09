@@ -56,6 +56,7 @@
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-kotlin-ls "/Users/tiagoaguiar/kotlin/kotlin-lsp/kotlin-lsp.sh")
   (setq taguiar-jdtls-script "~/.start-jdtls.sh")
+  (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta))
 
 (when is-win32
@@ -303,6 +304,9 @@ fixme-modes)
 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "M-h") nil))
+(with-eval-after-load 'evil
+  (evil-define-key 'normal xref--xref-buffer-mode-map
+    (kbd "RET") #'xref-goto-xref))
 
 (font-lock-add-keywords 'org-mode
   '(("\\<DOING\\>" . 'my-org-doing-face)))
@@ -389,13 +393,13 @@ fixme-modes)
 (define-key global-map "\eb" 'switch-to-buffer)
 (define-key global-map "\ek" 'kill-current-buffer)
 (define-key global-map "\ed" 'dired)
-(define-key global-map "\eo" 'project-find-file)
 (define-key global-map "\eF" 'project-find-file)
 (define-key global-map "\ef" 'find-file)
 (define-key global-map "\es" 'save-buffer)
 (define-key global-map "\ei" 'xref-find-definitions)
 (define-key global-map "\eu" 'xref-find-references)
 (define-key global-map "\e," 'xref-go-back)
+(define-key global-map "\eo" 'eglot-code-action-organize-imports)
 (define-key global-map "\em" 'make-without-asking)
 (define-key global-map "\en" 'compile)
 (define-key global-map "\eM" 'recompile)
@@ -416,10 +420,11 @@ fixme-modes)
 (define-key global-map [f12] 'eval-buffer)
 
 (define-key eglot-mode-map (kbd "M-<f6>") 'eglot-rename)
-(define-key eglot-mode-map (kbd "M-RET") 'eglot-code-action-quickfix)
+(define-key eglot-mode-map (kbd "M-RET") 'eglot-code-actions)
+(define-key eglot-mode-map (kbd "S-M-<return>") 'eglot-code-action-quickfix)
 (define-key eglot-mode-map (kbd "C-SPC") 'company-capf)
+(define-key eglot-mode-map (kbd "M-s-b") 'eglot-find-implementation)
 
- 
 (define-key company-active-map (kbd "C-j") 'company-select-next)
 (define-key company-active-map (kbd "C-k") 'company-select-previous)
 (define-key company-active-map [tab] 'company-complete-selection)
@@ -636,7 +641,7 @@ fixme-modes)
 
 (add-hook 'java-mode-hook #'my-eglot-java-init)
 
-;; format Java code after save
+
 (add-hook 'java-mode-hook
           (lambda ()
             (add-hook 'before-save-hook #'eglot-format-buffer nil t)))

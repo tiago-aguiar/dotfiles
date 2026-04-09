@@ -1,8 +1,7 @@
 #!/bin/bash
 
 JDTLS_HOME=/opt/homebrew/opt/jdtls/libexec
-# WORKSPACE=$HOME/.jdtls-workspace/$(basename $(pwd))
-# WORKSPACE=$HOME/.jdtls-workspace/tetris-java
+# WORKSPACE=$HOME/.jdtls-workspace/<project>
 
 WORKSPACE=$1
 
