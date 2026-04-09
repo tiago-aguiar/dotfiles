@@ -421,7 +421,7 @@ fixme-modes)
 
 (define-key eglot-mode-map (kbd "M-<f6>") 'eglot-rename)
 (define-key eglot-mode-map (kbd "M-RET") 'eglot-code-actions)
-(define-key eglot-mode-map (kbd "S-M-<return>") 'eglot-code-action-quickfix)
+(define-key eglot-mode-map (kbd "s-<return>") 'eglot-code-action-quickfix)
 (define-key eglot-mode-map (kbd "C-SPC") 'company-capf)
 (define-key eglot-mode-map (kbd "M-s-b") 'eglot-find-implementation)
 
@@ -605,13 +605,18 @@ fixme-modes)
 ;;
 ;; Java IDE setup
 ;;
-(defun my-java-project-root ()
-  (or
-   (locate-dominating-file default-directory ".project")
-   (locate-dominating-file default-directory ".classpath")
-   (locate-dominating-file default-directory "pom.xml")
-   (locate-dominating-file default-directory "build.gradle")
-   default-directory))
+(defun my-java-project-root (&optional dir)
+  (let ((start-dir (file-name-as-directory
+                    (or dir
+                        (when buffer-file-name
+                          (file-name-directory buffer-file-name))
+                        default-directory))))
+    (or
+     (locate-dominating-file start-dir ".project")
+     (locate-dominating-file start-dir ".classpath")
+     (locate-dominating-file start-dir "pom.xml")
+     (locate-dominating-file start-dir "build.gradle")
+     start-dir)))
 
 
 (defun my-jdtls-command (&rest _)
@@ -633,14 +638,24 @@ fixme-modes)
 
     (list (expand-file-name taguiar-jdtls-script) workspace)))
 
+;; NOTE(tiago): the jdtls only works when default-directory is set to root project
+;; however, if we want to keep find-file opening at current buffer dir
+;; we need to restore this variable to "default" default-directory
 (defun my-eglot-java-init ()
-  (let ((project-root (my-java-project-root)))
-    (when project-root
-      (setq default-directory project-root))
+  (let ((buffer-dir default-directory)
+        (project-root (my-java-project-root)))
+    (setq-local my-eglot-java-buffer-directory buffer-dir)
+    (setq-local default-directory project-root)
+    (add-hook 'eglot-managed-mode-hook #'my-eglot-java-restore-directory nil t)
     (eglot-ensure)))
 
-(add-hook 'java-mode-hook #'my-eglot-java-init)
+(defun my-eglot-java-restore-directory ()
+  (when (bound-and-true-p my-eglot-java-buffer-directory)
+    (setq-local default-directory my-eglot-java-buffer-directory)
+    (kill-local-variable 'my-eglot-java-buffer-directory)
+    (remove-hook 'eglot-managed-mode-hook #'my-eglot-java-restore-directory t)))
 
+(add-hook 'java-mode-hook #'my-eglot-java-init)
 
 (add-hook 'java-mode-hook
           (lambda ()
@@ -654,5 +669,3 @@ fixme-modes)
 (defun hello-world ()
     (when (= 1 1)
       (message "hello world 2")))
-
-
