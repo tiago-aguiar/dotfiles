@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: org-cpp
-# key: cpp
-# --
-
-#+begin_src c++
-$0
-#+end_src
-

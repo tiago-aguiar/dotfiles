@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: consstartend
-# key: consstartend
-# --
-
-app:layout_constraintStart_toEndOf=""

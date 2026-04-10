@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: consbotbot
-# key: consbotbot
-# --
-
-app:layout_constraintBottom_toBottomOf="$1"

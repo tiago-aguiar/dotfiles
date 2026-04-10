@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: marginstart
-# key: marginstart
-# --
-android:layout_marginStart="$1"

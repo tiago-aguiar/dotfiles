@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: swift-subviews
-# key: subviews
-# --
-override func layoutSubviews() {
-    super.layoutSubviews()
-    $0
-}

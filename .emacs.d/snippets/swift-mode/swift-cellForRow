@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: swift-cellForRow
-# key: cellForRow
-# --
-func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     $0
-}

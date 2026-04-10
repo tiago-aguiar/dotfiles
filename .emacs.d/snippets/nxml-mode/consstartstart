@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: consstartstart
-# key: consstartstart
-# --
-
-app:layout_constraintStart_toStartOf=""

@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: swift-tbcommit
-# key: tbcommit
-# --
-
-func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-     $0
-}

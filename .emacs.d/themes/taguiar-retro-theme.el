@@ -14,7 +14,6 @@
   '(font-lock-doc-face ((t (:foreground "Grey40"))))
   '(font-lock-preprocessor-face ((t (:foreground "#baddbc"))))
   '(font-lock-contant-face ((t (:foreground "Yellow"))))
-  ;;'(show-paren-match ((t (:bold t :foreground "Green"))))
   '(flycheck-inline-error ((t (:foreground "red"))))
   '(show-paren-match ((t (:background "blue"))))
   '(show-paren-mismatch ((((class color)) (:background "red" :foreground "white"))))

@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: constoptop
-# key: constoptop
-# --
-
-app:layout_constraintTop_toTopOf="$1"

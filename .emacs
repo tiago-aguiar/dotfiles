@@ -101,8 +101,6 @@
     taguiar-retro
     casey
     jon
-    modus-vivendi
-    wheatgrass
 ))
 ;; (defvar taguiar/themes (custom-available-themes))
 (defvar taguiar/current-theme-index 1)
@@ -315,21 +313,21 @@ fixme-modes)
   "Face for highlighting DOING in org-mode.")
 
 
-(set-face-attribute 'org-level-1 nil
-                    :foreground "gray70"
-		    :background nil
-                    :height 1.0
-                    :weight 'normal)
+;; (set-face-attribute 'org-level-1 nil
+;;                     :foreground "gray70"
+;; 		    :background nil
+;;                     :height 1.0
+;;                     :weight 'normal)
 
-(set-face-attribute 'org-level-2 nil
-                    :foreground "burlywood2"
-                    :height 1.0
-                    :weight 'normal)
+;; (set-face-attribute 'org-level-2 nil
+;;                     :foreground "burlywood2"
+;;                     :height 1.0
+;;                     :weight 'normal)
 
-(set-face-attribute 'org-level-3 nil
-                    :foreground "wheat4"
-                    :height 1.0
-                    :weight 'normal)
+;; (set-face-attribute 'org-level-3 nil
+;;                     :foreground "wheat4"
+;;                     :height 1.0
+;;                     :weight 'normal)
 
 
 ;; Github Flavored Markdown exporter for Org Mode

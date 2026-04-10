@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: swift-didLayout
-# key: didLayout
-# --
-override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    $0
-}

@@ -1,6 +1,3 @@
-;;; package --- Summary;
-;;; Commentary:
-;;; Code:
 (deftheme taguiar-dark
   "taguiar-dark theme")
 
@@ -8,8 +5,9 @@
  'taguiar-dark
   '(default ((t (:background "black" :foreground "burlywood2"))))
 
-  '(mode-line ((t (:background "wheat" :foreground "black"))))
-  '(mode-line-buffer-id ((t (:background "wheat" :foreground "black"))))
+  '(mode-line ((t (:background "black" :foreground "wheat"))))
+  '(mode-line-inactive ((t (:background "black" :foreground "gray30"))))
+  '(mode-line-buffer-id ((t (:background "black" :foreground "OliveDrab3"))))
   '(mode-line-mousable ((t (:background "wheat" :foreground "black"))))
   '(mode-line-mousable-minor-mode ((t (:background "wheat" :foreground "black"))))
  
@@ -30,15 +28,15 @@
   '(show-paren-match              ((t (:bold t :foreground "spring green"))))
 
   ;; org-mode
-  '(org-done ((t (:foreground "lawn green" :weight bold))))
-  '(org-headline-done ((t (:foreground "lawn green"))))
-  '(org-level-1 ((t (:foreground "Cyan1" :weight bold))))
-  '(org-level-2 ((t (:foreground "Orange1" :weight bold))))
-  '(org-level-3 ((t (:foreground "Blue1" :weight bold))))
-  '(org-level-4 ((t (:foreground "SpringGreen4" :weight bold))))
+  '(org-done ((t (:foreground "lawn green" :weight normal))))
+  '(org-headline-done ((t (:foreground "wheat"))))
+  '(org-level-1 ((t (:foreground "OliveDrab3" :weight normal))))
+  '(org-level-2 ((t (:foreground "RosyBrown4" :weight normal))))
+  '(org-level-3 ((t (:foreground "RosyBrown4" :weight normal))))
+  '(org-level-4 ((t (:foreground "wheat" :weight normal))))
   '(org-todo ((t (:foreground "red" :weight bold))))
 
-  '(org-block ((t (:background "gray10" :weight bold))))
+  '(org-block ((t (:background "gray10" :weight normal))))
 )
 
 (when load-file-name
@@ -47,4 +45,3 @@
 
 (provide-theme 'taguiar-dark)
 ;;; taguiar-dark-theme.el ends here
-
