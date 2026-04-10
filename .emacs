@@ -55,7 +55,6 @@
   (setq taguiar-launchscript "./launch.sh")
   (setq taguiar-makescript "./build.sh")
   (setq taguiar-kotlin-ls "/Users/tiagoaguiar/kotlin/kotlin-lsp/kotlin-lsp.sh")
-  (setq taguiar-jdtls-script "~/.start-jdtls.sh")
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta))
 
@@ -636,7 +635,7 @@ fixme-modes)
 
     (message "[JDTLS] Starting server...")
 
-    (list (expand-file-name taguiar-jdtls-script) workspace)))
+    (list "jdtls" workspace)))
 
 ;; NOTE(tiago): the jdtls only works when default-directory is set to root project
 ;; however, if we want to keep find-file opening at current buffer dir
@@ -669,3 +668,7 @@ fixme-modes)
 (defun hello-world ()
     (when (= 1 1)
       (message "hello world 2")))
+
+
+(use-package flymake-diagnostic-at-point
+  :hook (flymake-mode . flymake-diagnostic-at-point-mode))

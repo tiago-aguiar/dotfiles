@@ -18,5 +18,5 @@ java \
   --add-opens java.base/java.util=ALL-UNNAMED \
   --add-opens java.base/java.lang=ALL-UNNAMED \
   -jar $JDTLS_HOME/plugins/org.eclipse.equinox.launcher_*.jar \
-  -configuration $JDTLS_HOME/config_mac \
+  -configuration $JDTLS_HOME/config_mac_arm \
   -data $WORKSPACE
