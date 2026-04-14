@@ -35,7 +35,7 @@
 (global-font-lock-mode 1)
 (global-visual-line-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
-(add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+;; (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
 
 ;; (set-face-attribute 'default nil :font "Lucida Console-14" :bold nil)
 (set-face-attribute 'default nil :font "Consolas-16" :bold nil)
