@@ -7,6 +7,8 @@
 
 (unless (file-directory-p "~/brain")
   (make-directory "~/brain"))
+(unless (file-directory-p "~/ruby/stack/_orgs")
+  (make-directory "~/ruby/stack/_orgs" t))
 
 ;;
 ;; variables
@@ -256,6 +258,12 @@ fixme-modes)
 	("p" "public post" plain
 	 (file "~/brain/templates/public_post.org")
 	 :if-new (file+head "%<%Y-%m-%d>-${slug}.org"
+			    "")
+	 :unnarrowed t)
+
+	("b" "blog post" plain
+	 (file "~/brain/templates/public_post.org")
+	 :if-new (file+head "~/ruby/stack/_orgs/%<%Y-%m-%d>-${slug}.org"
 			    "")
 	 :unnarrowed t)))
 

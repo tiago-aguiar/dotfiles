@@ -20,6 +20,23 @@
           :body-only t ;; Only export section between <body> </body>
 	  ) 
 
+        ("org-blog"
+          ;; Path to your org files.
+          :base-directory "~/ruby/stack/_orgs/"
+          :base-extension "org"
+
+          ;; Path to your Jekyll project.
+          :publishing-directory "~/ruby/stack/_posts/"
+          :recursive t
+          :publishing-function org-html-publish-to-html
+          ;;:publishing-function org-gfm-export-to-markdown
+          :headline-levels 4
+          :html-extension "html"
+          :body-only t ;; Only export section between <body> </body>
+	  ) 
+
+
+
 	("org-static"
 	 :base-directory "~/brain/3-assets/public/"
 	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|jpeg\\|pdf\\|mp3\\|ogg\\|swf\\|php"
@@ -27,6 +44,6 @@
 	 :recursive t
 	 :publishing-function org-publish-attachment)
 
-	("org" :components ("org-notes" "org-static"))))
+	("org" :components ("org-notes" "org-blog" "org-static"))))
 
 (provide 'org-export)
