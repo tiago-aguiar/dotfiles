@@ -1,3 +1,4 @@
 #!/bin/bash
 
-open /Applications/Emacs.app
+echo "Opening Emacs on $PWD"
+open -a Emacs "$PWD"
