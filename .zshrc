@@ -29,6 +29,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
     export PATH=/opt/homebrew/opt/ruby/bin:$PATH
 
+    # mkdir ~/.npm-global
+    # npm config set prefix '~/.npm-global'
+    export PATH="$HOME/.npm-global/bin:$PATH"
+
     alias myip="dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com"
     alias air='~/go/bin/air'
     alias gop="~/bin/git-open"

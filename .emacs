@@ -286,7 +286,10 @@ fixme-modes)
   (add-to-list 'eglot-server-programs
              `(java-mode . ,#'my-jdtls-command))
   (add-to-list 'eglot-server-programs
+               '(python-mode . ("basedpyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs
 	       '((kotlin-ts-mode kotlin-mode) . ("bash" "/Users/tiagoaguiar/kotlin/kotlin-lsp/kotlin-lsp.sh" "--stdio"))))
+
 (setq eglot-stay-out-of '(idle-change))
 
 (defun conditionally-disable-abbrev ()
@@ -406,7 +409,7 @@ fixme-modes)
 (define-key global-map "\e," 'xref-go-back)
 (define-key global-map "\eo" 'eglot-code-action-organize-imports)
 (define-key global-map "\em" 'make-without-asking)
-(define-key global-map "\en" 'compile)
+(define-key global-map "\en" #'taguiar/compile-from-project-root)
 (define-key global-map "\eM" 'recompile)
 (define-key global-map "\er" 'launch-without-asking)
 (define-key global-map "\e/" 'comment-line)
@@ -606,6 +609,22 @@ fixme-modes)
     (ansi-color-apply-on-region compilation-filter-start (point))))
 
 (add-hook 'compilation-filter-hook 'my/colorize-compilation-buffer)
+
+;;
+;; Compile command
+;; 
+(defun taguiar/project-root ()
+  "Retorna a raiz do projeto (.git) ou nil."
+  (locate-dominating-file default-directory ".git"))
+
+(defun taguiar/compile-from-project-root ()
+  "Executa compile a partir da raiz do projeto Git."
+  (interactive)
+  (let ((default-directory
+          (or (taguiar/project-root)
+              default-directory)))
+    (call-interactively #'compile)))
+
 
 ;;
 ;; Java IDE setup
