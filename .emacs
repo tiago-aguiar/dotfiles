@@ -276,7 +276,7 @@ fixme-modes)
   ; (setq eglot-ignored-server-capabilities '(:hoverProvider :documentHighlightProvider :textDocument/definition))
 
   ;(add-hook 'c-mode-hook 'eglot-ensure)
-  ;(add-hook 'c++-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
   (add-hook 'kotlin-mode-hook 'eglot-ensure)
   (add-hook 'go-mode-hook 'eglot-ensure)
   (add-hook 'objc-mode-hook 'eglot-ensure)
@@ -548,7 +548,13 @@ fixme-modes)
 
   (cond ((file-exists-p buffer-file-name) t)
         ((string-match "[.]h" buffer-file-name)   (taguiar-header-format))
-        ((string-match "[.]cpp" buffer-file-name) (taguiar-source-format))))
+        ((string-match "[.]cpp" buffer-file-name) (taguiar-source-format)))
+
+  ;; avoid format code after typing
+  (setq-local eglot-ignored-server-capabilities
+              '(:documentOnTypeFormattingProvider)))
+
+
 
 (add-hook 'c-mode-common-hook 'taguiar/c-hook)
 (add-hook 'java-mode-hook 'taguiar/java-hook)
@@ -697,3 +703,13 @@ fixme-modes)
 
 (use-package flymake-diagnostic-at-point
   :hook (flymake-mode . flymake-diagnostic-at-point-mode))
+
+;; used to generated correct blog path
+;; [[./xxxx][XXX] => [[site:xxxx][XXX]
+(org-link-set-parameters
+ "site"
+ :export (lambda (path desc backend)
+           (when (eq backend 'html)
+             (format "<a href=\"/%s\">%s</a>"
+                     path
+                     (or desc path)))))
